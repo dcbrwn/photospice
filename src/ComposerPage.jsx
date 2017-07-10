@@ -3,6 +3,7 @@ import EffectProcessor from './lib/EffectProcessor.js';
 import grayscale from './fx/grayscale.js';
 import colorize from './fx/colorize.js';
 import scaline from './fx/scaline.js';
+import funky from './fx/funky';
 
 export default class ComposerPage extends React.Component {
   useImage(event) {
@@ -19,7 +20,7 @@ export default class ComposerPage extends React.Component {
   componentDidMount() {
     this.processor = new EffectProcessor(this.canvas);
     // this.processor.addPass(grayscale);
-    // this.processor.addPass(colorize);
+    this.processor.addPass(colorize);
     this.processor.addPass(scaline);
   }
 
