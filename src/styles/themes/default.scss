@@ -1,0 +1,37 @@
+// Default theme
+
+$palette-foreground: hsl(0, 0%, 5%);
+$palette-background: hsl(50, 100%, 100%);
+$palette-primary: hsl(200, 90%, 50%);
+$palette-positive: hsl(150, 70%, 50%);
+$palette-negative: hsl(-10, 70%, 60%);
+
+html, body {
+  color: lighten($palette-foreground, 30%);
+  background-color: $palette-background;
+}
+
+h1, h2, h3 {
+  color: $palette-foreground;
+}
+
+a {
+  color: $palette-primary;
+
+  &:hover {
+    color: darken($palette-primary, 10%);
+  }
+
+  &:visited {
+    color: darken($palette-positive, 10%);
+  }
+
+  &:visited:hover {
+    color: darken($palette-positive, 20%);
+  }
+}
+
+::selection {
+  background-color: lighten($palette-primary, 0);
+  color: $palette-background;
+}

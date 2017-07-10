@@ -1,0 +1,46 @@
+html, body {
+  font-family: $font-text;
+  font-size: $size-text;
+  font-weight: $font-weight-text;
+  line-height: 1.5em;
+}
+
+span, a, img, i, u, b, small, strong {
+  display: inline;
+}
+
+h1, h2, h3 {
+  margin: 0.2em 0 0.5em 0;
+  font-family: $font-heading;
+  font-weight: $font-weight-heading;
+  line-height: 1.1em;
+}
+
+h1 {
+  font-size: $size-heading-primary;
+}
+
+h2 {
+  font-size: $size-heading-secondary;
+}
+
+h3 {
+  font-size: $size-heading-tertiary;
+}
+
+i {
+  font-style: italic;
+}
+
+b, strong {
+  font-weight: bolder;
+}
+
+p {
+  margin: 0 0 1em 0;
+}
+
+ul {
+  list-style: disc outside;
+  padding: 0.5em 0 0.5em 1em;
+}
