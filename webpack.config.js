@@ -32,7 +32,9 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['es2015', 'react']
+            presets: ['es2015', 'react'],
+            // FIXME: need to find a better way to support decorators
+            plugins: ['transform-decorators-legacy'],
           }
         }
       },
