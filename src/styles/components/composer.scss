@@ -1,0 +1,26 @@
+.composer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+
+  .composer-overlay {
+    z-index: 1;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .composer-screen {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+  }
+}

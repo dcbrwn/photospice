@@ -1,40 +1,48 @@
 import React from 'react';
 import EffectProcessor from './lib/EffectProcessor.js';
+import EffectTuner from './EffectTuner.jsx';
 import fx from './fx';
 
 export default class ComposerPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      processor: null,
+    };
+  }
+
   useImage(event) {
     const reader = new FileReader();
     reader.onload = async (event) => {
-      await this.processor.useImage(0, event.target.result);
-      this.processor.render();
+      await this.state.processor.useImage(0, event.target.result);
+      this.state.processor.render();
     };
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  componentDidMount() {
-    this.processor = new EffectProcessor(this.canvas);
-    this.processor.addPass(fx.colorize);
-    this.processor.addPass(fx.scaline);
+  async componentDidMount() {
+    const processor = new EffectProcessor(this.canvas);
+    processor.addPass(fx.grayscale);
+    await processor.useImage(0, 'assets/spice.jpg');
+    processor.render();
+    this.setState({ processor: processor });
   }
 
   render() {
     return (
-      <main>
-        <header>
+      <main className='composer'>
+        <div className='composer-overlay'>
           <h1>Photospice</h1>
-        </header>
-        <button onClick={() => this.imageInput.click()}>Upload photo</button>
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          onChange={ this.useImage.bind(this) }
-          ref={(input) => this.imageInput = input } />
-        <div className='scroll-lane'>
-          <canvas ref={(canvas) => { this.canvas = canvas; }}>
-          </canvas>
+          <button onClick={() => this.imageInput.click()}>Upload photo</button>
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            onChange={ this.useImage.bind(this) }
+            ref={(input) => this.imageInput = input } />
+          <EffectTuner processor={this.state.processor} />
         </div>
-        <div className='effect-editor'>
+        <div className='composer-screen'>
+          <canvas ref={(canvas) => { this.canvas = canvas; }} />
         </div>
       </main>
     );
