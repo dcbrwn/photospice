@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Start dev server.",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": [ "start" ],
+      "port": 5858
+    }
+  ]
+}
