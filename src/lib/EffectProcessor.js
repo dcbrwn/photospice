@@ -1,4 +1,5 @@
 import GLProgram from './GLProgram.js';
+import { toPowerOfTwo } from './math.js';
 
 const passthroughVS = `
   attribute vec4 aPosition;
@@ -14,10 +15,6 @@ const quadData = new Float32Array([
   1.0, -1.0, 0.0,
   -1.0, -1.0, 0.0,
 ]);
-
-function toPowerOfTwo(value) {
-  return Math.pow(2, Math.ceil(Math.log2(value))) | 0;
-}
 
 export default class EffectProcessor {
   constructor(canvas) {
