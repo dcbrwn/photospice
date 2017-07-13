@@ -5,3 +5,7 @@ export function clamp(value, min = 0, max = 1) {
 export function toPowerOfTwo(value) {
   return Math.pow(2, Math.ceil(Math.log2(value))) | 0;
 }
+
+export function align(value, step) {
+  return step * Math.round(value / step);
+}
