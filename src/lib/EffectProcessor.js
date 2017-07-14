@@ -17,8 +17,8 @@ const quadData = new Float32Array([
 ]);
 
 export default class EffectProcessor {
-  constructor(canvas) {
-    this.canvas = canvas;
+  constructor() {
+    this.canvas = document.createElement('canvas');
     const gl = this.gl = this.canvas.getContext('webgl');
 
     if (!this.gl) {
@@ -90,7 +90,7 @@ export default class EffectProcessor {
     return canvas;
   }
 
-  async useImage(imageIndex, imageSrc) {
+  async useImage(imageSrc) {
     const gl = this.gl;
     const image = await this.loadImage(imageSrc);
     const resizedImage = this.resizeToPowerOfTwo(image);
@@ -98,14 +98,15 @@ export default class EffectProcessor {
     this.canvas.height = resizedImage.height;
     gl.viewport(0, 0, resizedImage.width, resizedImage.height);
 
-    this.images[imageIndex] = {
-      image: resizedImage,
+    this.source = {
+      original: image,
+      resized: resizedImage,
       textureId: gl.createTexture(),
     };
 
-    gl.bindTexture(gl.TEXTURE_2D, this.images[imageIndex].textureId);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, this.source.textureId);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, resizedImage);
     gl.generateMipmap(gl.TEXTURE_2D);
@@ -114,8 +115,8 @@ export default class EffectProcessor {
     console.log(`Image loaded. Canvas resized to ${resizedImage.width}x${resizedImage.height}.`);
   }
 
-  render() {
-    return this.passes.reduce((prevPassTexture, pass) => {
+  render(target) {
+    this.passes.reduce((prevPassTexture, pass) => {
       const gl = this.gl;
       const program = pass.program;
 
@@ -132,8 +133,8 @@ export default class EffectProcessor {
       gl.bindTexture(gl.TEXTURE_2D, prevPassTexture);
       gl.uniform1i(uImage, prevPassTexture);
       gl.uniform2fv(uResolution, [
-        this.images[0].image.width,
-        this.images[0].image.height,
+        this.source.resized.width,
+        this.source.resized.height,
       ]);
       gl.uniform1f(uTime, 0);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -144,6 +145,11 @@ export default class EffectProcessor {
       gl.generateMipmap(gl.TEXTURE_2D);
 
       return pass.textureId;
-    }, this.images[0].textureId);
+    }, this.source.textureId);
+
+    target.width = this.source.original.width;
+    target.height = this.source.original.height;
+    const ctx = target.getContext('2d');
+    ctx.drawImage(this.canvas, 0, 0);
   }
 }
