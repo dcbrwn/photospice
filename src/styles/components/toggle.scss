@@ -1,15 +1,15 @@
 .toggle {
   display: inline-block;
   position: relative;
-  width: 3em;
-  height: 1.5em;
+  width: $size-control * 2;
+  height: $size-control;
   border: 2px solid $palette-primary;
   user-select: none;
 
   .toggle-button {
     position: absolute;
-    width: 1.5em;
-    height: 1.5em;
+    width: $size-control;
+    height: $size-control;
     top: 0;
     background-color: $palette-primary;
     transition: left 0.05s ease;

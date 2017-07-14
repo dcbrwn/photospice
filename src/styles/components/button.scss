@@ -1,0 +1,19 @@
+@mixin button-variant($bg, $fg) {
+  background-color: $bg;
+  color: $fg;
+
+  &:hover {
+    background-color: darken($bg, 5%);
+  }
+
+  &:active {
+    background-color: darken($bg, 10%);
+  }
+}
+
+.button {
+  border: 0;
+  height: $size-control;
+  line-height: $size-control;
+  @include button-variant($palette-primary, $palette-foreground-inverse);
+}
