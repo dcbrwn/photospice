@@ -17,6 +17,10 @@ h1, h2, h3 {
   color: $palette-foreground;
 }
 
+hr {
+  border: 1px solid $palette-muted;
+}
+
 a {
   color: $palette-primary;
 

@@ -40,6 +40,7 @@ export default class ComposerPage extends React.Component {
             style={{ display: 'none' }}
             onChange={ this.useImage.bind(this) }
             ref={(input) => this.imageInput = input } />
+          <hr />
           <EffectEditor processor={this.state.processor} />
         </div>
         <div className='composer-screen'>
