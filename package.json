@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --inline --hot"
+    "start": "webpack-dev-server --inline --hot",
+    "backup": "tar --exclude='./node_modules' -cf ../photospice.tar ."
   },
   "dependencies": {
     "babel-core": "^6.25.0",
