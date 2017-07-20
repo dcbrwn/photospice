@@ -40,15 +40,17 @@ export default class ComposerPage extends React.Component {
     return (
       <main className='l-composer'>
         <div className='composer-sidebar'>
-          <h1>Photospice</h1>
-          <button className='button' onClick={() => this.imageInput.click()}>Upload photo</button>
-          <input
-            type='file'
-            accept='image/*'
-            style={{ display: 'none' }}
-            onChange={ this.useImage.bind(this) }
-            ref={(input) => this.imageInput = input } />
-          <hr />
+          <div className='composer-sidebar-header'>
+            <h1>Photospice</h1>
+            <button className='button' onClick={() => this.imageInput.click()}>Upload photo</button>
+            <input
+              type='file'
+              accept='image/*'
+              style={{ display: 'none' }}
+              onChange={ this.useImage.bind(this) }
+              ref={(input) => this.imageInput = input } />
+            <hr />
+          </div>
           <EffectEditor
             processor={this.state.processor}
             onChange={(u) => this.setState({ uniforms: u })}

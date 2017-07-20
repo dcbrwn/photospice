@@ -8,10 +8,15 @@
   .composer-sidebar {
     z-index: 1;
     position: absolute;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
     top: 0;
     bottom: 0;
     width: $sidebar-width;
+
+    .composer-sidebar-header {
+      text-align: center;
+    }
   }
 
   .composer-screen {
