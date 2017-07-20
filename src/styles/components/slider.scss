@@ -1,10 +1,12 @@
 .slider {
+  $border-size: 2px;
+
   display: inline-block;
   width: 100%;
   height: $size-control;
-  border: 2px solid $palette-primary;
+  border: $border-size solid $palette-primary;
   padding: 0 1.5em 0 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
 
   .slider-container {
     position: relative;
@@ -15,7 +17,7 @@
     .slider-button {
       position: absolute;
       top: 0;
-      height: $size-control;
+      height: $size-control - $border-size * 2;
       width: $size-control;
       background-color: $palette-primary;
     }

@@ -20,3 +20,14 @@
 @import './components/button.scss';
 @import './components/slider.scss';
 @import './components/toggle.scss';
+@import './components/effect-editor.scss';
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+.ReactModalPortal {
+  position: relative;
+  z-index: 2;
+}
