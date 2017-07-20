@@ -75,7 +75,7 @@ export default {
       type: 'float',
       min: 0,
       max: 1,
-      default: 0.5,
+      default: 0.3,
     },
     {
       name: 'Shift',
