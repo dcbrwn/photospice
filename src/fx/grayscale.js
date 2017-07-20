@@ -1,4 +1,4 @@
-export default `
+const shader = `
 precision lowp float;
 
 uniform sampler2D uImage;
@@ -14,3 +14,10 @@ void main() {
   gl_FragColor.a = src.a;
 }
 `;
+
+export default {
+  name: 'Grayscale',
+  description: '',
+  shader: shader,
+  uniforms: [],
+};

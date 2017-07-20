@@ -1,9 +1,11 @@
-export default `
+const shader = `
 precision lowp float;
 
 uniform sampler2D uImage;
 uniform float uTime;
 uniform vec2 uResolution;
+uniform vec2 uShift;
+uniform float uHue;
 
 float Epsilon = 1e-10;
 
@@ -50,14 +52,41 @@ vec3 blendOverlay(vec3 base, vec3 blend) {
 }
 
 void main() {
-  vec2 shift = vec2(-50.0, 0.0);
   vec2 uv1 = gl_FragCoord.xy / uResolution.xy;
-  vec2 uv2 = (gl_FragCoord.xy + shift) / uResolution.xy;
+  vec2 uv2 = (gl_FragCoord.xy + uShift * vec2(-1.0, 1.0)) / uResolution.xy;
   vec4 src1 = texture2D(uImage, uv1, 0.0);
   vec4 src2 = texture2D(uImage, uv2, 0.0);
   src1.g = src1.b;
   src2.g = src2.b;
-  vec4 inverted = vec4(modifyHSV(src2.rgb, vec3(0.5, 0.0, 0.0)), 0.0);
-  gl_FragColor = vec4(blendOverlay(src1.rgb, inverted.rgb), src1.a * src2.a);
+  vec3 inverted = modifyHSV(src2.rgb, vec3(uHue, 0.0, 0.0));
+  gl_FragColor = vec4(blendOverlay(src1.rgb, inverted), src1.a * src2.a);
 }
 `;
+
+export default {
+  name: 'Olga-Bart',
+  description: '',
+  shader: shader,
+  uniforms: [
+    {
+      name: 'Hue',
+      description: '',
+      id: 'uHue',
+      type: 'float',
+      min: 0,
+      max: 1,
+      default: 0.5,
+    },
+    {
+      name: 'Shift',
+      description: '',
+      id: 'uShift',
+      type: 'vec2',
+      components: [
+        { name: 'Horizontal', min: -100, max: 100 },
+        { name: 'Vertical', min: -100, max: 100 },
+      ],
+      default: [10, 0],
+    }
+  ],
+};
