@@ -23,8 +23,11 @@ export default class Slider extends React.Component {
     const sx = buttonRect.width / 2;
 
     function handleMouseMove(event) {
-      const value = domain * (event.pageX - sx - containerRect.left) / width + self.props.min;
-      self.props.onChange(clamp(align(value, self.props.step), self.props.min, self.props.max));
+      let value = domain * (event.pageX - sx - containerRect.left) / width + self.props.min;
+      if (self.props.step) {
+        value = align(value, self.props.step);
+      }
+      self.props.onChange(clamp(value, self.props.min, self.props.max));
     }
 
     function handleMouseUp() {
