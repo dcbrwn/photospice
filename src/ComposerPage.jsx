@@ -8,7 +8,7 @@ export default class ComposerPage extends React.Component {
     super();
 
     const processor = new EffectProcessor();
-    processor.addPass(fx.scaline);
+    processor.addPass(fx.funky);
 
     this.state = {
       processor: processor,
@@ -36,7 +36,8 @@ export default class ComposerPage extends React.Component {
           <h1>Photospice</h1>
           <button className='button' onClick={() => this.imageInput.click()}>Upload photo</button>
           <input
-            type="file"
+            type='file'
+            accept='image/*'
             style={{ display: 'none' }}
             onChange={ this.useImage.bind(this) }
             ref={(input) => this.imageInput = input } />
