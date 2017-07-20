@@ -12,8 +12,18 @@
 }
 
 .button {
+  margin: 0 0.5em 0 0;
   border: 0;
+  box-sizing: border-box;
   height: $size-control;
   line-height: $size-control;
   @include button-variant($palette-primary, $palette-foreground-inverse);
+}
+
+.button-transparent {
+  @include button-variant($palette-background, $palette-foreground);
+}
+
+.button-muted {
+  @include button-variant($palette-muted, $palette-foreground);
 }
