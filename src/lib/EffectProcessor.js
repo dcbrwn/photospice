@@ -1,5 +1,6 @@
 import GLProgram from './GLProgram.js';
 import { toPowerOfTwo } from './math.js';
+import _ from 'lodash';
 
 const passthroughVS = `
   attribute vec4 aPosition;
@@ -8,6 +9,26 @@ const passthroughVS = `
     gl_Position = aPosition;
   }
 `;
+
+const passthroughFS = `
+  precision lowp float;
+
+  uniform sampler2D uImage;
+  uniform vec2 uResolution;
+
+  void main() {
+    vec2 uv = gl_FragCoord.xy / uResolution.xy;
+    vec4 src = texture2D(uImage, uv, 0.0);
+    gl_FragColor = src;
+  }
+`;
+
+const passtroughEffect = {
+  name: 'Passthrough',
+  isInternal: true,
+  shader: passthroughFS,
+  uniforms: [],
+};
 
 const quadData = new Float32Array([
   1.0, 1.0, 0.0,
@@ -57,10 +78,14 @@ export default class EffectProcessor {
     gl.bufferData(gl.ARRAY_BUFFER, quadData.buffer, gl.STATIC_DRAW);
 
     this.passes = [];
-    this.images = [];
+
+    // I dont know why but I think that this trick with passtrough shader
+    // can be useful later on.
+    this.addPass(passtroughEffect);
   }
 
-  addPass(pass) {
+  addPass(effect) {
+    const pass = _.cloneDeep(effect);
     const gl = this.gl;
 
     // Create a gl program using pass shader
@@ -85,6 +110,12 @@ export default class EffectProcessor {
       });
 
     this.passes.push(pass);
+  }
+
+  removePass(pass) {
+    this.passes = _.without(this.passes, pass);
+    pass._program.destroy();
+    this.gl.deleteTexture(pass._textureId);
   }
 
   loadImage(source) {

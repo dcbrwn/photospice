@@ -9,7 +9,6 @@ export default class ComposerPage extends React.Component {
     super();
 
     const processor = new EffectProcessor();
-    processor.addPass(fx.holgaart);
 
     this.state = {
       processor: processor,

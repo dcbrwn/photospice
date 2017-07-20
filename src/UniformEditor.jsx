@@ -19,8 +19,8 @@ export default class UniformEditor extends React.Component {
   renderVec2() {
     const uniform = this.props.uniform;
     const value = this.props.value || uniform.default;
-    const x = uniform.components[0];
-    const y = uniform.components[1];
+    const x = uniform.components && uniform.components[0] || { name: 'x' };
+    const y = uniform.components && uniform.components[1] || { name: 'y' };
     return <div>
       <span>{uniform.name}: {x.name}</span>
       <Slider
