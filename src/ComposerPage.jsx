@@ -16,7 +16,7 @@ export default class ComposerPage extends React.Component {
     };
     this.updatePhoto = _.throttle(() => {
       processor.render(this.canvas);
-    }, 20);
+    }, 50);
   }
 
   @bound
