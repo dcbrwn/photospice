@@ -4,7 +4,7 @@ precision lowp float;
 uniform sampler2D uImage;
 uniform float uTime;
 uniform vec2 uResolution;
-uniform float uVintageAmount;
+uniform float uAmount;
 
 void main() {
   vec2 uv = gl_FragCoord.xy / uResolution.xy;
@@ -12,7 +12,7 @@ void main() {
   vec4 src = texture2D(uImage, uv, 0.0);
   float gray = dot(src.rgb, vec3(0.299, 0.587, 0.114));
   vec3 fx = mix(vec3(0.3, 0.0, 0.3), vec3(1.0, 0.8, 0.1), gray);
-  gl_FragColor.rgb = mix(src.rgb, fx, uVintageAmount);
+  gl_FragColor.rgb = mix(src.rgb, fx, uAmount);
   gl_FragColor.a = src.a;
 }
 `;
@@ -25,7 +25,7 @@ export default {
     {
       name: 'Amount',
       description: '',
-      id: 'uVintageAmount',
+      id: 'uAmount',
       type: 'float',
       min: 0,
       max: 1,
