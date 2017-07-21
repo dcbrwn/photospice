@@ -10,17 +10,13 @@ export default class EffectEditor extends React.Component {
     super();
     this.state = {
       advancedMode: false,
-      uniforms: {
-        isPassPickerOpen: false,
-      },
+      isPassPickerOpen: false,
     };
   }
 
-  handleUniformChange(value, id) {
-    const newUniforms = this.state.uniforms;
-    newUniforms[id] = value;
-    this.setState({ uniforms: newUniforms });
-    this.props.onChange(newUniforms);
+  handleUniformChange(value, uniform) {
+    uniform.value = value;
+    this.props.onChange();
   }
 
   renderEffectPass(pass, advancedMode) {
@@ -32,8 +28,8 @@ export default class EffectEditor extends React.Component {
         <li key={i}>
           <UniformEditor
             uniform={uniform}
-            value={this.state.uniforms[uniform.id]}
-            onChange={(v) => this.handleUniformChange(v, uniform.id)}
+            value={uniform.value}
+            onChange={(v) => this.handleUniformChange(v, uniform)}
           />
         </li>
       );
@@ -67,14 +63,12 @@ export default class EffectEditor extends React.Component {
   pickEffect(effect) {
     this.props.processor.addPass(effect);
     this.closePassPicker();
-    // this.forceUpdate();
-    this.props.onChange({});
+    this.props.onChange();
   }
 
   removePass(pass) {
     this.props.processor.removePass(pass);
-    // this.forceUpdate();
-    this.props.onChange({});
+    this.props.onChange();
   }
 
   render() {

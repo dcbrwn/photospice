@@ -1,4 +1,5 @@
 import React from 'react';
+import { bound } from './lib/commonDecorators.js';
 import EffectProcessor from './lib/EffectProcessor.js';
 import EffectEditor from './EffectEditor.jsx';
 import fx from './fx';
@@ -14,10 +15,11 @@ export default class ComposerPage extends React.Component {
       processor: processor,
     };
     this.updatePhoto = _.throttle(() => {
-      this.state.processor.render(this.canvas, this.state.uniforms);
-    }, 50);
+      processor.render(this.canvas);
+    }, 20);
   }
 
+  @bound
   useImage(event) {
     const reader = new FileReader();
     reader.onload = async (event) => {
@@ -32,7 +34,10 @@ export default class ComposerPage extends React.Component {
     this.updatePhoto();
   }
 
-  componentDidUpdate() {
+  @bound
+  handleProcessorChange() {
+    // FIXME: This feels wrong...
+    this.setState({ processor: this.state.processor });
     this.updatePhoto();
   }
 
@@ -47,13 +52,13 @@ export default class ComposerPage extends React.Component {
               type='file'
               accept='image/*'
               style={{ display: 'none' }}
-              onChange={ this.useImage.bind(this) }
+              onChange={this.useImage}
               ref={(input) => this.imageInput = input } />
             <hr />
           </div>
           <EffectEditor
             processor={this.state.processor}
-            onChange={(u) => this.setState({ uniforms: u })}
+            onChange={this.handleProcessorChange}
           />
         </div>
         <div className='composer-screen'>

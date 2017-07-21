@@ -78,6 +78,7 @@ export default class EffectProcessor {
     gl.bufferData(gl.ARRAY_BUFFER, quadData.buffer, gl.STATIC_DRAW);
 
     this.passes = [];
+    this.source = null;
 
     // I dont know why but I think that this trick with passtrough shader
     // can be useful later on.
@@ -98,16 +99,22 @@ export default class EffectProcessor {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-    pass._uniforms = builtinUniforms
-      .concat(pass.uniforms)
-      .map((uniform) => {
-        return {
-          id: uniform.id,
-          location: gl.getUniformLocation(pass._program.programId, uniform.id),
-          type: uniformTypeMapping[uniform.type],
-          value: uniform.value || uniform.default,
-        };
-      });
+    pass.uniforms.forEach((uniform) => {
+      uniform._location = gl.getUniformLocation(pass._program.programId, uniform.id);
+      uniform._type = uniformTypeMapping[uniform.type];
+      uniform.value = uniform.default;
+    });
+
+    pass._builtinUniforms = builtinUniforms.reduce((acc, uniform) => {
+      acc[uniform.id] = {
+        _location: gl.getUniformLocation(pass._program.programId, uniform.id),
+        _type: uniformTypeMapping[uniform.type],
+        set(value) {
+          return gl[this._type](this._location, value);
+        },
+      };
+      return acc;
+    }, {});
 
     this.passes.push(pass);
   }
@@ -164,11 +171,9 @@ export default class EffectProcessor {
     console.log(`Image loaded. Canvas resized to ${resizedImage.width}x${resizedImage.height}.`);
   }
 
-  render(target, uniforms = {}) {
+  render(target) {
     const gl = this.gl;
-    const builtIns = {
-      uResolution: [this.source.resized.width, this.source.resized.height],
-    };
+    const uResolution = [this.source.resized.width, this.source.resized.height];
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
 
@@ -183,10 +188,10 @@ export default class EffectProcessor {
       gl.bindTexture(gl.TEXTURE_2D, prevPassTexture);
 
       // Update uniforms
-      builtIns.uImage = prevPassTexture;
-      for (let uniform of pass._uniforms) {
-        const value = uniforms[uniform.id] || builtIns[uniform.id] || uniform.value;
-        gl[uniform.type](uniform.location, value);
+      pass._builtinUniforms.uImage.set(prevPassTexture);
+      pass._builtinUniforms.uResolution.set(uResolution);
+      for (let uniform of pass.uniforms) {
+        gl[uniform._type](uniform._location, uniform.value);
       }
 
       // Draw quad
