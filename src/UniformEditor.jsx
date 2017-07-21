@@ -11,14 +11,14 @@ export default class UniformEditor extends React.Component {
         min={uniform.min}
         max={uniform.max}
         step={0}
-        value={this.props.value || uniform.default}
+        value={this.props.value}
         onChange={this.props.onChange} />
     </div>;
   }
 
   renderVec2() {
     const uniform = this.props.uniform;
-    const value = this.props.value || uniform.default;
+    const value = this.props.value;
     const [x, y] = uniform.components || [{ name: 'x' }, { name: 'y' }];
     return <div>
       <span>{uniform.name}: {x.name}</span>
