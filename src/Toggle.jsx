@@ -15,10 +15,10 @@ export default class Toggle extends React.Component {
 
   render() {
     return (
-      <div className='toggle' onClick={ this.handleMouseClick }>
-        <div
-          style={{ left: (this.props.value ? 50 : 0) + '%' }}
-          className='toggle-button'></div>
+      <div
+        className={'toggle' + (this.props.value ? ' active' : '')}
+        onClick={ this.handleMouseClick }>
+        <div className='toggle-button'></div>
       </div>
     );
   }
