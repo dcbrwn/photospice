@@ -27,3 +27,11 @@
 .button-muted {
   @include button-variant($palette-muted, $palette-foreground);
 }
+
+.button-negative {
+  @include button-variant($palette-negative, $palette-foreground-inverse);
+}
+
+.button-positive {
+  @include button-variant($palette-positive, $palette-foreground-inverse);
+}
