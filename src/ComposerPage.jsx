@@ -2,7 +2,6 @@ import React from 'react';
 import { bound } from './lib/commonDecorators.js';
 import EffectProcessor from './lib/EffectProcessor.js';
 import EffectEditor from './EffectEditor.jsx';
-import fx from './fx';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
