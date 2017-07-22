@@ -6,7 +6,6 @@
   max-width: 100%;
 
   .composer-sidebar {
-    z-index: 1;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -20,7 +19,6 @@
   }
 
   .composer-screen {
-    z-index: 0;
     position: absolute;
     top: 0;
     right: 0;
