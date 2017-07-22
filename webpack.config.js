@@ -8,6 +8,9 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     disableHostCheck: true,
+    historyApiFallback: {
+      index: 'index.html',
+    },
   },
   context: __dirname,
   entry: { main: ['./src/index.jsx'] },
