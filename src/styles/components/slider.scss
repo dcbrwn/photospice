@@ -1,25 +1,30 @@
 .slider {
   $border-size: 2px;
 
+  position: relative;
   display: inline-block;
   width: 100%;
   height: $size-control;
-  border: $border-size solid $palette-primary;
-  padding: 0 1.5em 0 0;
-  box-sizing: border-box;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: ($size-control - $border-size) / 2;
+    width: 100%;
+    border-bottom: $border-size solid $palette-primary;
+  }
 
   .slider-container {
-    position: relative;
+    position: absolute;
     left: 0;
     right: $size-control;
-    height: $size-control;
+  }
 
-    .slider-button {
-      position: absolute;
-      top: 0;
-      height: $size-control - $border-size * 2;
-      width: $size-control;
-      background-color: $palette-primary;
-    }
+  .slider-button {
+    position: absolute;
+    height: $size-control;
+    width: $size-control;
+    background-color: $palette-primary;
   }
 }
