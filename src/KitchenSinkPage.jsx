@@ -26,6 +26,18 @@ export default class KitchenSinkPage extends React.Component {
           <h1>Kitchen Sink</h1>
         </header>
         <section>
+          Links:<br />
+          <a href='#'>Simple link</a>
+        </section>
+        <section>
+          Buttons:<br />
+          <button className='button'>Default</button>
+          <button className='button button-positive'>Positive</button>
+          <button className='button button-negative'>Negative</button>
+          <button className='button button-muted'>Muted</button>
+          <button className='button button-transparent'>Transparent</button>
+        </section>
+        <section>
           Slider: {this.state.sliderValue}<br />
           <Slider
             value={this.state.sliderValue}
@@ -38,12 +50,6 @@ export default class KitchenSinkPage extends React.Component {
             value={this.state.toggleValue}
             onChange={this.onChange('toggleValue')}
           />
-        </section>
-        <section>
-          Buttons:<br />
-          <button className='button'>Default</button>
-          <button className='button button-muted'>Muted</button>
-          <button className='button button-transparent'>Transparent</button>
         </section>
       </main>
     );
