@@ -10,7 +10,6 @@ export default class UniformEditor extends React.Component {
       <Slider
         min={uniform.min}
         max={uniform.max}
-        step={0}
         value={this.props.value}
         onChange={this.props.onChange} />
     </div>;

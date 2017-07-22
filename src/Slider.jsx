@@ -7,7 +7,7 @@ export default class Slider extends React.Component {
     return {
       min: 0,
       max: 1,
-      step: 0.1,
+      step: 0,
       onChange: () => {},
     };
   }
