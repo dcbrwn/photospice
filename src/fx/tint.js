@@ -12,7 +12,7 @@ uniform float uTintScale;
 void main() {
   vec2 uv = gl_FragCoord.xy / uResolution.xy;
   vec4 src = texture2D(uImage, uv, 0.0);
-  vec4 tint = mix(src, vec4(uTintColor), length(uv * uTintScale + uTintShift));
+  vec4 tint = mix(src, vec4(uTintColor), length((uv + uTintShift) * uTintScale));
   gl_FragColor = mix(src, tint, uTintAmount);
   gl_FragColor.a = src.a;
 }
@@ -48,10 +48,10 @@ export default {
       id: 'uTintShift',
       type: 'vec2',
       components: [
-        { name: 'x', min: -5, max: 5 },
-        { name: 'y', min: -5, max: 5 },
+        { name: 'x', min: -1, max: 1 },
+        { name: 'y', min: -1, max: 1 },
       ],
-      default: [0.5, 0.5],
+      default: [0, 0],
     },
   ],
 };
