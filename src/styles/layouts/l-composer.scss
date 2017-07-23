@@ -26,5 +26,17 @@
     left: $sidebar-width;
     overflow: hidden;
     background-color: #888;
+
+    // FIXME: Temporary fix. Will be moved to separate component with composer-screen
+    line-height: 100vh;
+    text-align: center;
+
+    canvas {
+      display: inline-block;
+      vertical-align: middle;
+      max-width: 100%;
+      height: auto;
+    }
+    // END FIXME
   }
 }
