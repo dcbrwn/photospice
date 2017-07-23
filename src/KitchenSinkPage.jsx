@@ -1,7 +1,11 @@
 import React from 'react';
+import { genParagraph } from './lib/textGenerator.jsx';
 import { bound } from './lib/commonDecorators.js';
 import Slider from './Slider.jsx';
 import Toggle from './Toggle.jsx';
+import ColorWell from './ColorWell.jsx';
+
+const fish = genParagraph(10);
 
 export default class KitchenSinkPage extends React.Component {
   constructor() {
@@ -25,17 +29,24 @@ export default class KitchenSinkPage extends React.Component {
         <header>
           <h1>Kitchen Sink</h1>
         </header>
+        <hr />
+        <section>
+          <h1>Header 1</h1>
+          <h2>Header 2</h2>
+          <h3>Header 3</h3>
+          <p>{fish}</p>
+        </section>
         <section>
           Links:<br />
           <a href='#'>Simple link</a>
         </section>
         <section>
           Buttons:<br />
+          <button className='button button-transparent'>Transparent</button>
+          <button className='button button-muted'>Muted</button>
           <button className='button'>Default</button>
           <button className='button button-positive'>Positive</button>
           <button className='button button-negative'>Negative</button>
-          <button className='button button-muted'>Muted</button>
-          <button className='button button-transparent'>Transparent</button>
         </section>
         <section>
           Slider: {this.state.sliderValue}<br />
@@ -49,6 +60,13 @@ export default class KitchenSinkPage extends React.Component {
           <Toggle
             value={this.state.toggleValue}
             onChange={this.onChange('toggleValue')}
+          />
+        </section>
+        <section>
+          Color well:<br />
+          <ColorWell
+            value={this.state.colorValue}
+            onChange={this.onChange('colorValue')}
           />
         </section>
       </main>
