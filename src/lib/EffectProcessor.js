@@ -85,7 +85,6 @@ export default class EffectProcessor {
     const image = await this.loadImage(imageSrc);
     this.source = this.renderer.createTexture(image);
     this.sourceSize = [image.width, image.height];
-    console.info('Image loaded');
   }
 
   render(target) {

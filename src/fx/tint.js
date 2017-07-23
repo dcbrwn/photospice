@@ -50,7 +50,7 @@ export default {
         { name: 'x', min: -1, max: 1 },
         { name: 'y', min: -1, max: 1 },
       ],
-      default: [0, 0],
+      default: [-0.5, -0.5],
     },
   ],
 };

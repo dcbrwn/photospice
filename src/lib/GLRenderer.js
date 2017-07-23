@@ -1,5 +1,8 @@
 import { isPowerOfTwo, toPowerOfTwo } from './math.js';
 
+// TODO: detect max resolution for textures
+const MAX_TEXTURE_RESOLUTION = 4096;
+
 const passthroughVS = `
   attribute vec4 aPosition;
   attribute vec2 aTexCoord;
@@ -40,8 +43,7 @@ const typeSymbol = Symbol();
 
 function resizeToPowerOfTwo(image) {
   const size = Math.max(image.width, image.height);
-  // TODO: detect max resolution for textures
-  const alignedSize = toPowerOfTwo(Math.min(2048, size));
+  const alignedSize = toPowerOfTwo(Math.min(MAX_TEXTURE_RESOLUTION, size));
   const canvas = document.createElement('canvas');
   canvas.width = alignedSize;
   canvas.height = alignedSize;
@@ -60,8 +62,10 @@ export default class GLRenderer {
 
     const gl = this.gl;
 
-    // Texture coords are calculated during renderer resize
-    this.textureBuffer = null;
+    this.textureBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, textureData.buffer, gl.STATIC_DRAW);
+
     this.vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertexData.buffer, gl.STATIC_DRAW);
@@ -73,17 +77,12 @@ export default class GLRenderer {
     const gl = this.gl;
     const aligned = toPowerOfTwo(Math.max(width, height));
 
-    if (aligned > 2048) {
-      // TODO: detect max resolution for textures
-      // TODO: more detailed message based on the above
-      throw new Error('New renderer size is too big');
+    if (aligned > MAX_TEXTURE_RESOLUTION) {
+      throw new Error(`Rendering of images larger than ${MAX_TEXTURE_RESOLUTION} is not supported yet.`);
     }
 
     this.canvas.width = aligned;
     this.canvas.height = aligned;
-    this.textureBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, textureData.buffer, gl.STATIC_DRAW);
     gl.viewport(0, 0, aligned, aligned);
   }
 
