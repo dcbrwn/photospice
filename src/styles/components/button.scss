@@ -13,15 +13,18 @@
 
 .button {
   margin: 0;
+  padding: 1px ($size-control / 4);
   border: 0;
   box-sizing: border-box;
   height: $size-control;
   line-height: $size-control;
+  font-family: $font-text;
+  font-size: $size-text;
   @include button-variant($palette-primary, $palette-foreground-inverse);
 }
 
 .button + .button {
-  margin: 0.5em 0 0;
+  margin-left: 0.5em;
 }
 
 .button-transparent {
