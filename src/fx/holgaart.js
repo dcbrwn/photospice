@@ -1,9 +1,9 @@
 const shader = `
 precision lowp float;
 
+varying vec2 vUv;
+
 uniform sampler2D uImage;
-uniform float uTime;
-uniform vec2 uResolution;
 uniform vec2 uShift;
 uniform float uHue;
 
@@ -52,8 +52,8 @@ vec3 blendOverlay(vec3 base, vec3 blend) {
 }
 
 void main() {
-  vec2 uv1 = gl_FragCoord.xy / uResolution.xy;
-  vec2 uv2 = (gl_FragCoord.xy + uShift * vec2(-1.0, 1.0)) / uResolution.xy;
+  vec2 uv1 = vUv;
+  vec2 uv2 = vUv + uShift;
   vec4 src1 = texture2D(uImage, uv1, 0.0);
   vec4 src2 = texture2D(uImage, uv2, 0.0);
   src1.g = src1.b;
@@ -83,10 +83,10 @@ export default {
       id: 'uShift',
       type: 'vec2',
       components: [
-        { name: 'Horizontal', min: -100, max: 100 },
-        { name: 'Vertical', min: -100, max: 100 },
+        { name: 'Horizontal', min: -0.5, max: 0.5 },
+        { name: 'Vertical', min: -0.5, max: 0.5 },
       ],
-      default: [10, 0],
+      default: [0.05, 0],
     }
   ],
 };

@@ -1,19 +1,18 @@
 const shader = `
 precision lowp float;
 
+varying vec2 vUv;
+
 uniform sampler2D uImage;
-uniform float uTime;
-uniform vec2 uResolution;
 uniform vec2 uTintShift;
-uniform float uTintAmount;
-uniform float uTintColor;
-uniform float uTintScale;
+uniform float uAmount;
+uniform float uColor;
+uniform float uScale;
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution.xy;
-  vec4 src = texture2D(uImage, uv, 0.0);
-  vec4 tint = mix(src, vec4(uTintColor), length((uv + uTintShift) * uTintScale));
-  gl_FragColor = mix(src, tint, uTintAmount);
+  vec4 src = texture2D(uImage, vUv, 0.0);
+  vec4 tint = mix(src, vec4(uColor), length((vUv + uTintShift) * uScale));
+  gl_FragColor = mix(src, tint, uAmount);
   gl_FragColor.a = src.a;
 }
 `;
@@ -25,19 +24,19 @@ export default {
   uniforms: [
     {
       name: 'Amount',
-      id: 'uTintAmount',
+      id: 'uAmount',
       type: 'float',
       default: 0.8,
     },
     {
       name: 'Color',
-      id: 'uTintColor',
+      id: 'uColor',
       type: 'float',
       default: 1,
     },
     {
       name: 'Scale',
-      id: 'uTintScale',
+      id: 'uScale',
       type: 'float',
       default: 1,
       min: 0.1,

@@ -1,15 +1,14 @@
 const shader = `
 precision lowp float;
 
+varying vec2 vUv;
+
 uniform sampler2D uImage;
-uniform float uTime;
-uniform vec2 uResolution;
 uniform float uAmount;
 uniform float uScale;
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution.xy;
-  vec4 src = texture2D(uImage, uv, 0.0);
+  vec4 src = texture2D(uImage, vUv, 0.0);
   gl_FragColor = src * (1.0 - (1.0 + sin(gl_FragCoord.y / uScale)) / 2.0 * uAmount);
   gl_FragColor.a = src.a;
 }
