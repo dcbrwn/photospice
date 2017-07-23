@@ -74,6 +74,8 @@ export default class GLRenderer {
   }
 
   setSize(width, height) {
+    if (this.canvas.width === width && this.canvas.height === height) return;
+
     const gl = this.gl;
     const aligned = toPowerOfTwo(Math.max(width, height));
 
@@ -81,6 +83,8 @@ export default class GLRenderer {
       throw new Error(`Rendering of images larger than ${MAX_TEXTURE_RESOLUTION} is not supported yet.`);
     }
 
+    this.width = width;
+    this.height = height;
     this.canvas.width = aligned;
     this.canvas.height = aligned;
     gl.viewport(0, 0, aligned, aligned);
@@ -196,5 +200,20 @@ export default class GLRenderer {
   renderToTexture(program, texture) {
     this.render(program);
     this.updateTexture(texture, this.canvas);
+  }
+
+  copyToCanvas(target) {
+    target.width = this.width;
+    target.height = this.height;
+    target.getContext('2d').drawImage(
+      this.canvas,
+      0,
+      this.canvas.height - this.height,
+      this.width,
+      this.height,
+      0,
+      0,
+      this.width,
+      this.height);
   }
 }

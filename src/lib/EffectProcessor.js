@@ -98,17 +98,6 @@ export default class EffectProcessor {
       this.renderer.renderToTexture(pass.program, pass.texture);
       return pass.texture;
     }, this.source);
-    target.width = this.sourceSize[0];
-    target.height = this.sourceSize[1];
-    target.getContext('2d').drawImage(
-      this.renderer.canvas,
-      0,
-      this.renderer.canvas.height - this.sourceSize[1],
-      this.sourceSize[0],
-      this.sourceSize[1],
-      0,
-      0,
-      this.sourceSize[0],
-      this.sourceSize[1]);
+    this.renderer.copyToCanvas(target);
   }
 }
