@@ -40,11 +40,15 @@ export default class UniformEditor extends React.Component {
   render() {
     const uniform = this.props.uniform;
 
+    if (uniform.hidden) return null;
+
     switch (uniform.type) {
       case 'float':
         return this.renderFloat();
       case 'vec2':
         return this.renderVec2();
     }
+
+    return null;
   }
 }

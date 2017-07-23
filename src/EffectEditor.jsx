@@ -20,6 +20,8 @@ export default class EffectEditor extends React.Component {
   }
 
   renderEffectPass(pass, advancedMode) {
+    if (pass.hidden) return null;
+
     const uniformEditors = [];
 
     for (let i = 0; i < pass.uniforms.length; i += 1) {
