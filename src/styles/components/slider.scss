@@ -3,6 +3,7 @@
 
   position: relative;
   display: inline-block;
+  min-width: $size-control * 2;
   width: 100%;
   height: $size-control;
 
