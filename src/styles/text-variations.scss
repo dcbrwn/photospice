@@ -1,4 +1,11 @@
-// Hello bootstrap! :P
 .text-muted {
   color: mix($palette-foreground, $palette-background, 45%);
+}
+
+.text-negative {
+  color: $palette-negative;
+}
+
+.text-positive {
+  color: $palette-positive;
 }
