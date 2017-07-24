@@ -124,6 +124,8 @@ export default class GLRenderer {
     const gl = this.gl;
     const program = gl.createProgram();
 
+    // Compile shaders
+
     const vertexShader = gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, passthroughVS);
     gl.compileShader(vertexShader);
@@ -148,13 +150,36 @@ export default class GLRenderer {
       throw 'Could not compile WebGL program:\n' + gl.getProgramInfoLog(program);
     }
 
+    this.useProgram(program);
+
+    // Bind buffers
+
+    const aPosition = gl.getAttribLocation(program, 'aPosition');
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+    gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(aPosition);
+
+    const aTexCoord = gl.getAttribLocation(program, 'aTexCoord');
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureBuffer);
+    gl.vertexAttribPointer(aTexCoord, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(aTexCoord);
+
+    // Locate and initialize uniforms
+
     for (let uniform of uniforms) {
       uniform[locationSymbol] = gl.getUniformLocation(program, uniform.id);
       uniform[typeSymbol] = uniformTypeMapping[uniform.type];
       if (!uniform[typeSymbol]) {
         throw new Error(`Unknown uniform type "${uniform[typeSymbol]}"`);
       }
-      // NOTE: Mutating uniforms object inside of renderer
+      let uniformValue;
+      Object.defineProperty(uniform, 'value', {
+        set: (value) => {
+          this.gl[uniform[typeSymbol]](uniform[locationSymbol], value);
+          uniformValue = value;
+        },
+        get: () => uniformValue,
+      });
       uniform.value = uniform.default;
     }
 
@@ -163,9 +188,6 @@ export default class GLRenderer {
 
   updateProgram(program, uniforms, fragmentShaderSource) {
     this.useProgram(program);
-    for (let uniform of uniforms) {
-      this.gl[uniform[typeSymbol]](uniform[locationSymbol], uniform.value);
-    }
   }
 
   useProgram(program) {
@@ -180,21 +202,7 @@ export default class GLRenderer {
   render(program) {
     const gl = this.gl;
     this.useProgram(program);
-
-    const aPosition = gl.getAttribLocation(program, 'aPosition');
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(aPosition);
-
-    const aTexCoord = gl.getAttribLocation(program, 'aTexCoord');
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureBuffer);
-    gl.vertexAttribPointer(aTexCoord, 2, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(aTexCoord);
-
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-
-    gl.disableVertexAttribArray(aPosition);
-    gl.disableVertexAttribArray(aTexCoord);
   }
 
   renderToTexture(program, texture) {
