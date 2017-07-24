@@ -15,15 +15,10 @@ export function align(value, step) {
   return step * Math.round(value / step);
 }
 
-export function HueToRGB(H) {
+export function HSVToRGB(H, S, V) {
   const R = clamp(Math.abs(H * 6.0 - 3.0) - 1.0, 0, 1);
   const G = clamp(2.0 - Math.abs(H * 6.0 - 2.0), 0, 1);
   const B = clamp(2.0 - Math.abs(H * 6.0 - 4.0), 0, 1);
-  return [R, G, B];
-}
-
-export function HSVToRGB(H, S, V) {
-  const [R, G, B] = HueToRGB(H);
   return [
     ((R - 1.0) * S + 1.0) * V,
     ((G - 1.0) * S + 1.0) * V,
