@@ -1,0 +1,22 @@
+.grid-row {
+  display: flex;
+  flex-direction: row;
+
+  @for $i from 1 through $grid-cols {
+    .grid-col-#{$i} {
+      max-width: $i / $grid-cols * 100%;
+      flex-basis: $i / $grid-cols * 100%;
+    }
+  }
+}
+
+.grid-col {
+  display: flex;
+  flex-direction: column;
+
+  @for $i from 1 through $grid-cols {
+    .grid-row-#{$i} {
+      flex: $i;
+    }
+  }
+}

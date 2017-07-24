@@ -14,6 +14,9 @@ $screen-medium: 1024px;
 $screen-large: 1280px;
 $screen-huge: 1920px;
 
+// 12 is good because it divides well by 2, 3 and 4
+$grid-cols: 12;
+
 // See also: https://baymard.com/blog/line-length-readability
 $width-comfort-reading: 600px;
 
