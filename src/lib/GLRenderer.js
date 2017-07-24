@@ -186,10 +186,6 @@ export default class GLRenderer {
     return program;
   }
 
-  updateProgram(program, uniforms, fragmentShaderSource) {
-    this.useProgram(program);
-  }
-
   useProgram(program) {
     this.gl.useProgram(program);
   }

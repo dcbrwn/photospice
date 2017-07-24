@@ -94,7 +94,6 @@ export default class EffectProcessor {
       this.renderer.useTexture(prevPassTexture);
       pass._uniforms.uImage.value = prevPassTexture;
       pass._uniforms.uResolution.value = this.sourceSize;
-      this.renderer.updateProgram(pass.program, pass.uniforms);
       this.renderer.renderToTexture(pass.program, pass.texture);
       return pass.texture;
     }, this.source);
