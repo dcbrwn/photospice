@@ -3,8 +3,9 @@ import Modal from 'react-modal';
 import { luminance, clamp, HSVToRGB, RGBToHSV } from './lib/math.js';
 import { bound } from './lib/commonDecorators.js';
 
-const popupWidth = 256;
-const popupHeight = 256;
+// FIXME: Calculate this on the fly
+const popupWidth = 300;
+const popupHeight = 350;
 
 export default class ColorWell extends React.Component {
   constructor() {
@@ -129,6 +130,7 @@ export default class ColorWell extends React.Component {
         className='color-well'>
         <Modal
           isOpen={this.state.isPopupOpen}
+          onAfterOpen={this.handlePopupOpen}
           style={popupStyle}
           contentLabel='Pick a color'>
           <div className='color-well-modal'>
