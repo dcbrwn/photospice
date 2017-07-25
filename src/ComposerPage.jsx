@@ -45,7 +45,12 @@ export default class ComposerPage extends React.Component {
       <main className='l-composer'>
         <div className='composer-sidebar'>
           <div className='composer-sidebar-header'>
-            <h1>Photospice<sup className='text-negative'>&alpha;</sup></h1>
+            <h1>
+              Photospice
+              <a style={{textDecoration: 'none'}} href='https://github.com/dcbrwn/photospice'>
+                <sup className='text-negative'>&alpha;</sup>
+              </a>
+            </h1>
             <button className='button' onClick={() => this.imageInput.click()}>Upload photo</button>
             <input
               type='file'
