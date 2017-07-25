@@ -1,6 +1,7 @@
 import React from 'react';
 import Toggle from './Toggle.jsx';
 import Slider from './Slider.jsx';
+import ColorWell from './ColorWell.jsx';
 
 export default class UniformEditor extends React.Component {
   renderFloat() {
@@ -37,6 +38,16 @@ export default class UniformEditor extends React.Component {
     </div>;
   }
 
+  renderColor() {
+    const uniform = this.props.uniform;
+    return <div>
+      <span>{uniform.name}</span>
+      <ColorWell
+        value={this.props.value}
+        onChange={this.props.onChange} />
+    </div>;
+  }
+
   render() {
     const uniform = this.props.uniform;
 
@@ -47,6 +58,8 @@ export default class UniformEditor extends React.Component {
         return this.renderFloat();
       case 'vec2':
         return this.renderVec2();
+      case 'color':
+        return this.renderColor();
     }
 
     return null;
