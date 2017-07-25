@@ -6,11 +6,13 @@ varying vec2 vUv;
 uniform sampler2D uImage;
 uniform float uTime;
 uniform float uAmount;
+uniform vec3 uColor1;
+uniform vec3 uColor2;
 
 void main() {
   vec4 src = texture2D(uImage, vUv, 0.0);
   float gray = dot(src.rgb, vec3(0.299, 0.587, 0.114));
-  vec3 fx = mix(vec3(0.3, 0.0, 0.3), vec3(1.0, 0.8, 0.1), gray);
+  vec3 fx = mix(uColor1, uColor2, gray);
   gl_FragColor.rgb = mix(src.rgb, fx, uAmount);
   gl_FragColor.a = src.a;
 }
@@ -29,6 +31,20 @@ export default {
       min: 0,
       max: 1,
       default: 0.3,
+    },
+    {
+      name: 'Color 1',
+      description: '',
+      id: 'uColor1',
+      type: 'color',
+      default: [0.3, 0.0, 0.3],
+    },
+    {
+      name: 'Color 2',
+      description: '',
+      id: 'uColor2',
+      type: 'color',
+      default: [1.0, 0.8, 0.1],
     },
   ],
 };
