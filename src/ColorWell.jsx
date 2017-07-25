@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { grayscale, clamp, HSVToRGB, RGBToHSV } from './lib/math.js';
+import { luminance, clamp, HSVToRGB, RGBToHSV } from './lib/math.js';
 import { bound } from './lib/commonDecorators.js';
 
 const popupWidth = 256;
@@ -160,7 +160,7 @@ export default class ColorWell extends React.Component {
               onClick={this.pickColor}
               style={{
                 backgroundColor: this.toCssColor(this.state.color),
-                color: grayscale(...this.state.color) > 0.55 ? 'black' : 'white',
+                color: luminance(...this.state.color) > 0.6 ? 'black' : 'white',
                 transition: 'color 0.2s ease',
               }}>
               Pick this color

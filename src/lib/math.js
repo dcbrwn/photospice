@@ -40,5 +40,11 @@ export function RGBToHSV(R, G, B) {
 }
 
 export function grayscale(R, G, B) {
-  return R * 0.299 + G * 0.587 + B * 0.114;
+  // NTSC color weights
+  return 0.299 * R + 0.587 * G + 0.114 * B;
+}
+
+export function luminance(R, G, B) {
+  // Relative luminance
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B;
 }
