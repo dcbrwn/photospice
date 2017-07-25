@@ -110,9 +110,9 @@ export default class EffectEditor extends React.Component {
     const effects = [];
     for (let effectId in fx) {
       const effect = fx[effectId];
-      effects.push(<li
-        onClick={() => this.pickEffect(effect)}
-        key={effect.name}>{effect.name}</li>);
+      effects.push(<li key={effect.name}>
+        <a onClick={() => this.pickEffect(effect)}>{effect.name}</a>
+      </li>);
     }
 
     const EffectsList = this.EffectsList;
