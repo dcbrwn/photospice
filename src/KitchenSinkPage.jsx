@@ -14,7 +14,7 @@ export default class KitchenSinkPage extends React.Component {
     this.state = {
       sliderValue: 0,
       toggleValue: false,
-      colorValue: [0.5, 0.7, 0.3],
+      colorValue: [0.3, 0.7, 0.3],
     };
   }
 

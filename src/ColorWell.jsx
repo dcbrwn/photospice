@@ -6,7 +6,7 @@ import GLRenderer from './lib/GLRenderer.js';
 import Slider from './Slider.jsx';
 
 const popupWidth = 256;
-const popupHeight = 310;
+const popupHeight = 256;
 const colorWheelShader = `
 precision lowp float;
 
@@ -26,51 +26,20 @@ vec3 HSVToRGB(vec3 HSV) {
   return ((RGB - 1.0) * HSV.y + 1.0) * HSV.z;
 }
 
-vec2 toPolar(vec2 cartesian) {
-  return vec2(length(cartesian), atan(cartesian.x, cartesian.y));
-}
-
 void main() {
   gl_FragColor.a = 1.0;
-  float margin = 0.01;
-  float ringThickness = 0.12;
-  vec3 markerColor = vec3(1.0);
-  vec2 p = toPolar(vUv - 0.5);
-  float angle = 1.0 - abs(p.y / 3.14);
-  if (p.x < ringThickness) {
-    // Draw uColor
-    gl_FragColor.rgb = HSVToRGB(uColor);
-  } else if (p.x < ringThickness * 2.0) {
-    // Draw hue ring
-    gl_FragColor.rgb = p.y > 0. && uColor.z > angle - margin && uColor.z < angle + margin
-      ? markerColor
-      : HSVToRGB(vec3(uColor.x, uColor.y, abs(angle)));
-  } else if (p.x < ringThickness * 3.0) {
-    // Draw saturation ring
-    gl_FragColor.rgb = p.y > 0. && uColor.y > angle - margin && uColor.y < angle + margin
-      ? markerColor
-      : HSVToRGB(vec3(uColor.x, abs(angle), 1.0));
-  } else if (p.x < ringThickness * 4.0) {
-    // Draw value/brightness ring
-    float hue = (3.14 + p.y) / 6.28;
-    gl_FragColor.rgb = uColor.x > hue - margin / 3.14 && uColor.x < hue + margin / 3.14
-      ? markerColor
-      : HSVToRGB(vec3(hue, 1.0, 1.0));
-  } else {
-    // Draw background
-    gl_FragColor = vec4(0.5);
-  }
+  gl_FragColor.rgb = HSVToRGB(vec3(uColor.x, vUv.x, vUv.y * 0.98));
 }
 `;
 
-export default class Toggle extends React.Component {
+export default class ColorWell extends React.Component {
   constructor() {
     super();
     this.uniforms = [
       {
         id: 'uColor',
         type: 'color',
-        default: [0.5, 0.8, 0.8],
+        default: [0.3, 0.8, 0.8],
       },
     ];
     this.renderer = new GLRenderer(256, 256);
@@ -85,16 +54,22 @@ export default class Toggle extends React.Component {
   static get defaultProps() {
     return {
       onChange: () => {},
+      value: [1, 1, 1],
     };
   }
 
   @bound
-  handleMouseClick(event) {
+  openPopup(event) {
     this.setState({
       isPopupOpen: true,
-      popupX: clamp(event.clientX, 0, window.innerWidth - popupWidth),
-      popupY: clamp(event.clientY - popupHeight, 0, window.innerWidth - popupHeight),
+      popupX: clamp(event.clientX - popupWidth / 2, 0, window.innerWidth - popupWidth),
+      popupY: clamp(event.clientY - popupHeight / 2, 0, window.innerHeight - popupHeight),
     });
+  }
+
+  @bound
+  handlePopupOpen() {
+    this.renderColorWheel(this.props.value);
   }
 
   @bound
@@ -102,16 +77,18 @@ export default class Toggle extends React.Component {
     this.setState({ isPopupOpen: false });
   }
 
-  toCssColor(value = [0, 0, 0]) {
+  toCssColor(value) {
     return `rgb(${value[0] * 255 | 0}, ${value[1] * 255 | 0}, ${value[2] * 255 | 0})`;
   }
 
-  @bound
-  handlePopupOpen() {
-    this.updateColorWheel(this.props.value);
+  handleHSBChange(hue, saturation, brightness) {
+    console.log(hue)
+    const color = HSVToRGB(hue, saturation, brightness);
+    this.props.onChange(color);
+    this.renderColorWheel(color);
   }
 
-  updateColorWheel(color) {
+  renderColorWheel(color) {
     this.uniforms[0].value = RGBToHSV(...color);
     this.renderer.render(this.program);
     this.renderer.copyToCanvas(this.canvas);
@@ -123,18 +100,20 @@ export default class Toggle extends React.Component {
         position: 'absolute',
         top: this.state.popupY,
         left: this.state.popupX,
-        width: popupWidth,
-        height: popupHeight,
+        right: 'auto',
+        bottom: 'auto',
       },
       overlay: {
         backgroundColor: 'transparent',
       },
     };
+    const [red, green, blue] = this.props.value;
+    const [hue, saturation, brightness] = RGBToHSV(...this.props.value);
 
     return (
       <div
         style={{ backgroundColor: this.toCssColor(this.props.value) }}
-        onClick={this.handleMouseClick}
+        onClick={this.openPopup}
         className='color-well'>
         <Modal
           isOpen={this.state.isPopupOpen}
@@ -142,11 +121,26 @@ export default class Toggle extends React.Component {
           onAfterOpen={this.handlePopupOpen}
           style={popupStyle}
           contentLabel='Pick a color'>
-          <canvas ref={c => this.canvas = c} width="256px" height="256px" />
-          <hr />
-          <div className='pull-right'>
-            <button className='button button-muted' onClick={this.closePopup}>Close</button>
-            <button className='button' onClick={this.closePopup}>Pick</button>
+          <div className='grid-row color-well-modal'>
+            <div className='grid-col-6'>
+              <canvas ref={c => this.canvas = c} width="256px" height="256px" />
+            </div>
+            <div className='grid-col-6 color-well-properties'>
+              <label>Hue:</label>
+              <Slider
+                onChange={(hue) => this.handleHSBChange(hue, saturation, brightness)}
+                value={hue} />
+              <label>Saturation:</label>
+              <Slider
+                onChange={(saturation) => this.handleHSBChange(hue, saturation, brightness)}
+                min={1e-5}
+                value={saturation} />
+              <label>Brightness:</label>
+              <Slider
+                onChange={(brightness) => this.handleHSBChange(hue, saturation, brightness)}
+                min={1e-5}
+                value={brightness} />
+            </div>
           </div>
         </Modal>
       </div>
