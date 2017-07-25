@@ -54,7 +54,7 @@ function resizeToPowerOfTwo(image) {
 export default class GLRenderer {
   constructor(width, height) {
     this.canvas = document.createElement('canvas');
-    this.gl = this.canvas.getContext('webgl');
+    this.gl = this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl');
 
     if (!this.gl) {
       throw new Error('WebGL is not supported');
