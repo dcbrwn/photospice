@@ -38,8 +38,11 @@ const uniformTypeMapping = {
   sampler2D: 'uniform1i',
 };
 
-const locationSymbol = Symbol();
-const typeSymbol = Symbol();
+const symbols = {
+  location: Symbol(),
+  type: Symbol(),
+  uniforms: Symbol(),
+};
 
 function resizeToPowerOfTwo(image) {
   const size = Math.max(image.width, image.height);
@@ -167,21 +170,15 @@ export default class GLRenderer {
     // Locate and initialize uniforms
 
     for (let uniform of uniforms) {
-      uniform[locationSymbol] = gl.getUniformLocation(program, uniform.id);
-      uniform[typeSymbol] = uniformTypeMapping[uniform.type];
-      if (!uniform[typeSymbol]) {
-        throw new Error(`Unknown uniform type "${uniform[typeSymbol]}"`);
+      uniform[symbols.location] = gl.getUniformLocation(program, uniform.id);
+      uniform[symbols.type] = uniformTypeMapping[uniform.type];
+      if (!uniform[symbols.type]) {
+        throw new Error(`Unknown uniform type "${uniform[symbols.type]}"`);
       }
-      let uniformValue;
-      Object.defineProperty(uniform, 'value', {
-        set: (value) => {
-          this.gl[uniform[typeSymbol]](uniform[locationSymbol], value);
-          uniformValue = value;
-        },
-        get: () => uniformValue,
-      });
       uniform.value = uniform.default;
     }
+
+    program[symbols.uniforms] = uniforms;
 
     return program;
   }
@@ -198,6 +195,9 @@ export default class GLRenderer {
   render(program) {
     const gl = this.gl;
     this.useProgram(program);
+    for (let uniform of program[symbols.uniforms]) {
+      gl[uniform[symbols.type]](uniform[symbols.location], uniform.value);
+    }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
