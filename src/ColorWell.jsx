@@ -129,7 +129,6 @@ export default class ColorWell extends React.Component {
         className='color-well'>
         <Modal
           isOpen={this.state.isPopupOpen}
-          onRequestClose={this.closePopup}
           style={popupStyle}
           contentLabel='Pick a color'>
           <div className='color-well-modal'>
