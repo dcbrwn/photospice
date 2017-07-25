@@ -11,7 +11,7 @@ uniform float uScale;
 
 void main() {
   vec4 src = texture2D(uImage, vUv, 0.0);
-  vec4 tint = mix(src, vec4(uColor, 1.0), length((vUv + uTintShift) * uScale));
+  vec4 tint = mix(src, vec4(uColor, 1.0), clamp(length((vUv + uTintShift) * uScale), 0.0, 1.0));
   gl_FragColor = mix(src, tint, uAmount);
   gl_FragColor.a = src.a;
 }
