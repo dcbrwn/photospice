@@ -28,7 +28,20 @@
 }
 
 .button-transparent {
-  @include button-variant($palette-background, $palette-foreground);
+  $hover-color: rgba(0, 0, 0, 0.1);
+  $active-color: rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+  color: $palette-foreground;
+
+  &:hover {
+    background-color: transparent;
+    background-image: linear-gradient($hover-color, $hover-color);
+  }
+
+  &:active {
+    background-color: transparent;
+    background-image: linear-gradient($active-color, $active-color);
+  }
 }
 
 .button-muted {

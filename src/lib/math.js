@@ -38,3 +38,7 @@ export function RGBToHSV(R, G, B) {
   else if (Cmax === B) hue = 60 * (R - G) / delta + 240;
   return [hue / 360, delta / Cmax, Cmax];
 }
+
+export function grayscale(R, G, B) {
+  return R * 0.299 + G * 0.587 + B * 0.114;
+}

@@ -15,12 +15,13 @@
   $pad-width: 250px;
   $pad-height: 20px;
   $arrow-size: 5px;
+  $circle-size: 8px;
 
   .hue-pad {
     box-sizing: border-box;
     width: $pad-width;
     height: $pad-height;
-    margin: 0 0 15px 0;
+    margin: 0 0 0.5em 0;
     background-image: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
     user-select: none;
 
@@ -34,28 +35,44 @@
       display: block;
       border: $arrow-size;
       border-style: solid;
-      border-color: transparent transparent $palette-primary transparent;
+      border-color: transparent transparent $palette-foreground transparent;
     }
 
     &::after {
       content: '';
+      display: block;
       position: relative;
       top: -$arrow-size * 3;
       left: -$arrow-size;
       width: 0;
       height: 0;
-      display: block;
       border: $arrow-size;
       border-style: solid;
-      border-color: $palette-primary transparent transparent transparent;
+      border-color: $palette-foreground transparent transparent transparent;
     }
   }
 
   .saturation-value-pad {
+    box-sizing: border-box;
     width: $pad-width;
     height: $pad-width;
+    margin: 0 0 0.5em 0;
+    overflow: hidden;
+    // background-size: cover;
+    // background-image: url('/assets/colorpicker_overlay.png');
     background-image:
       linear-gradient(to top, black, transparent),
-      linear-gradient(to right, white, red);
+      linear-gradient(to right, white, transparent);
+
+    &::before {
+      content: '';
+      display: block;
+      width: $circle-size;
+      height: $circle-size;
+      margin: ($circle-size / -2) 0 0 ($circle-size / -2);
+      border-radius: 50%;
+      border: 1px solid black;
+      box-shadow: inset 0 0 0 1px white;
+    }
   }
 }
