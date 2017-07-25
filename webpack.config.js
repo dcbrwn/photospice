@@ -60,6 +60,6 @@ module.exports = {
 
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.js', '.ts', '.tsx']
+    extensions: ['.js', '.jsx']
   },
 };
