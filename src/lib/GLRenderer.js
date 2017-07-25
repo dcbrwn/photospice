@@ -10,8 +10,8 @@ const passthroughVS = `
   varying vec2 vUv;
 
   void main() {
-    gl_Position = aPosition;
     vUv = aTexCoord;
+    gl_Position = aPosition;
   }
 `;
 
@@ -195,6 +195,10 @@ export default class GLRenderer {
   render(program) {
     const gl = this.gl;
     this.useProgram(program);
+    const iCanvasResolution = gl.getUniformLocation(program, 'iCanvasResolution');
+    gl.uniform2fv(iCanvasResolution, [this.canvas.width, this.canvas.height]);
+    const iImageResolution = gl.getUniformLocation(program, 'iImageResolution');
+    gl.uniform2fv(iImageResolution, [this.width, this.height]);
     for (let uniform of program[symbols.uniforms]) {
       gl[uniform[symbols.type]](uniform[symbols.location], uniform.value);
     }

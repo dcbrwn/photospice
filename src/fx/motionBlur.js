@@ -5,15 +5,23 @@ varying vec2 vUv;
 uniform sampler2D uImage;
 uniform float uAmount;
 uniform vec2 uDirection;
+uniform vec2 iCanvasResolution;
+uniform vec2 iImageResolution;
 
 #define uSamples 50.0
 
 void main() {
   vec4 sum = vec4(0.0);
+  vec2 bounds = iImageResolution / iCanvasResolution;
+  float total = 0.0;
   for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
-    sum += texture2D(uImage, vUv + uDirection * i, 0.0);
+    vec2 uv = vUv + uDirection * i;
+    if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
+      sum += texture2D(uImage, uv, 0.0);
+      total += 1.0;
+    }
   }
-  sum /= uSamples;
+  sum /= total;
   gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
 }
 `;

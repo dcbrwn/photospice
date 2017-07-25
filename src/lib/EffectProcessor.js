@@ -38,12 +38,6 @@ export default class EffectProcessor {
         type: 'sampler2D',
         default: 0,
       },
-      uResolution: {
-        hidden: true,
-        id: 'uResolution',
-        type: 'vec2',
-        default: [0, 0],
-      },
     };
     pass.uniforms = _.values(pass._uniforms).concat(pass.uniforms);
     pass.texture = this.renderer.createTexture();
@@ -79,7 +73,6 @@ export default class EffectProcessor {
       if (pass.isDisabled) return prevPassTexture;
       this.renderer.useTexture(prevPassTexture);
       pass._uniforms.uImage.value = prevPassTexture;
-      pass._uniforms.uResolution.value = this.sourceSize;
       this.renderer.renderToTexture(pass.program, pass.texture);
       return pass.texture;
     }, this.source);

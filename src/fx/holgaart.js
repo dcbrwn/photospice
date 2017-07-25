@@ -3,6 +3,8 @@ precision lowp float;
 
 varying vec2 vUv;
 
+uniform vec2 iCanvasResolution;
+uniform vec2 iImageResolution;
 uniform sampler2D uImage;
 uniform vec2 uShift;
 uniform float uHue;
@@ -53,7 +55,7 @@ vec3 blendOverlay(vec3 base, vec3 blend) {
 
 void main() {
   vec2 uv1 = vUv;
-  vec2 uv2 = vUv + uShift;
+  vec2 uv2 = mod(vUv + uShift, iImageResolution / iCanvasResolution);
   vec4 src1 = texture2D(uImage, uv1, 0.0);
   vec4 src2 = texture2D(uImage, uv2, 0.0);
   src1.g = src1.b;
