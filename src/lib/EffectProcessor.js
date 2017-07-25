@@ -1,40 +1,21 @@
 import GLRenderer from './GLRenderer.js';
 import _ from 'lodash';
 
-const passthroughFS = `
-  precision lowp float;
-
-  varying vec2 vUv;
-  uniform sampler2D uImage;
-
-  void main() {
-    gl_FragColor = texture2D(uImage, vUv, 0.0);
-  }
-`;
-
 const passtroughEffect = {
   name: 'Passthrough',
   hidden: true,
-  shader: passthroughFS,
+  shader: `
+    precision lowp float;
+
+    varying vec2 vUv;
+    uniform sampler2D uImage;
+
+    void main() {
+      gl_FragColor = texture2D(uImage, vUv, 0.0);
+    }
+  `,
   uniforms: [],
 };
-
-const builtinUniforms = [
-  {
-    hidden: true,
-    id: 'uImage',
-    type: 'sampler2D',
-    default: 0,
-  },
-  {
-    hidden: true,
-    id: 'uResolution',
-    type: 'vec2',
-    default: [0, 0],
-  },
-];
-
-const builtinUniformIds = _.map(builtinUniforms, 'id');
 
 export default class EffectProcessor {
   constructor() {
@@ -48,18 +29,23 @@ export default class EffectProcessor {
   }
 
   addPass(effect) {
-    const pass = effect;
-    pass._uniforms = {};
-    pass.uniforms = _.chain(builtinUniforms)
-      .concat(pass.uniforms)
-      .cloneDeep()
-      .forEach((uniform) => {
-        if (builtinUniformIds.indexOf(uniform.id) !== -1) {
-          // Save built-in uniforms as a separate object for quick access
-          pass._uniforms[uniform.id] = uniform;
-        }
-      })
-      .value();
+    const pass = _.cloneDeep(effect);
+    // BuiltIn uniforms
+    pass._uniforms = {
+      uImage: {
+        hidden: true,
+        id: 'uImage',
+        type: 'sampler2D',
+        default: 0,
+      },
+      uResolution: {
+        hidden: true,
+        id: 'uResolution',
+        type: 'vec2',
+        default: [0, 0],
+      },
+    };
+    pass.uniforms = _.values(pass._uniforms).concat(pass.uniforms);
     pass.texture = this.renderer.createTexture();
     pass.program = this.renderer.createProgram(pass.uniforms, pass.shader);
     this.passes.push(pass);
