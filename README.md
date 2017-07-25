@@ -10,6 +10,8 @@ WebGL-based multi-pass photo-effect processor :P. No flash, plugins or even back
 
 ## What I'm aiming to fix
 
+* Effect picker dialog with previews
+* Presets for both single effects and pipeline as a whole
 * Preview for image is quite static and can't be moved/zoomed
 * The UI is not adapted for mobile devices yet
 * UI goodies like custom color for background in preview
