@@ -9,6 +9,7 @@
   height: $size-control;
   border: $border-size solid $palette-primary;
   padding: $border-size;
+  vertical-align: top;
 
   .toggle-button {
     width: $size-control - $border-size * 4;
