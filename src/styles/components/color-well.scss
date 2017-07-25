@@ -11,8 +11,51 @@
   box-shadow: inset 0 0 0 $border-size white;
 }
 
-.color-well-properties {
-  position: relative;
-  width: 300px;
+.color-well-modal {
+  $pad-width: 250px;
+  $pad-height: 20px;
+  $arrow-size: 5px;
 
+  .hue-pad {
+    box-sizing: border-box;
+    width: $pad-width;
+    height: $pad-height;
+    margin: 0 0 15px 0;
+    background-image: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    user-select: none;
+
+    &::before {
+      content: '';
+      position: relative;
+      top: $pad-height - $arrow-size;
+      left: -$arrow-size;
+      width: 0;
+      height: 0;
+      display: block;
+      border: $arrow-size;
+      border-style: solid;
+      border-color: transparent transparent $palette-primary transparent;
+    }
+
+    &::after {
+      content: '';
+      position: relative;
+      top: -$arrow-size * 3;
+      left: -$arrow-size;
+      width: 0;
+      height: 0;
+      display: block;
+      border: $arrow-size;
+      border-style: solid;
+      border-color: $palette-primary transparent transparent transparent;
+    }
+  }
+
+  .saturation-value-pad {
+    width: $pad-width;
+    height: $pad-width;
+    background-image:
+      linear-gradient(to top, black, transparent),
+      linear-gradient(to right, white, red);
+  }
 }
