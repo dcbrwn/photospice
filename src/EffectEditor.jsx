@@ -19,6 +19,11 @@ export default class EffectEditor extends React.Component {
     this.props.onChange();
   }
 
+  togglePass(pass) {
+    pass.isDisabled = !pass.isDisabled;
+    this.props.onChange();
+  }
+
   renderEffectPass(pass, advancedMode) {
     if (pass.hidden) return null;
 
@@ -40,6 +45,7 @@ export default class EffectEditor extends React.Component {
     return (
       <ul className='effect-editor-pass'>
         <li>
+          <Toggle value={!pass.isDisabled} onChange={() => this.togglePass(pass)} />
           <button
             className='button button-muted'
             onClick={() => this.removePass(pass)}>

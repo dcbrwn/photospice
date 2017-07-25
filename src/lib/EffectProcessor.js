@@ -90,7 +90,7 @@ export default class EffectProcessor {
   render(target) {
     this.renderer.setSize(...this.sourceSize);
     this.passes.reduce((prevPassTexture, pass) => {
-      // Update uniforms
+      if (pass.isDisabled) return prevPassTexture;
       this.renderer.useTexture(prevPassTexture);
       pass._uniforms.uImage.value = prevPassTexture;
       pass._uniforms.uResolution.value = this.sourceSize;
