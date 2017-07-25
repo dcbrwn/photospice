@@ -13,9 +13,7 @@ export default class ComposerPage extends React.Component {
     this.state = {
       processor: processor,
     };
-    this.updatePhoto = _.debounce(() => {
-      processor.render(this.canvas);
-    }, 100);
+    this.updatePhoto = () => processor.render(this.canvas);
   }
 
   @bound
