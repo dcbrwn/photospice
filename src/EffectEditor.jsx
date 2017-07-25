@@ -120,6 +120,7 @@ export default class EffectEditor extends React.Component {
     return (
       <div className='effect-editor'>
         <EffectsList
+          lockAxis='y'
           items={processor.passes}
           onSortEnd={this.onSortEnd}
           useDragHandle={true}/>
