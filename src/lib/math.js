@@ -33,7 +33,8 @@ export function RGBToHSV(R, G, B) {
   if (Cmin === Cmax) return [0, 0, Cmin];
   const delta = Cmax - Cmin;
   let hue;
-  if (Cmax === R) hue = 60 * (G - B) / delta;
+  if (Cmax === R && G >= B) hue = 60 * (G - B) / delta;
+  else if (Cmax === R && G < B) hue = 60 * (G - B) / delta + 360;
   else if (Cmax === G) hue = 60 * (B - R) / delta + 120;
   else if (Cmax === B) hue = 60 * (R - G) / delta + 240;
   return [hue / 360, delta / Cmax, Cmax];
