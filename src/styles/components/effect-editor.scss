@@ -1,11 +1,46 @@
 .effect-editor {
   margin: 0;
-  padding: 1em;
   text-align: left;
   overflow: auto;
 
-  .effect-editor-pass {
-    padding: 0 0 1em 0;
+  & > ul {
+    padding: 0;
+  }
+
+  .effect-editor-actions {
+    padding: 1em;
+  }
+}
+
+.effect-pass {
+  background: $palette-background;
+  padding: 1em;
+  list-style: none;
+
+  .effect-pass-header {
+    line-height: $size-control;
+    vertical-align: baseline;
+    margin: 0 0 0.5em 0;
+
+    .toggle {
+      margin-right: 0.5em;
+    }
+
+    .effect-pass-actions {
+      float: right;
+
+      * + * {
+        margin-left: 10px;
+      }
+    }
+
+    .effect-pass-name {
+      cursor: move;
+    }
+  }
+
+  ul {
+    padding: 0;
     list-style: none;
   }
 }

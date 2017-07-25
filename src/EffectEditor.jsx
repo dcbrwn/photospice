@@ -1,17 +1,70 @@
 import React from 'react';
+import Modal from 'react-modal';
+import {
+  SortableHandle,
+  SortableContainer,
+  SortableElement,
+  arrayMove
+} from 'react-sortable-hoc';
 import { bound } from './lib/commonDecorators.js';
 import Toggle from './Toggle.jsx';
 import UniformEditor from './UniformEditor.jsx';
-import Modal from 'react-modal';
 import fx from './fx';
 
 export default class EffectEditor extends React.Component {
   constructor() {
     super();
+
+    this.EffectsList = SortableContainer(({items}) => {
+      const Effect = SortableElement(({pass}) => this.renderPass(pass));
+      const passes = items
+        .filter((pass) => !pass.hidden)
+        .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} pass={value} />));
+      return <ul>{passes}</ul>;
+    });
+
     this.state = {
       advancedMode: false,
       isPassPickerOpen: false,
     };
+  }
+
+  renderPass(pass) {
+    const EffectHandle = SortableHandle(() => {
+      return <span className='effect-pass-name'>
+        <i>fx</i> <b>{pass.name}</b>
+      </span>
+    });
+    const uniformEditors = [];
+
+    for (let i = 0; i < pass.uniforms.length; i += 1) {
+      const uniform = pass.uniforms[i];
+      uniformEditors.push(
+        <li key={i}>
+          <UniformEditor
+            uniform={uniform}
+            value={uniform.value}
+            onChange={(v) => this.handleUniformChange(v, uniform)} />
+        </li>
+      );
+    }
+
+    return (<li className='effect-pass'>
+      <div className='effect-pass-header'>
+        <Toggle value={!pass.isDisabled} onChange={() => this.togglePass(pass)} />
+        <EffectHandle />
+        <div className='effect-pass-actions'>
+          <button
+            className='button button-muted'
+            onClick={() => this.removePass(pass)}>
+            Remove
+          </button>
+        </div>
+      </div>
+      <ul>
+        {uniformEditors}
+      </ul>
+    </li>);
   }
 
   handleUniformChange(value, uniform) {
@@ -22,40 +75,6 @@ export default class EffectEditor extends React.Component {
   togglePass(pass) {
     pass.isDisabled = !pass.isDisabled;
     this.props.onChange();
-  }
-
-  renderEffectPass(pass, advancedMode) {
-    if (pass.hidden) return null;
-
-    const uniformEditors = [];
-
-    for (let i = 0; i < pass.uniforms.length; i += 1) {
-      const uniform = pass.uniforms[i];
-      uniformEditors.push(
-        <li key={i}>
-          <UniformEditor
-            uniform={uniform}
-            value={uniform.value}
-            onChange={(v) => this.handleUniformChange(v, uniform)}
-          />
-        </li>
-      );
-    }
-
-    return (
-      <ul className='effect-editor-pass'>
-        <li>
-          <Toggle value={!pass.isDisabled} onChange={() => this.togglePass(pass)} />
-          <button
-            className='button button-muted'
-            onClick={() => this.removePass(pass)}>
-            X
-          </button>
-          <b>Pass "{pass.name}"</b>
-        </li>
-        {uniformEditors}
-      </ul>
-    );
   }
 
   @bound
@@ -69,8 +88,8 @@ export default class EffectEditor extends React.Component {
   }
 
   pickEffect(effect) {
-    this.props.processor.addPass(effect);
     this.closePassPicker();
+    this.props.processor.addPass(effect);
     this.props.onChange();
   }
 
@@ -79,15 +98,15 @@ export default class EffectEditor extends React.Component {
     this.props.onChange();
   }
 
+  @bound
+  onSortEnd({oldIndex, newIndex}) {
+    // FIXME: BEEEEEP!
+    this.props.processor.passes = arrayMove(this.props.processor.passes, oldIndex, newIndex);
+    this.props.onChange();
+  }
+
   render() {
     const processor = this.props.processor;
-
-    const passes = [];
-    for (let i = 0; i < processor.passes.length; i += 1) {
-      if (processor.passes[i].isInternal) continue;
-      passes.push(<li key={i}>{this.renderEffectPass(processor.passes[i], this.state.advancedMode)}</li>);
-    }
-
     const effects = [];
     for (let effectId in fx) {
       const effect = fx[effectId];
@@ -96,10 +115,17 @@ export default class EffectEditor extends React.Component {
         key={effect.name}>{effect.name}</li>);
     }
 
+    const EffectsList = this.EffectsList;
+
     return (
       <div className='effect-editor'>
-        <ol>{passes}</ol>
-        <button className='button' onClick={this.openPassPicker}>Add pass</button>
+        <EffectsList
+          items={processor.passes}
+          onSortEnd={this.onSortEnd}
+          useDragHandle={true}/>
+        <div className='effect-editor-actions'>
+          <button className='button' onClick={this.openPassPicker}>Add pass</button>
+        </div>
         <Modal
           isOpen={this.state.isPassPickerOpen}
           onRequestClose={this.closePassPicker}
