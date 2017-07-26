@@ -38,6 +38,14 @@ export default class ComposerPage extends React.Component {
     this.updatePhoto();
   }
 
+  @bound
+  handleDownloadClick() {
+    const link = document.createElement('a');
+    link.href = this.canvas.toDataURL();
+    link.download = 'render.png';
+    link.click();
+  }
+
   render() {
     return (
       <main className='l-composer'>
@@ -49,7 +57,8 @@ export default class ComposerPage extends React.Component {
                 <sup className='text-negative'>&alpha;</sup>
               </a>
             </h1>
-            <button className='button' onClick={() => this.imageInput.click()}>Upload photo</button>
+            <button className='button' onClick={() => this.imageInput.click()}>Upload new image</button>
+            <button className='button' onClick={this.handleDownloadClick}>Download result</button>
             <input
               type='file'
               accept='image/*'
