@@ -18,6 +18,7 @@ export default class EffectEditor extends React.Component {
 
   handleUniformChange(value, uniform) {
     uniform.value = value;
+    this.setState({ uniforms: this.state.uniforms });
     this.props.updatePhoto();
   }
 

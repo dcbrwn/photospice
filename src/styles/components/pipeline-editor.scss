@@ -11,36 +11,3 @@
     padding: 1em;
   }
 }
-
-.effect-editor {
-  background: $palette-background;
-  padding: 1em;
-  list-style: none;
-
-  .effect-editor-header {
-    line-height: $size-control;
-    vertical-align: baseline;
-    margin: 0 0 0.5em 0;
-
-    .toggle {
-      margin-right: 0.5em;
-    }
-
-    .effect-editor-actions {
-      float: right;
-
-      * + * {
-        margin-left: 10px;
-      }
-    }
-
-    .effect-editor-name {
-      cursor: move;
-    }
-  }
-
-  ul {
-    padding: 0;
-    list-style: none;
-  }
-}

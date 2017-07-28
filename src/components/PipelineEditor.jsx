@@ -5,9 +5,9 @@ import {
   SortableElement,
   arrayMove
 } from 'react-sortable-hoc';
-import { bound } from './lib/commonDecorators.js';
+import { bound } from '../lib/commonDecorators.js';
 import EffectEditor from './EffectEditor';
-import fx from './fx';
+import fx from '../fx';
 
 export default class PipelineEditor extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ export default class PipelineEditor extends React.Component {
     return <ul>{
       items
         .filter((effect) => !effect.hidden)
-        .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} pass={value} />))
+        .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} effect={value} />))
     }</ul>;
   });
 

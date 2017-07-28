@@ -1,7 +1,7 @@
 import React from 'react';
-import Toggle from './components/Toggle.jsx';
-import Slider from './components/Slider.jsx';
-import ColorWell from './components/ColorWell.jsx';
+import Toggle from './Toggle.jsx';
+import Slider from './Slider.jsx';
+import ColorWell from './ColorWell.jsx';
 
 export default class UniformEditor extends React.Component {
   renderFloat() {
