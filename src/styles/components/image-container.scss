@@ -1,21 +1,35 @@
 .image-container {
+  cursor: move;
+  user-select: none;
   display: block;
   height: 100%;
   width: 100%;
 
   .image-container-wrapper {
-    cursor: move;
     display: inline-block;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     line-height: 0;
-    transition: transform 0.2s ease;
+    transition: transform 0.05s ease;
   }
 
   .image-container-actions {
+    cursor: default;
     position: absolute;
     padding: 1em;
+
+    &.inverse {
+      $inverse-color: rgba(0, 0, 0, 0.5);
+      .button {
+        border: 2px solid $inverse-color;
+        color: $inverse-color;
+      }
+      .color-well {
+        border: 2px solid $inverse-color;
+        background-color: $inverse-color !important;
+      }
+    }
 
     .button, .color-well {
       cursor: pointer;
@@ -45,6 +59,7 @@
       width: 0;
       opacity: 0;
       transition: all 0.2s ease;
+      overflow: hidden;
 
       &.active {
         width: ($size-control + 5px) * 4;
