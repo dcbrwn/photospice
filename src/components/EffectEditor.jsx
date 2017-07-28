@@ -7,31 +7,34 @@ import UniformEditor from './UniformEditor.jsx';
 export default class EffectEditor extends React.Component {
   constructor(props) {
     super();
-    this.state = props.effect;
+    this.state = {
+      effect: props.effect,
+    };
   }
 
   EffectHandle = SortableHandle(() => {
     return <span className='effect-editor-name'>
-      <i>fx</i> <b>{this.state.name}</b>
+      <i>fx</i> <b>{this.state.effect.name}</b>
     </span>
   });
 
   handleUniformChange(value, uniform) {
     uniform.value = value;
-    this.setState({ uniforms: this.state.uniforms });
+    this.setState({ effect: this.state.effect });
     this.props.updatePhoto();
   }
 
   @bound
   toggleEffect() {
-    this.setState({ isDisabled: !this.state.isDisabled });
+    this.state.effect.isDisabled = !this.state.effect.isDisabled;
+    this.setState({ effect: this.state.effect });
     this.props.updatePhoto();
   }
 
   render() {
     return (<li className='effect-editor'>
       <div className='effect-editor-header'>
-        <Toggle value={!this.state.isDisabled} onChange={this.toggleEffect} />
+        <Toggle value={!this.state.effect.isDisabled} onChange={this.toggleEffect} />
         <this.EffectHandle />
         <div className='effect-editor-actions'>
           <button
@@ -42,7 +45,7 @@ export default class EffectEditor extends React.Component {
         </div>
       </div>
       <ul>
-        {this.state.uniforms.map((uniform, index) => <li key={index}>
+        {this.state.effect.uniforms.map((uniform, index) => <li key={index}>
           <UniformEditor
             uniform={uniform}
             value={uniform.value}
