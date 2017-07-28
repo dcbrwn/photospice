@@ -75,14 +75,14 @@ export default class PipelineEditor extends React.Component {
 
   render() {
     return (
-      <div className='effect-editor'>
+      <div className='pipeline-editor'>
         <this.EffectsList
           lockAxis='y'
           items={this.state.passes}
           onSortEnd={this.onSortEnd}
           useDragHandle={true}
         />
-        <div className='effect-editor-actions'>
+        <div className='pipeline-editor-actions'>
           <button className='button' onClick={this.openPassPicker}>Add pass</button>
         </div>
         <Modal
