@@ -1,7 +1,8 @@
 import React from 'react';
-import { bound } from './lib/commonDecorators.js';
-import EffectProcessor from './lib/EffectProcessor.js';
-import PipelineEditor from './components/PipelineEditor.jsx';
+import { bound } from './lib/commonDecorators';
+import EffectProcessor from './lib/EffectProcessor';
+import PipelineEditor from './components/PipelineEditor';
+import ImageContainer from './components/ImageContainer';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
@@ -63,7 +64,9 @@ export default class ComposerPage extends React.Component {
           />
         </div>
         <div className='composer-screen'>
-          <canvas ref={(canvas) => { this.canvas = canvas; }} />
+          <ImageContainer>
+            <canvas ref={(canvas) => { this.canvas = canvas; }} />
+          </ImageContainer>
         </div>
       </main>
     );
