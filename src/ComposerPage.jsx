@@ -1,7 +1,7 @@
 import React from 'react';
 import { bound } from './lib/commonDecorators.js';
 import EffectProcessor from './lib/EffectProcessor.js';
-import PipelineEditor from './PipelineEditor.jsx';
+import PipelineEditor from './components/PipelineEditor.jsx';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
@@ -60,7 +60,7 @@ export default class ComposerPage extends React.Component {
               ref={(input) => this.imageInput = input } />
             <hr />
           </div>
-          <EffectEditor
+          <PipelineEditor
             updatePhoto={this.updatePhoto}
             processor={this.state.processor}
           />

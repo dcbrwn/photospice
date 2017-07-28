@@ -1,4 +1,4 @@
-.effect-editor {
+.pipeline-editor {
   margin: 0;
   text-align: left;
   overflow: auto;
@@ -7,17 +7,17 @@
     padding: 0;
   }
 
-  .effect-editor-actions {
+  .pipeline-editor-actions {
     padding: 1em;
   }
 }
 
-.effect-pass {
+.effect-editor {
   background: $palette-background;
   padding: 1em;
   list-style: none;
 
-  .effect-pass-header {
+  .effect-editor-header {
     line-height: $size-control;
     vertical-align: baseline;
     margin: 0 0 0.5em 0;
@@ -26,7 +26,7 @@
       margin-right: 0.5em;
     }
 
-    .effect-pass-actions {
+    .effect-editor-actions {
       float: right;
 
       * + * {
@@ -34,7 +34,7 @@
       }
     }
 
-    .effect-pass-name {
+    .effect-editor-name {
       cursor: move;
     }
   }

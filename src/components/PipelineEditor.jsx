@@ -1,14 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
 import {
-  SortableHandle,
   SortableContainer,
   SortableElement,
   arrayMove
 } from 'react-sortable-hoc';
 import { bound } from './lib/commonDecorators.js';
-import Toggle from './components/Toggle.jsx';
-import UniformEditor from './UniformEditor.jsx';
+import EffectEditor from './EffectEditor';
 import fx from './fx';
 
 export default class PipelineEditor extends React.Component {
@@ -33,60 +31,17 @@ export default class PipelineEditor extends React.Component {
   }
 
   EffectsList = SortableContainer(({items}) => {
-    const Effect = SortableElement(({pass}) => this.renderPass(pass));
-    const passes = items
-      .filter((pass) => !pass.hidden)
-      .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} pass={value} />));
-    return <ul>{passes}</ul>;
+    const Effect = SortableElement(({effect}) => <EffectEditor
+      effect={effect}
+      removePass={() => this.removeEffect(effect)}
+      updatePhoto={this.props.updatePhoto}
+    />);
+    return <ul>{
+      items
+        .filter((effect) => !effect.hidden)
+        .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} pass={value} />))
+    }</ul>;
   });
-
-  renderPass(pass) {
-    const EffectHandle = SortableHandle(() => {
-      return <span className='effect-pass-name'>
-        <i>fx</i> <b>{pass.name}</b>
-      </span>
-    });
-    const uniformEditors = [];
-
-    for (let i = 0; i < pass.uniforms.length; i += 1) {
-      const uniform = pass.uniforms[i];
-      uniformEditors.push(
-        <li key={i}>
-          <UniformEditor
-            uniform={uniform}
-            value={uniform.value}
-            onChange={(v) => this.handleUniformChange(v, uniform)} />
-        </li>
-      );
-    }
-
-    return (<li className='effect-pass'>
-      <div className='effect-pass-header'>
-        <Toggle value={!pass.isDisabled} onChange={() => this.togglePass(pass)} />
-        <EffectHandle />
-        <div className='effect-pass-actions'>
-          <button
-            className='button button-muted'
-            onClick={() => this.removePass(pass)}>
-            Remove
-          </button>
-        </div>
-      </div>
-      <ul>
-        {uniformEditors}
-      </ul>
-    </li>);
-  }
-
-  handleUniformChange(value, uniform) {
-    uniform.value = value;
-    this.props.onChange();
-  }
-
-  togglePass(pass) {
-    pass.isDisabled = !pass.isDisabled;
-    this.props.updatePhoto();
-  }
 
   @bound
   openPassPicker() {
@@ -105,7 +60,7 @@ export default class PipelineEditor extends React.Component {
     this.props.updatePhoto();
   }
 
-  removePass(pass) {
+  removeEffect(pass) {
     this.processor.removePass(pass);
     this.setState({ passes: this.processor.passes });
     this.props.updatePhoto();
@@ -125,7 +80,8 @@ export default class PipelineEditor extends React.Component {
           lockAxis='y'
           items={this.state.passes}
           onSortEnd={this.onSortEnd}
-          useDragHandle={true}/>
+          useDragHandle={true}
+        />
         <div className='effect-editor-actions'>
           <button className='button' onClick={this.openPassPicker}>Add pass</button>
         </div>
