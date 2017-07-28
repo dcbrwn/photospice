@@ -5,18 +5,13 @@ import PipelineEditor from './components/PipelineEditor.jsx';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
-  constructor() {
-    super();
-
-    const processor = new EffectProcessor();
-
-    this.state = {
-      processor: processor,
-    };
-    this.updatePhoto = _.throttle(() => {
-      processor.render(this.canvas);
-    }, 30);
+  state = {
+    processor: new EffectProcessor(),
   }
+
+  updatePhoto = _.throttle(() => {
+    this.state.processor.render(this.canvas);
+  }, 30)
 
   @bound
   useImage(event) {
