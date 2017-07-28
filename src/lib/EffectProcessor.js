@@ -68,14 +68,14 @@ export default class EffectProcessor {
   }
 
   render(target) {
-    this.renderer.setSize(...this.sourceSize);
-    this.passes.reduce((prevPassTexture, pass) => {
-      if (pass.isDisabled) return prevPassTexture;
-      this.renderer.useTexture(prevPassTexture);
-      pass._uniforms.uImage.value = prevPassTexture;
-      this.renderer.renderToTexture(pass.program, pass.texture);
-      return pass.texture;
-    }, this.source);
-    this.renderer.copyToCanvas(target);
+    // this.renderer.setSize(...this.sourceSize);
+    // this.passes.reduce((prevPassTexture, pass) => {
+    //   if (pass.isDisabled) return prevPassTexture;
+    //   this.renderer.useTexture(prevPassTexture);
+    //   pass._uniforms.uImage.value = prevPassTexture;
+    //   this.renderer.renderToTexture(pass.program, pass.texture);
+    //   return pass.texture;
+    // }, this.source);
+    // this.renderer.copyToCanvas(target);
   }
 }

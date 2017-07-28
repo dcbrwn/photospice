@@ -1,5 +1,5 @@
 import React from 'react';
-import { bound } from './lib/commonDecorators.js';
+import { bound } from '../lib/commonDecorators.js';
 
 export default class Toggle extends React.Component {
   static get defaultProps() {

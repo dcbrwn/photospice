@@ -1,7 +1,7 @@
 import React from 'react';
 import { bound } from './lib/commonDecorators.js';
 import EffectProcessor from './lib/EffectProcessor.js';
-import EffectEditor from './EffectEditor.jsx';
+import PipelineEditor from './PipelineEditor.jsx';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
@@ -28,13 +28,6 @@ export default class ComposerPage extends React.Component {
 
   async componentDidMount() {
     await this.state.processor.useImage('assets/jelly-beans.png');
-    this.updatePhoto();
-  }
-
-  @bound
-  handleProcessorChange() {
-    // FIXME: This feels wrong...
-    this.setState({ processor: this.state.processor });
     this.updatePhoto();
   }
 
@@ -68,8 +61,8 @@ export default class ComposerPage extends React.Component {
             <hr />
           </div>
           <EffectEditor
+            updatePhoto={this.updatePhoto}
             processor={this.state.processor}
-            onChange={this.handleProcessorChange}
           />
         </div>
         <div className='composer-screen'>
