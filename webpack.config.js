@@ -13,7 +13,7 @@ module.exports = {
     },
   },
   context: __dirname,
-  entry: { main: ['./src/index.jsx'] },
+  entry: { main: ['babel-polyfill', './src/index.jsx'] },
   output: {
     path: path.resolve('./bundles'),
     publicPath: '/bundles/',
