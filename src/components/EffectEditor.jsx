@@ -1,6 +1,6 @@
 import React from 'react';
 import { SortableHandle } from 'react-sortable-hoc';
-import { bound } from '../lib/commonDecorators.js';
+import { bound } from '../lib/utils.js';
 import Toggle from './Toggle.jsx';
 import UniformEditor from './UniformEditor.jsx';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { genParagraph } from './lib/textGenerator.jsx';
-import { bound } from './lib/commonDecorators.js';
+import { bound } from './lib/utils.js';
 import Slider from './components/Slider.jsx';
 import Toggle from './components/Toggle.jsx';
 import ColorWell from './components/ColorWell.jsx';

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { luminance, clamp, HSVToRGB, RGBToHSV } from '../lib/math.js';
-import { bound } from '../lib/commonDecorators.js';
+import { bound, toCssColor } from '../lib/utils.js';
 
 // FIXME: Calculate this on the fly
 const popupWidth = 300;
@@ -94,10 +94,6 @@ export default class ColorWell extends React.Component {
     this.closePopup();
   }
 
-  toCssColor(color) {
-    return `rgb(${color[0] * 255 | 0}, ${color[1] * 255 | 0}, ${color[2] * 255 | 0})`;
-  }
-
   handleHSBChange(hue, saturation, brightness) {
     const color = HSVToRGB(hue, saturation, brightness);
     this.setState({
@@ -125,7 +121,7 @@ export default class ColorWell extends React.Component {
 
     return (
       <div
-        style={{ backgroundColor: this.toCssColor(this.props.value) }}
+        style={{ backgroundColor: toCssColor(this.props.value) }}
         onClick={this.openPopup}
         className='color-well'>
         <Modal
@@ -145,7 +141,7 @@ export default class ColorWell extends React.Component {
               ref={SBPad => this.SBPad = SBPad}
               onMouseDown={this.handleSBClick}
               style={{
-                backgroundColor: this.toCssColor(pureColor),
+                backgroundColor: toCssColor(pureColor),
                 paddingLeft: this.state.saturation * 100 + '%',
                 paddingTop: (1 - this.state.brightness) * 100 + '%',
               }}>
@@ -161,7 +157,7 @@ export default class ColorWell extends React.Component {
               className='button button-transparent'
               onClick={this.pickColor}
               style={{
-                backgroundColor: this.toCssColor(this.state.color),
+                backgroundColor: toCssColor(this.state.color),
                 color: luminance(...this.state.color) > 0.6 ? 'black' : 'white',
                 transition: 'color 0.2s ease',
               }}>

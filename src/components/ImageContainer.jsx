@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { clamp, luminance } from '../lib/math.js';
-import { bound } from '../lib/commonDecorators';
+import { bound, toCssColor } from '../lib/utils';
 import ColorWell from './ColorWell';
 
 export default class ImageContainer extends React.Component {
@@ -13,20 +13,13 @@ export default class ImageContainer extends React.Component {
     colorPickerOpened: false,
   };
 
-  @bound
-  toggleColorPicker() {
-    this.setState({ colorPickerOpened: !this.state.colorPickerOpened });
-  }
+  prevView = {
+    posX: 0,
+    posY: 0,
+    zoom: 1,
+  };
 
-  reset() {
-    this.setState({
-      posX: 0,
-      posY: 0,
-      zoom: 1,
-    });
-  }
-
-  fit() {
+  getZoomToFitImage() {
     const container = this.container.getBoundingClientRect();
     const wrapper = this.wrapper.getBoundingClientRect();
     let zoom = 1;
@@ -41,15 +34,49 @@ export default class ImageContainer extends React.Component {
       zoom = container.width / width;
     }
 
+    return zoom;
+  }
+
+  reset() {
     this.setState({
       posX: 0,
       posY: 0,
-      zoom: zoom,
+      zoom: 1,
+    });
+  }
+
+  fit() {
+    this.setState({
+      posX: 0,
+      posY: 0,
+      zoom: this.getZoomToFitImage(),
     });
   }
 
   @bound
-  handleZoom(event) {
+  toggleColorPicker() {
+    this.setState({ colorPickerOpened: !this.state.colorPickerOpened });
+  }
+
+  @bound
+  toggleViewSettings() {
+    const currentView = _.pick(this.state, ['posX', 'posY', 'zoom']);
+    const fitView = {
+      posX: 0,
+      posY: 0,
+      zoom: this.getZoomToFitImage(),
+    };
+
+    if (_.isEqual(currentView, fitView)) {
+      this.setState(this.prevView);
+    } else {
+      this.prevView = currentView;
+      this.setState(fitView);
+    }
+  }
+
+  @bound
+  updateZoom(event) {
     const minZoom = 0.1;
     const maxZoom = 10;
 
@@ -76,7 +103,7 @@ export default class ImageContainer extends React.Component {
   }
 
   @bound
-  handleImageClick(event) {
+  startImageMove(event) {
     event.preventDefault();
     const self = this;
     let px = event.clientX;
@@ -100,10 +127,6 @@ export default class ImageContainer extends React.Component {
     document.addEventListener('mouseup', handleMouseUp);
   }
 
-  toCssColor(color) {
-    return `rgb(${color[0] * 255 | 0}, ${color[1] * 255 | 0}, ${color[2] * 255 | 0})`;
-  }
-
   render() {
     const zoom = this.state.zoom;
     const wrapperTransform = `
@@ -117,11 +140,11 @@ export default class ImageContainer extends React.Component {
     return (
       <div
         className='image-container'
-        onWheel={this.handleZoom}
-        onDoubleClick={() => this.reset()}
-        onMouseDown={this.handleImageClick}
+        onWheel={this.updateZoom}
+        onDoubleClick={this.toggleViewSettings}
+        onMouseDown={this.startImageMove}
         ref={(container) => this.container = container}
-        style={{ backgroundColor: this.toCssColor(this.state.color) }}>
+        style={{ backgroundColor: toCssColor(this.state.color) }}>
         <div
           className='image-container-wrapper'
           ref={(wrapper) => this.wrapper = wrapper}
@@ -131,11 +154,6 @@ export default class ImageContainer extends React.Component {
           {this.props.children}
         </div>
         <div className={actionsClass}>
-           <button
-            className='button'
-            onClick={() => this.fit()}>
-            FT
-          </button> 
           <button
             className={ 'button' + (this.state.colorPickerOpened ? ' active' : '') }
             onClick={this.toggleColorPicker}>

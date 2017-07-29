@@ -1,5 +1,5 @@
 import React from 'react';
-import { bound } from './lib/commonDecorators';
+import { bound } from './lib/utils';
 import EffectProcessor from './lib/EffectProcessor';
 import PipelineEditor from './components/PipelineEditor';
 import ImageContainer from './components/ImageContainer';

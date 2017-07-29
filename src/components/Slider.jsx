@@ -1,6 +1,6 @@
 import React from 'react';
 import { clamp, align } from '../lib/math';
-import { bound } from '../lib/commonDecorators';
+import { bound } from '../lib/utils';
 
 export default class Slider extends React.Component {
   static get defaultProps() {

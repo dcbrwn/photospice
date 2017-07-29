@@ -5,7 +5,7 @@ import {
   SortableElement,
   arrayMove
 } from 'react-sortable-hoc';
-import { bound } from '../lib/commonDecorators.js';
+import { bound } from '../lib/utils.js';
 import EffectEditor from './EffectEditor';
 import fx from '../fx';
 
