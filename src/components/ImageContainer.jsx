@@ -79,26 +79,16 @@ export default class ImageContainer extends React.Component {
   updateZoom(event) {
     const minZoom = 0.1;
     const maxZoom = 10;
-
-    const isLimitReached = (this.state.zoom <= minZoom && event.deltaY > 0) ||
-      (this.state.zoom >= maxZoom && event.deltaY < 0);
-
-    if (isLimitReached) return;
-
     const factor = event.deltaY < 0 ? 1.25 : 0.8;
-    const container = this.container.getBoundingClientRect();
-
-    // Convert page coords to image space coords
-    const tx = (event.pageX - (container.left + container.width / 2)) / this.state.zoom;
-    const ty = (event.pageY - (container.top + container.height / 2)) / this.state.zoom;
-    // Delta
-    const dx = Math.sign(event.deltaY) * (tx * factor - tx);
-    const dy = Math.sign(event.deltaY) * (ty * factor - ty);
-
+    const zoom = this.state.zoom * factor;
+    if (zoom > maxZoom || zoom < minZoom) return;
+    const [ix, iy] = this.pageToImageSpace(event.pageX, event.pageY);
+    const dx = (ix * factor - ix) * zoom;
+    const dy = (iy * factor - iy) * zoom;
     this.setState({
-      posX: this.state.posX + dx,
-      posY: this.state.posY + dy,
-      zoom: clamp(this.state.zoom * factor, minZoom, maxZoom),
+      posX: this.state.posX - dx,
+      posY: this.state.posY - dy,
+      zoom: clamp(zoom, minZoom, maxZoom),
     });
   }
 
@@ -111,8 +101,8 @@ export default class ImageContainer extends React.Component {
 
     const handleMouseMove = _.throttle(function(event) {
       self.setState({
-        posX: self.state.posX + (event.clientX - px) / self.state.zoom,
-        posY: self.state.posY + (event.clientY - py) / self.state.zoom,
+        posX: self.state.posX + (event.clientX - px),
+        posY: self.state.posY + (event.clientY - py),
       });
       px = event.clientX;
       py = event.clientY;
@@ -127,11 +117,19 @@ export default class ImageContainer extends React.Component {
     document.addEventListener('mouseup', handleMouseUp);
   }
 
+  pageToImageSpace(pageX, pageY) {
+    const container = this.container.getBoundingClientRect();
+    const containerX = pageX - (container.left + container.width / 2);
+    const containerY = pageY - (container.top + container.height / 2);
+    const imageX = (containerX - this.state.posX) / this.state.zoom;
+    const imageY = (containerY - this.state.posY) / this.state.zoom;
+    return [imageX, imageY];
+  }
+
   render() {
-    const zoom = this.state.zoom;
     const wrapperTransform = `
       translate(-50%, -50%)
-      translate(${this.state.posX * zoom}px, ${this.state.posY * zoom}px)
+      translate(${this.state.posX}px, ${this.state.posY}px)
       scale(${this.state.zoom})
     `;
     const actionsClass = luminance(...this.state.color) < 0.6
