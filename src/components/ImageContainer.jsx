@@ -58,18 +58,19 @@ export default class ImageContainer extends React.Component {
 
     if (isLimitReached) return;
 
-    const factor = event.deltaY < 0 ? 1.2 : 0.8;
+    const factor = event.deltaY < 0 ? 1.25 : 0.8;
     const container = this.container.getBoundingClientRect();
 
-    // FIXME: Follow point on image under the cursor, not the image center
-    // position (0, 0) corresponds to center of container so we need to take
-    // its width into account.
-    const dx = (event.pageX - (container.left + container.width / 2)) - this.state.posX;
-    const dy = (event.pageY - (container.top + container.height / 2)) - this.state.posY;
+    // Convert page coords to image space coords
+    const tx = (event.pageX - (container.left + container.width / 2)) / this.state.zoom;
+    const ty = (event.pageY - (container.top + container.height / 2)) / this.state.zoom;
+    // Delta
+    const dx = Math.sign(event.deltaY) * (tx * factor - tx);
+    const dy = Math.sign(event.deltaY) * (ty * factor - ty);
 
     this.setState({
-      posX: this.state.posX + dx / 5,
-      posY: this.state.posY + dy / 5,
+      posX: this.state.posX + dx,
+      posY: this.state.posY + dy,
       zoom: clamp(this.state.zoom * factor, minZoom, maxZoom),
     });
   }
@@ -83,8 +84,8 @@ export default class ImageContainer extends React.Component {
 
     const handleMouseMove = _.throttle(function(event) {
       self.setState({
-        posX: self.state.posX + event.clientX - px,
-        posY: self.state.posY + event.clientY - py,
+        posX: self.state.posX + (event.clientX - px) / self.state.zoom,
+        posY: self.state.posY + (event.clientY - py) / self.state.zoom,
       });
       px = event.clientX;
       py = event.clientY;
@@ -104,9 +105,10 @@ export default class ImageContainer extends React.Component {
   }
 
   render() {
+    const zoom = this.state.zoom;
     const wrapperTransform = `
       translate(-50%, -50%)
-      translate(${this.state.posX}px, ${this.state.posY}px)
+      translate(${this.state.posX * zoom}px, ${this.state.posY * zoom}px)
       scale(${this.state.zoom})
     `;
     const actionsClass = luminance(...this.state.color) < 0.6
