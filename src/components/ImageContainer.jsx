@@ -33,8 +33,12 @@ export default class ImageContainer extends React.Component {
     const width = wrapper.width / this.state.zoom;
     const height = wrapper.height / this.state.zoom;
 
-    if (width > container.width || height > container.height) {
-      zoom = Math.min(width / container.width, height / container.height);
+    if (width < container.width && height < container.height) {
+      zoom = 1;
+    } else if (height >= width) {
+      zoom = container.height / height;
+    } else {
+      zoom = container.width / width;
     }
 
     this.setState({
@@ -57,6 +61,7 @@ export default class ImageContainer extends React.Component {
     const factor = event.deltaY < 0 ? 1.2 : 0.8;
     const container = this.container.getBoundingClientRect();
 
+    // FIXME: Follow point on image under the cursor, not the image center
     // position (0, 0) corresponds to center of container so we need to take
     // its width into account.
     const dx = (event.pageX - (container.left + container.width / 2)) - this.state.posX;
@@ -124,11 +129,11 @@ export default class ImageContainer extends React.Component {
           {this.props.children}
         </div>
         <div className={actionsClass}>
-          {/* <button
+           <button
             className='button'
             onClick={() => this.fit()}>
             FT
-          </button> */}
+          </button> 
           <button
             className={ 'button' + (this.state.colorPickerOpened ? ' active' : '') }
             onClick={this.toggleColorPicker}>
