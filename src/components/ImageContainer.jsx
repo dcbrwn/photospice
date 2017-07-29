@@ -132,9 +132,6 @@ export default class ImageContainer extends React.Component {
       translate(${this.state.posX}px, ${this.state.posY}px)
       scale(${this.state.zoom})
     `;
-    const actionsClass = luminance(...this.state.color) < 0.6
-      ? 'image-container-actions'
-      : 'image-container-actions inverse';
     return (
       <div
         className='image-container'
@@ -151,11 +148,11 @@ export default class ImageContainer extends React.Component {
           }}>
           {this.props.children}
         </div>
-        <div className={actionsClass}>
+        <div className='image-container-actions'>
           <button
-            className={ 'button' + (this.state.colorPickerOpened ? ' active' : '') }
+            title='Change background color'
+            className={ 'button bg-button' + (this.state.colorPickerOpened ? ' active' : '') }
             onClick={this.toggleColorPicker}>
-            BG
           </button>
           <div
             className={ 'color-buttons' + (this.state.colorPickerOpened ? ' active' : '') }>

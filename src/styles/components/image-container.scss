@@ -17,24 +17,14 @@
   .image-container-actions {
     cursor: default;
     position: absolute;
+    bottom: 0;
     padding: 1em;
-
-    &.inverse {
-      $inverse-color: rgba(0, 0, 0, 0.5);
-      .button {
-        border: 2px solid $inverse-color;
-        color: $inverse-color;
-      }
-      .color-well {
-        border: 2px solid $inverse-color;
-        background-color: $inverse-color !important;
-      }
-    }
 
     .button, .color-well {
       cursor: pointer;
       opacity: 0.6;
       transition: opacity 0.1s linear;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
 
       &:hover, &.active {
         opacity: 0.9;
@@ -45,14 +35,21 @@
       width: $size-control * 1.5;
       height: $size-control * 1.5;
       border-radius: 50%;
-      background-color: transparent;
-      border: 2px solid white;
+      background-color: $palette-background;
       outline: none;
+    }
+
+    .bg-button {
+      background-image: url('/assets/fill-tool.svg');
+      background-size: $size-control;
+      background-repeat: no-repeat;
+      // Hard-coded values for specific image
+      background-position: 50% 45%;
     }
 
     .color-buttons {
       display: inline-block;
-      vertical-align: middle;
+      vertical-align: top;
       position: relative;
       height: $size-control * 1.5;
       margin: 0 0 0 5px;
@@ -66,28 +63,24 @@
         opacity: 1;
       }
 
-      * {
+      .button, .color-well {
         display: inline-block;
         position: absolute;
         top: $size-control - $size-control * 1.5 / 2;
-      }
-
-      .button, .color-well {
         left: 0;
-        margin-left: 0.2em;
         width: $size-control;
         height: $size-control;
+        margin-left: 0.2em;
+        border: 2px solid white;
       }
 
       .color-well {
-        border: 2px solid white;
         border-radius: 50%;
         left: 75%;
-        // Turn off color preview with "important"
+        // Turn off inline color for preview with "important"
         background-color: white !important;
         background-image: url('/assets/color-wheel-32.png');
         background-size: cover;
-        box-shadow: none;
       }
     }
   }
