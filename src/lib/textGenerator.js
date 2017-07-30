@@ -1,5 +1,3 @@
-import React from 'react';
-
 const vowels = 'aeiou';
 const consonants = 'klmnpstwj';
 
@@ -41,8 +39,4 @@ export function genParagraph(length, min = 0, max = 10) {
     result.push(genSentence(randomInRange(min, max)));
   }
   return result.join(' ');
-}
-
-export function Fish({ length }) {
-  return <span>{genParagraph(length)}</span>
 }
