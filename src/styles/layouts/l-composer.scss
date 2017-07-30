@@ -13,7 +13,7 @@
     .composer-screen {
       left: 0;
 
-      .image-container-actions {
+      .image-container-actions:not(.active) {
         opacity: 0;
         transition: opacity 0.1s linear;
 

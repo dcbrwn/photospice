@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import { clamp, luminance } from '../lib/math.js';
-import { bound, toCssColor } from '../lib/utils';
+import { clamp } from '../lib/math.js';
+import { bound, toCssColor, classes } from '../lib/utils';
 import ColorWell from './ColorWell';
 
 export default class ImageContainer extends React.Component {
@@ -10,14 +10,19 @@ export default class ImageContainer extends React.Component {
     posX: 0,
     posY: 0,
     zoom: 1,
-    colorPickerOpened: false,
+    isColorPickerOpened: false,
   };
 
-  prevView = {
-    posX: 0,
-    posY: 0,
-    zoom: 1,
-  };
+  prevView = null;
+
+  pageToImageSpace(pageX, pageY) {
+    const container = this.container.getBoundingClientRect();
+    const containerX = pageX - (container.left + container.width / 2);
+    const containerY = pageY - (container.top + container.height / 2);
+    const imageX = (containerX - this.state.posX) / this.state.zoom;
+    const imageY = (containerY - this.state.posY) / this.state.zoom;
+    return [imageX, imageY];
+  }
 
   getZoomToFitImage() {
     const container = this.container.getBoundingClientRect();
@@ -53,9 +58,16 @@ export default class ImageContainer extends React.Component {
     });
   }
 
+  pickColor(color) {
+    this.setState({
+      color: color,
+      isColorPickerOpened: false,
+    });
+  }
+
   @bound
   toggleColorPicker() {
-    this.setState({ colorPickerOpened: !this.state.colorPickerOpened });
+    this.setState({ isColorPickerOpened: !this.state.isColorPickerOpened });
   }
 
   @bound
@@ -67,7 +79,7 @@ export default class ImageContainer extends React.Component {
       zoom: this.getZoomToFitImage(),
     };
 
-    if (_.isEqual(currentView, fitView)) {
+    if (this.prevView && _.isEqual(currentView, fitView)) {
       this.setState(this.prevView);
     } else {
       this.prevView = currentView;
@@ -117,21 +129,18 @@ export default class ImageContainer extends React.Component {
     document.addEventListener('mouseup', handleMouseUp);
   }
 
-  pageToImageSpace(pageX, pageY) {
-    const container = this.container.getBoundingClientRect();
-    const containerX = pageX - (container.left + container.width / 2);
-    const containerY = pageY - (container.top + container.height / 2);
-    const imageX = (containerX - this.state.posX) / this.state.zoom;
-    const imageY = (containerY - this.state.posY) / this.state.zoom;
-    return [imageX, imageY];
-  }
-
   render() {
     const wrapperTransform = `
       translate(-50%, -50%)
       translate(${this.state.posX}px, ${this.state.posY}px)
       scale(${this.state.zoom})
     `;
+    const activeClass = {
+      'active': this.state.isColorPickerOpened,
+    };
+    const actionsClass = classes('image-container-actions', activeClass);
+    const bgButtonClass = classes('button bg-button', activeClass);
+    const colorButtonsClass = classes('color-buttons', activeClass);
     return (
       <div
         className='image-container'
@@ -148,37 +157,37 @@ export default class ImageContainer extends React.Component {
           }}>
           {this.props.children}
         </div>
-        <div className='image-container-actions'>
+        <div className={actionsClass}>
           <button
             className='button hide-ui-button'
             title='Hide interface'
             onClick={this.props.toggleCompactMode}>
           </button>
           <button
-            className={ 'button bg-button' + (this.state.colorPickerOpened ? ' active' : '') }
+            className={bgButtonClass}
             title='Change background color'
             onClick={this.toggleColorPicker}>
           </button>
           <div
-            className={ 'color-buttons' + (this.state.colorPickerOpened ? ' active' : '') }>
+            className={colorButtonsClass}>
             <button
               className='button'
               style={{ backgroundColor: 'white' }}
-              onClick={() => this.setState({ color: [1, 1, 1] })}>
+              onClick={() => this.pickColor([1, 1, 1])}>
             </button>
             <button
               className='button'
               style={{ left: '25%', backgroundColor: 'grey' }}
-              onClick={() => this.setState({ color: [0.5, 0.5, 0.5] })}>
+              onClick={() => this.pickColor([0.5, 0.5, 0.5])}>
             </button>
             <button
               className='button'
               style={{ left: '50%', backgroundColor: 'black' }}
-              onClick={() => this.setState({ color: [0, 0, 0] })}>
+              onClick={() => this.pickColor([0, 0, 0])}>
             </button>
             <ColorWell
               value={this.state.color}
-              onChange={(color) => this.setState({ color: color })} />
+              onChange={(color) => this.pickColor(color)} />
           </div>
         </div>
       </div>
