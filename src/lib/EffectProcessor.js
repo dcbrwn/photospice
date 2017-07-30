@@ -22,6 +22,7 @@ export default class EffectProcessor {
     this.source = null;
     this.sourceSize = null;
     this.passtrough = this.createPass(passtroughEffect, false);
+    this.isDirty = true;
   }
 
   createPass(effect, isIntermediate = true) {
@@ -44,12 +45,14 @@ export default class EffectProcessor {
 
   addPass(effect) {
     this.passes.push(this.createPass(effect));
+    this.isDirty = true;
   }
 
   removePass(pass) {
     this.passes = _.without(this.passes, pass);
     this.renderer.deleteProgram(pass.program);
     this.renderer.deleteTexture(pass.texture);
+    this.isDirty = true;
   }
 
   loadImage(source) {
@@ -66,14 +69,11 @@ export default class EffectProcessor {
     const image = await this.loadImage(imageSrc);
     this.source = this.renderer.createTexture(image);
     this.sourceSize = [image.width, image.height];
-    // Force full pipeline re-render by resetting first pass's prev. state
-    if (this.passes.length >= 1) {
-      this.passes[0].prevState = null;
-    }
+    this.isDirty = true;
   }
 
   render(target) {
-    let isDirty = false;
+    let isDirty = this.isDirty;
     this.renderer.setSize(...this.sourceSize);
     const result = this.passes.reduce((prevPassTexture, pass) => {
       const currentState = JSON.stringify({
@@ -100,5 +100,6 @@ export default class EffectProcessor {
     this.passtrough._uniforms.uImage.value = result;
     this.renderer.render(this.passtrough.program);
     this.renderer.copyToCanvas(target);
+    this.isDirty = false;
   }
 }

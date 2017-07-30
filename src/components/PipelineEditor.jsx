@@ -67,6 +67,8 @@ export default class PipelineEditor extends React.Component {
   @bound
   onSortEnd({oldIndex, newIndex}) {
     this.processor.passes = arrayMove(this.state.passes, oldIndex, newIndex);
+    // FIXME: Internal property leak
+    this.processor.isDirty = true;
     this.setState({ passes: this.processor.passes });
     this.props.updatePhoto();
   }
