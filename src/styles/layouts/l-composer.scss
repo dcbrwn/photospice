@@ -1,16 +1,18 @@
 .l-composer {
   $sidebar-width: 400px;
-  position: relative;
-  z-index: 0;
-  width: 100vw;
-  height: 100vh;
-  max-width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
   &.l-composer-compact {
     .composer-sidebar {
       z-index: 1;
       left: -$sidebar-width;
 
+      // Add 1px area on the left of the screen.
+      // Hovering on it, user can open sidebar.
       &::after {
         content: '';
         display: block;
@@ -25,6 +27,8 @@
         left: 0;
         transition-delay: 0.5s;
 
+        // Prevent sidebar from closing immediately when user accidentaly
+        // moves cursor out of it for a few pixels. 
         &::after {
           right: -50px;
           width: 50px;
@@ -35,6 +39,7 @@
     .composer-screen {
       left: 0;
 
+      // Hide action buttons when background picker is inactive
       .image-container-actions:not(.active) {
         opacity: 0;
         transition: opacity 0.1s linear;

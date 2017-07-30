@@ -1,7 +1,7 @@
 // In general I'm following SMACSS. Result may seem "bootstrap"-ish but that's
-// because the bootstrap seemingly uses same approach. I was thinking on going
+// because the bootstrap seemingly uses the same approach. I was thinking to go
 // with alternative path of using semantic classes like Semantic-UI does, but
-// this practice is not yet common, and being similar to famous twitter
+// this practice is not common yet, and being similar to famous twitter
 // CSS framework is probably a good thing.
 
 // Base
@@ -11,12 +11,17 @@
 @import './typography.scss';
 @import './atomic.scss';
 
-@import './themes/default.scss';
+// Theme
 
+@import './themes/default.scss';
 @import './text-variations.scss';
+
+// Layouts/Pages
 
 @import './layouts/l-composer.scss';
 @import './layouts/l-kitchen-sink.scss';
+
+// Components
 
 @import './components/grid.scss';
 @import './components/button.scss';
