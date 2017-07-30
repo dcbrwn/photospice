@@ -150,8 +150,13 @@ export default class ImageContainer extends React.Component {
         </div>
         <div className='image-container-actions'>
           <button
-            title='Change background color'
+            className='button hide-ui-button'
+            title='Hide interface'
+            onClick={this.props.toggleCompactMode}>
+          </button>
+          <button
             className={ 'button bg-button' + (this.state.colorPickerOpened ? ' active' : '') }
+            title='Change background color'
             onClick={this.toggleColorPicker}>
           </button>
           <div

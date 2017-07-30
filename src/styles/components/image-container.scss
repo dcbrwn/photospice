@@ -47,6 +47,14 @@
       background-position: 50% 45%;
     }
 
+    .hide-ui-button {
+      background-image: url('/assets/fullscreen.svg');
+      background-size: $size-control;
+      background-repeat: no-repeat;
+      // Hard-coded values for specific image
+      background-position: 50% 50%;
+    }
+
     .color-buttons {
       display: inline-block;
       vertical-align: top;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { bound } from './lib/utils';
+import { bound, classes } from './lib/utils';
 import EffectProcessor from './lib/EffectProcessor';
 import PipelineEditor from './components/PipelineEditor';
 import ImageContainer from './components/ImageContainer';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 export default class ComposerPage extends React.Component {
   state = {
     processor: new EffectProcessor(),
+    compactMode: false,
   }
 
   updatePhoto = _.throttle(() => {
@@ -37,9 +38,19 @@ export default class ComposerPage extends React.Component {
     link.click();
   }
 
+  @bound
+  toggleCompactMode() {
+    this.setState({
+      compactMode: !this.state.compactMode,
+    });
+  }
+
   render() {
+    const layoutClass = classes('l-composer', {
+      'l-composer-compact': this.state.compactMode,
+    });
     return (
-      <main className='l-composer'>
+      <main className={layoutClass}>
         <div className='composer-sidebar'>
           <div className='composer-sidebar-header'>
             <h1>
@@ -64,7 +75,7 @@ export default class ComposerPage extends React.Component {
           />
         </div>
         <div className='composer-screen'>
-          <ImageContainer>
+          <ImageContainer toggleCompactMode={this.toggleCompactMode}>
             <canvas ref={(canvas) => { this.canvas = canvas; }} />
           </ImageContainer>
         </div>
