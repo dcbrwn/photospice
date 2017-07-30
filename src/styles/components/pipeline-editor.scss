@@ -8,6 +8,12 @@
   }
 
   .pipeline-editor-actions {
-    padding: 1em;
+    text-align: center;
   }
+}
+
+.pipeline-editor-item {
+  padding: 1em;
+  list-style: none;
+  vertical-align: baseline;
 }

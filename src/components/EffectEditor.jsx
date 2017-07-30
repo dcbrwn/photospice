@@ -32,7 +32,7 @@ export default class EffectEditor extends React.Component {
   }
 
   render() {
-    return (<li className='effect-editor'>
+    return (<li className='effect-editor pipeline-editor-item'>
       <div className='effect-editor-header'>
         <Toggle value={!this.state.effect.isDisabled} onChange={this.toggleEffect} />
         <this.EffectHandle />

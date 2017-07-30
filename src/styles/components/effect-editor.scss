@@ -1,12 +1,9 @@
 
 .effect-editor {
   background: $palette-background;
-  padding: 1em;
-  list-style: none;
 
   .effect-editor-header {
     line-height: $size-control;
-    vertical-align: baseline;
     margin: 0 0 0.5em 0;
 
     .toggle {

@@ -62,7 +62,7 @@ export default class PipelineEditor extends React.Component {
           onSortEnd={this.onSortEnd}
           useDragHandle={true}
         />
-        <div className='pipeline-editor-actions'>
+        <div className='pipeline-editor-actions pipeline-editor-item'>
           <EffectPicker
             isOpen={this.state.isPassPickerOpen}
             onPickEffect={this.pickEffect}>
