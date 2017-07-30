@@ -58,11 +58,8 @@
     height: $pad-width;
     margin: 0 0 0.5em 0;
     overflow: hidden;
-    // background-size: cover;
-    // background-image: url('/assets/colorpicker_overlay.png');
-    background-image:
-      linear-gradient(to top, black, transparent),
-      linear-gradient(to right, white, transparent);
+    background-size: cover;
+    background-image: url('/assets/colorpicker_overlay.png');
 
     &::before {
       content: '';
@@ -73,6 +70,14 @@
       border-radius: 50%;
       border: 1px solid black;
       box-shadow: inset 0 0 0 1px white;
+    }
+  }
+
+  .color-well-modal-actions {
+    text-align: right;
+
+    .button {
+      margin-left: 0.5em;
     }
   }
 }

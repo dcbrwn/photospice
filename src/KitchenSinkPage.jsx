@@ -41,7 +41,7 @@ export default class KitchenSinkPage extends React.Component {
           Links:<br />
           <a href='#'>Simple link</a>
         </section>
-        <section>
+        <section className='buttons-group'>
           Buttons:<br />
           <button className='button button-transparent'>Transparent</button>
           <button className='button button-muted'>Muted</button>

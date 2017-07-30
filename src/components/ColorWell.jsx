@@ -146,23 +146,23 @@ export default class ColorWell extends React.Component {
                 paddingTop: (1 - this.state.brightness) * 100 + '%',
               }}>
             </div>
-          </div>
-          <div className='pull-right'>
-            <button
-              className='button button-muted'
-              onClick={this.closePopup}>
-              Cancel
-            </button>
-            <button
-              className='button button-transparent'
-              onClick={this.pickColor}
-              style={{
-                backgroundColor: toCssColor(this.state.color),
-                color: luminance(...this.state.color) > 0.6 ? 'black' : 'white',
-                transition: 'color 0.2s ease',
-              }}>
-              Pick this color
-            </button>
+            <div className='color-well-modal-actions'>
+              <button
+                className='button button-muted'
+                onClick={this.closePopup}>
+                Cancel
+              </button>
+              <button
+                className='button button-transparent'
+                onClick={this.pickColor}
+                style={{
+                  backgroundColor: toCssColor(this.state.color),
+                  color: luminance(...this.state.color) > 0.6 ? 'black' : 'white',
+                  transition: 'color 0.2s ease',
+                }}>
+                Pick this color
+              </button>
+            </div>
           </div>
         </Modal>
       </div>

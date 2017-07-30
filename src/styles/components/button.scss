@@ -23,10 +23,6 @@
   @include button-variant($palette-primary, $palette-foreground-inverse);
 }
 
-.button + .button {
-  margin-left: 0.5em;
-}
-
 .button-transparent {
   $hover-color: rgba(0, 0, 0, 0.1);
   $active-color: rgba(0, 0, 0, 0.2);
