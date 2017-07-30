@@ -45,7 +45,10 @@ export default class EffectPicker extends React.Component {
 
   @bound
   openModal() {
-    this.setState({ isModalOpened: true });
+    this.setState({
+      query: null,
+      isModalOpened: true,
+    });
   }
 
   @bound

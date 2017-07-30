@@ -16,7 +16,7 @@ export default class ComposerPage extends React.Component {
   }, 30)
 
   async componentDidMount() {
-    await this.state.processor.useImage('assets/jelly-beans.png');
+    await this.state.processor.useImage('assets/spice.jpg');
     this.updatePhoto();
   }
 
