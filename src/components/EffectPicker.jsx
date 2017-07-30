@@ -4,25 +4,38 @@ import { bound } from '../lib/utils';
 import fx from '../fx';
 
 export default class EffectPicker extends React.Component {
-  constructor() {
-    super();
-
-
-  }
-
   state = {
     isModalOpened: false,
   };
 
+  renderEffectDescription(effect) {
+    if (!effect.description) return null;
+
+    return <p>{effect.description}</p>;
+  }
+
   renderEffectsList(effects = [], query) {
     return effects
       .filter((effect) => {
-        if (!query) return true;
-        // FIXME: Add filtering logic
+        if (!query || query === '') return true;
+        const re = new RegExp(query.replace(/[^0-9A-Za-z\s]/g, ''), 'i');
+        return re.test(effect.name + effect.description);
       })
-      .map((effect) => <li key={effect.name}>
-        <a onClick={() => this.pickEffect(effect)}>{effect.name}</a>
-      </li>);
+      .map((effect) => {
+        return (
+          <li
+            key={effect.name}
+            onClick={() => this.pickEffect(effect)}>
+            <b>{effect.name}</b>
+            {this.renderEffectDescription(effect)}
+          </li>
+        );
+      });
+  }
+
+  @bound
+  setSearchQuery(event) {
+    this.setState({ query: event.target.value });
   }
 
   @bound
@@ -51,9 +64,24 @@ export default class EffectPicker extends React.Component {
           isOpen={this.state.isModalOpened}
           onRequestClose={this.closeModal}
           contentLabel='Effect pass picker'>
-          <h2>Pick effect pass</h2>
-          <ul>{this.renderEffectsList(fx, this.state.query)}</ul>
-          <button className='button' onClick={this.closeModal}>Close</button>
+          <div className='effect-picker'>
+            <h2>Pick effect pass</h2>
+            <input
+              className='effect-picker-search'
+              type='text'
+              placeholder='Search for effect...'
+              onChange={this.setSearchQuery}/>
+            <ul className='effect-picker-list'>
+              {this.renderEffectsList(fx, this.state.query)}
+            </ul>
+            <div className='effect-picker-actions'>
+              <button
+                className='button button-muted'
+                onClick={this.closeModal}>
+                Close
+              </button>
+            </div>
+          </div>
         </Modal>
       </div>
     );
