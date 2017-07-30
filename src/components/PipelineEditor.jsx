@@ -32,6 +32,16 @@ export default class PipelineEditor extends React.Component {
   });
 
   @bound
+  useImage(event) {
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      await this.processor.useImage(event.target.result);
+      this.props.updatePhoto();
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  @bound
   pickEffect(effect) {
     this.processor.addPass(effect);
     this.setState({ passes: this.processor.passes });
@@ -56,19 +66,35 @@ export default class PipelineEditor extends React.Component {
   render() {
     return (
       <div className='pipeline-editor'>
-        <this.EffectsList
-          lockAxis='y'
-          items={this.state.passes}
-          onSortEnd={this.onSortEnd}
-          useDragHandle={true}
-        />
         <div className='pipeline-editor-actions pipeline-editor-item'>
           <EffectPicker
             isOpen={this.state.isPassPickerOpen}
             onPickEffect={this.pickEffect}>
             <button className='button'>Add pass</button>
           </EffectPicker>
+          <button
+            className='button button-muted'
+            onClick={() => this.imageInput.click()}>
+            Upload new image
+          </button>
+          <button
+            className='button button-muted'
+            onClick={this.props.downloadPhoto}>
+            Download result
+          </button>
+          <input
+            type='file'
+            accept='image/*'
+            style={{ display: 'none' }}
+            onChange={this.useImage}
+            ref={(input) => this.imageInput = input } />
         </div>
+        <this.EffectsList
+          lockAxis='y'
+          items={this.state.passes}
+          onSortEnd={this.onSortEnd}
+          useDragHandle={true}
+        />
       </div>
     );
   }
