@@ -6,13 +6,6 @@ import ImageContainer from './components/ImageContainer';
 import _ from 'lodash';
 
 export default class ComposerPage extends React.Component {
-  constructor() {
-    super();
-
-    this.offscreenDownloadLink = document.createElement('a');
-    this.offscreenDownloadLink.download = 'render.png';
-  }
-
   state = {
     processor: new EffectProcessor(),
     compactMode: false,
@@ -29,8 +22,10 @@ export default class ComposerPage extends React.Component {
 
   @bound
   downloadPhoto() {
-    this.offscreenDownloadLink.href = this.canvas.toDataURL();
-    this.offscreenDownloadLink.click();
+    const link = document.createElement('a');
+    link.download = 'render.png';
+    link.href = this.canvas.toDataURL();
+    link.click();
   }
 
   @bound
