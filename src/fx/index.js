@@ -7,7 +7,7 @@ import motionBlur from './motionBlur';
 import contrast from './contrast';
 import tint from './tint';
 
-export default {
+export default [
   contrast,
   colorize,
   funky,
@@ -16,4 +16,4 @@ export default {
   motionBlur,
   scaline,
   tint,
-};
+];

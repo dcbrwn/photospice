@@ -7,18 +7,23 @@ export default class EffectPicker extends React.Component {
   constructor() {
     super();
 
-    this.effects = [];
-    for (let effectId in fx) {
-      const effect = fx[effectId];
-      this.effects.push(<li key={effect.name}>
-        <a onClick={() => this.pickEffect(effect)}>{effect.name}</a>
-      </li>);
-    }
+
   }
 
   state = {
     isModalOpened: false,
   };
+
+  renderEffectsList(effects = [], query) {
+    return effects
+      .filter((effect) => {
+        if (!query) return true;
+        // FIXME: Add filtering logic
+      })
+      .map((effect) => <li key={effect.name}>
+        <a onClick={() => this.pickEffect(effect)}>{effect.name}</a>
+      </li>);
+  }
 
   @bound
   openModal() {
@@ -38,14 +43,16 @@ export default class EffectPicker extends React.Component {
 
   render() {
     return (
-      <div onClick={this.openModal}>
+      <div
+        style={{ display: 'inline-block' }}
+        onClick={this.openModal}>
         {this.props.children}
         <Modal
           isOpen={this.state.isModalOpened}
           onRequestClose={this.closeModal}
           contentLabel='Effect pass picker'>
           <h2>Pick effect pass</h2>
-          <ul>{this.effects}</ul>
+          <ul>{this.renderEffectsList(fx, this.state.query)}</ul>
           <button className='button' onClick={this.closeModal}>Close</button>
         </Modal>
       </div>
