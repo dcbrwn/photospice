@@ -1,4 +1,4 @@
-import GLRenderer from './GLRenderer.js';
+import GLRenderer from './GLRenderer';
 import _ from 'lodash';
 
 const passtroughEffect = {

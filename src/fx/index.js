@@ -1,11 +1,11 @@
-import colorize from './colorize.js';
-import funky from './funky.js';
-import grayscale from './grayscale.js';
-import scaline from './scaline.js';
-import holgaart from './holgaart.js';
-import motionBlur from './motionBlur.js';
-import contrast from './contrast.js';
-import tint from './tint.js';
+import colorize from './colorize';
+import funky from './funky';
+import grayscale from './grayscale';
+import scaline from './scaline';
+import holgaart from './holgaart';
+import motionBlur from './motionBlur';
+import contrast from './contrast';
+import tint from './tint';
 
 export default {
   contrast,

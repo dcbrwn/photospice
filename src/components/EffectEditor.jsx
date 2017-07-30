@@ -1,8 +1,8 @@
 import React from 'react';
 import { SortableHandle } from 'react-sortable-hoc';
-import { bound } from '../lib/utils.js';
-import Toggle from './Toggle.jsx';
-import UniformEditor from './UniformEditor.jsx';
+import { bound } from '../lib/utils';
+import Toggle from './Toggle';
+import UniformEditor from './UniformEditor';
 
 export default class EffectEditor extends React.Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { bound } from '../lib/utils.js';
+import { bound } from '../lib/utils';
 
 export default class Toggle extends React.Component {
   static get defaultProps() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { luminance, clamp, HSVToRGB, RGBToHSV } from '../lib/math.js';
-import { bound, toCssColor } from '../lib/utils.js';
+import { luminance, clamp, HSVToRGB, RGBToHSV } from '../lib/math';
+import { bound, toCssColor } from '../lib/utils';
 
 // FIXME: Calculate this on the fly
 const popupWidth = 300;

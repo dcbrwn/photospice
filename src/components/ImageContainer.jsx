@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { clamp } from '../lib/math.js';
+import { clamp } from '../lib/math';
 import { bound, toCssColor, classes } from '../lib/utils';
 import ColorWell from './ColorWell';
 

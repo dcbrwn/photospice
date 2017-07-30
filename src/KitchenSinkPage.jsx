@@ -1,9 +1,9 @@
 import React from 'react';
-import { genParagraph } from './lib/textGenerator.jsx';
-import { bound } from './lib/utils.js';
-import Slider from './components/Slider.jsx';
-import Toggle from './components/Toggle.jsx';
-import ColorWell from './components/ColorWell.jsx';
+import { genParagraph } from './lib/textGenerator';
+import { bound } from './lib/utils';
+import Slider from './components/Slider';
+import Toggle from './components/Toggle';
+import ColorWell from './components/ColorWell';
 
 const fish = genParagraph(10);
 

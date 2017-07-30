@@ -1,4 +1,4 @@
-import { isPowerOfTwo, toPowerOfTwo } from './math.js';
+import { isPowerOfTwo, toPowerOfTwo } from './math';
 
 // TODO: detect max resolution for textures
 const MAX_TEXTURE_RESOLUTION = 4096;
