@@ -15,22 +15,26 @@ export default class EffectPicker extends React.Component {
   }
 
   renderEffectsList(effects = [], query) {
-    return effects
-      .filter((effect) => {
-        if (!query || query === '') return true;
-        const re = new RegExp(query.replace(/[^0-9A-Za-z\s]/g, ''), 'i');
+    let filtered = effects;
+
+    if (query && query !== '') {
+      const terms = query.match(/(([^\x00-\x7F]|[&']|\w)+)/g);
+      const re = new RegExp(terms.join('\\s+'), 'i');
+      filtered = effects.filter((effect) => {
         return re.test(effect.name + effect.description);
-      })
-      .map((effect) => {
-        return (
-          <li
-            key={effect.name}
-            onClick={() => this.pickEffect(effect)}>
-            <b>{effect.name}</b><br />
-            {this.renderEffectDescription(effect)}
-          </li>
-        );
       });
+    }
+
+    return filtered.map((effect) => {
+      return (
+        <li
+          key={effect.name}
+          onClick={() => this.pickEffect(effect)}>
+          <b>{effect.name}</b><br />
+          {this.renderEffectDescription(effect)}
+        </li>
+      );
+    });
   }
 
   @bound
