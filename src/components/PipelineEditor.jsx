@@ -64,6 +64,16 @@ export default class PipelineEditor extends React.Component {
   }
 
   render() {
+    let trailingEffectPicker = null;
+    if (this.processor.passes.length > 1) {
+      trailingEffectPicker = <div className='pipeline-editor-item'>
+        <EffectPicker
+        isOpen={this.state.isPassPickerOpen}
+        onPickEffect={this.pickEffect}>
+          <button className='button'>Add pass</button>
+        </EffectPicker>
+      </div>
+    }
     return (
       <div className='pipeline-editor'>
         <div className='pipeline-editor-actions pipeline-editor-item'>
@@ -95,6 +105,7 @@ export default class PipelineEditor extends React.Component {
           onSortEnd={this.onSortEnd}
           useDragHandle={true}
         />
+        {trailingEffectPicker}
       </div>
     );
   }
