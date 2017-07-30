@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import {
   SortableContainer,
   SortableElement,
@@ -7,26 +6,17 @@ import {
 } from 'react-sortable-hoc';
 import { bound } from '../lib/utils';
 import EffectEditor from './EffectEditor';
-import fx from '../fx';
+import EffectPicker from './EffectPicker';
 
 export default class PipelineEditor extends React.Component {
   constructor(props) {
     super();
-
-    this.effects = [];
-    for (let effectId in fx) {
-      const effect = fx[effectId];
-      this.effects.push(<li key={effect.name}>
-        <a onClick={() => this.pickEffect(effect)}>{effect.name}</a>
-      </li>);
-    }
 
     this.processor = props.processor;
 
     this.state = {
       passes: this.processor.passes,
       advancedMode: false,
-      isPassPickerOpen: false,
     };
   }
 
@@ -42,17 +32,7 @@ export default class PipelineEditor extends React.Component {
   });
 
   @bound
-  openPassPicker() {
-    this.setState({ isPassPickerOpen: true });
-  }
-
-  @bound
-  closePassPicker() {
-    this.setState({ isPassPickerOpen: false });
-  }
-
   pickEffect(effect) {
-    this.closePassPicker();
     this.processor.addPass(effect);
     this.setState({ passes: this.processor.passes });
     this.props.updatePhoto();
@@ -83,16 +63,12 @@ export default class PipelineEditor extends React.Component {
           useDragHandle={true}
         />
         <div className='pipeline-editor-actions'>
-          <button className='button' onClick={this.openPassPicker}>Add pass</button>
+          <EffectPicker
+            isOpen={this.state.isPassPickerOpen}
+            onPickEffect={this.pickEffect}>
+            <button className='button'>Add pass</button>
+          </EffectPicker>
         </div>
-        <Modal
-          isOpen={this.state.isPassPickerOpen}
-          onRequestClose={this.closePassPicker}
-          contentLabel='Effect pass picker'>
-          <h2>Pick effect pass</h2>
-          <ul>{this.effects}</ul>
-          <button className='button' onClick={this.closePassPicker}>Close</button>
-        </Modal>
       </div>
     );
   }
