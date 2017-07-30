@@ -37,9 +37,7 @@ export default class PipelineEditor extends React.Component {
       updatePhoto={this.props.updatePhoto}
     />);
     return <ul>{
-      items
-        .filter((effect) => !effect.hidden)
-        .map((value, index) => (<Effect key={`item-${index}`} index={index + 1} effect={value} />))
+      items.map((value, index) => (<Effect key={`item-${index}`} index={index} effect={value} />))
     }</ul>;
   });
 

@@ -2,8 +2,6 @@ import GLRenderer from './GLRenderer.js';
 import _ from 'lodash';
 
 const passtroughEffect = {
-  name: 'Passthrough',
-  hidden: true,
   shader: `
     precision lowp float;
 
@@ -23,12 +21,10 @@ export default class EffectProcessor {
     this.passes = [];
     this.source = null;
     this.sourceSize = null;
-    // I dont know why but I think that this trick with passtrough shader
-    // can be useful later on.
-    this.addPass(passtroughEffect);
+    this.passtrough = this.createPass(passtroughEffect, false);
   }
 
-  addPass(effect) {
+  createPass(effect, isIntermediate = true) {
     const pass = _.cloneDeep(effect);
     // BuiltIn uniforms
     pass._uniforms = {
@@ -40,9 +36,14 @@ export default class EffectProcessor {
       },
     };
     pass.uniforms = _.values(pass._uniforms).concat(pass.uniforms);
-    pass.texture = this.renderer.createTexture();
+    pass.prevState = null;
+    if (isIntermediate) pass.texture = this.renderer.createTexture();
     pass.program = this.renderer.createProgram(pass.uniforms, pass.shader);
-    this.passes.push(pass);
+    return pass;
+  }
+
+  addPass(effect) {
+    this.passes.push(this.createPass(effect));
   }
 
   removePass(pass) {
@@ -65,17 +66,39 @@ export default class EffectProcessor {
     const image = await this.loadImage(imageSrc);
     this.source = this.renderer.createTexture(image);
     this.sourceSize = [image.width, image.height];
+    // Force full pipeline re-render by resetting first pass's prev. state
+    if (this.passes.length >= 1) {
+      this.passes[0].prevState = null;
+    }
   }
 
   render(target) {
+    let isDirty = false;
     this.renderer.setSize(...this.sourceSize);
-    this.passes.reduce((prevPassTexture, pass) => {
-      if (pass.isDisabled) return prevPassTexture;
-      this.renderer.useTexture(prevPassTexture);
-      pass._uniforms.uImage.value = prevPassTexture;
-      this.renderer.renderToTexture(pass.program, pass.texture);
+    const result = this.passes.reduce((prevPassTexture, pass) => {
+      const currentState = JSON.stringify({
+        isDisabled: pass.isDisabled,
+        uniforms: pass.uniforms,
+      });
+
+      isDirty = isDirty || currentState !== pass.prevState;
+      pass.prevState = currentState;
+
+      if (pass.isDisabled) {
+        return prevPassTexture;
+      }
+
+      if (isDirty) {
+        this.renderer.useTexture(prevPassTexture);
+        pass._uniforms.uImage.value = prevPassTexture;
+        this.renderer.renderToTexture(pass.program, pass.texture);
+      }
+
       return pass.texture;
     }, this.source);
+    this.renderer.useTexture(result);
+    this.passtrough._uniforms.uImage.value = result;
+    this.renderer.render(this.passtrough.program);
     this.renderer.copyToCanvas(target);
   }
 }
