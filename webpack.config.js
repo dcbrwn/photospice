@@ -41,6 +41,7 @@ module.exports = {
         }
       },
       { test: /\.js$/, loader: 'source-map-loader' },
+      { test: /\.yml$/, loader: 'yml-loader' },
       {
         test: /\.scss$/,
         use: [
@@ -59,6 +60,6 @@ module.exports = {
 
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.yml'],
   },
 };

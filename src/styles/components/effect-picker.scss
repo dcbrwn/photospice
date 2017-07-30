@@ -4,8 +4,23 @@
   height: 100%;
   width: 100%;
 
-  .effect-picker-search {
+  .effect-picker-header {
+    display: flex;
+    flex-direction: row;
     margin: 0 0 1.5em 0;
+    line-height: $size-control;
+
+    input {
+      flex: 1;
+    }
+
+    span {
+      padding: 0 10px 0 10px;
+    }
+
+    * {
+      vertical-align: baseline;
+    }
   }
 
   .effect-picker-list {
