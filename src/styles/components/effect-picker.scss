@@ -4,7 +4,12 @@
   height: 100%;
   width: 100%;
 
+  .effect-picker-search {
+    margin: 0 0 1.5em 0;
+  }
+
   .effect-picker-list {
+    flex: 1;
     list-style: none;
     padding: 0;
     overflow-y: auto;
@@ -12,6 +17,7 @@
     li {
       cursor: pointer;
       padding: 1em;
+      border-top: 1px solid $palette-muted;
       transition: background-color 0.1s linear;
 
       &:hover {

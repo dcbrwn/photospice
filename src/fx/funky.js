@@ -20,7 +20,7 @@ void main() {
 
 export default {
   name: 'Vintage',
-  description: '',
+  description: 'Mix image with gradient to make it look faded',
   shader: shader,
   uniforms: [
     {

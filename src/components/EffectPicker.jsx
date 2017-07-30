@@ -11,7 +11,7 @@ export default class EffectPicker extends React.Component {
   renderEffectDescription(effect) {
     if (!effect.description) return null;
 
-    return <p>{effect.description}</p>;
+    return <span>{effect.description}</span>;
   }
 
   renderEffectsList(effects = [], query) {
@@ -26,7 +26,7 @@ export default class EffectPicker extends React.Component {
           <li
             key={effect.name}
             onClick={() => this.pickEffect(effect)}>
-            <b>{effect.name}</b>
+            <b>{effect.name}</b><br />
             {this.renderEffectDescription(effect)}
           </li>
         );
@@ -55,19 +55,30 @@ export default class EffectPicker extends React.Component {
   }
 
   render() {
+    const modalStyle = {
+      content: {
+        width: '540px',
+        height: 'auto',
+      },
+      overlay: {
+        backgroundColor: 'transparent',
+      },
+    };
+
     return (
       <div
         style={{ display: 'inline-block' }}
         onClick={this.openModal}>
         {this.props.children}
         <Modal
+          style={modalStyle}
           isOpen={this.state.isModalOpened}
           onRequestClose={this.closeModal}
           contentLabel='Effect pass picker'>
           <div className='effect-picker'>
-            <h2>Pick effect pass</h2>
             <input
               className='effect-picker-search'
+              autoFocus
               type='text'
               placeholder='Search for effect...'
               onChange={this.setSearchQuery}/>
