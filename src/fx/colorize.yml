@@ -1,10 +1,9 @@
-name: 'Colorize'
-description: ''
+name: Colorize
+description: Apply simple color filter
 uniforms:
-  - name: 'Color'
-    description: ''
-    id: 'uColor'
-    type: 'color'
+  - name: Color
+    id: uColor
+    type: color
     default: [0.4, 1.0, 0.2]
 shader: |
   precision lowp float;
