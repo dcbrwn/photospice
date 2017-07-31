@@ -15,7 +15,7 @@ void main() {
 `;
 
 export default {
-  name: 'Scaline',
+  name: 'Scanline',
   description: '',
   shader: shader,
   uniforms: [
