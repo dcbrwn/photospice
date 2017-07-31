@@ -2,3 +2,4 @@ webpack-stats.json
 node_modules
 *.log
 *.swp
+bundles
