@@ -45,7 +45,7 @@ export default class ComposerPage extends React.Component {
           <div className='composer-sidebar-header'>
             <h1>
               Photospice
-              <a style={{textDecoration: 'none'}} href='https://github.com/dcbrwn/photospice'>
+              <a style={{textDecoration: 'none'}} href='https://github.com/photospice/photospice'>
                 <sup className='text-negative'>&alpha;</sup>
               </a>
             </h1>
