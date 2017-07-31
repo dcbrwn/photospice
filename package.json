@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
-    "release": "webpack -p",
+    "bundle": "webpack -p",
     "backup": "tar --exclude='./node_modules' -cf ../photospice.tar ."
   },
   "repository": {
