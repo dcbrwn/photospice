@@ -33,14 +33,14 @@ export default {
       default: 0.3,
     },
     {
-      name: 'Color 1',
+      name: 'Darks',
       description: '',
       id: 'uColor1',
       type: 'color',
       default: [0.3, 0.0, 0.3],
     },
     {
-      name: 'Color 2',
+      name: 'Lights',
       description: '',
       id: 'uColor2',
       type: 'color',
