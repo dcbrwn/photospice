@@ -70,7 +70,7 @@ export default class PipelineEditor extends React.Component {
         <EffectPicker
         isOpen={this.state.isPassPickerOpen}
         onPickEffect={this.pickEffect}>
-          <button className='button'>Add pass</button>
+          <button className='button'>Add effect</button>
         </EffectPicker>
       </div>
     }
@@ -80,7 +80,7 @@ export default class PipelineEditor extends React.Component {
           <EffectPicker
             isOpen={this.state.isPassPickerOpen}
             onPickEffect={this.pickEffect}>
-            <button className='button'>Add pass</button>
+            <button className='button'>Add effect</button>
           </EffectPicker>
           <button
             className='button button-muted'
