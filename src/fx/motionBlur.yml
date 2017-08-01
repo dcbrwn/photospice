@@ -6,33 +6,40 @@ uniforms:
     default: 0.5
   - name: Direction
     id: uDirection
-    type: vec2
-    components:
-      - name: Horizontal
-        min: -0.5
-        max: 0.5
-      - name: Vertical
-        min: -0.5
-        max: 0.5
-    default: [0.1, 0]
+    type: float
+    max: 3.1415
+    default: 0
+  - name: Force
+    id: uForce
+    type: float
+    max: 0.15
+    default: 0.05
 shader: |
   precision lowp float;
 
   varying vec2 vUv;
   uniform sampler2D uImage;
   uniform float uAmount;
-  uniform vec2 uDirection;
+  uniform float uDirection;
+  uniform float uForce;
   uniform vec2 iCanvasResolution;
   uniform vec2 iImageResolution;
 
   #define uSamples 50.0
 
+  vec2 rotate(vec2 p, float a) {
+    return vec2(
+      p.x * cos(a) + p.y * sin(a),
+      p.x * sin(a) + p.y * cos(a));
+  }
+
   void main() {
     vec4 sum = vec4(0.0);
     vec2 bounds = iImageResolution / iCanvasResolution;
+    vec2 dir = rotate(vec2(1.0, 0.0), uDirection) * uForce;
     float total = 0.0;
     for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
-      vec2 uv = vUv + uDirection * i;
+      vec2 uv = vUv + dir * i;
       if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
         sum += texture2D(uImage, uv, 0.0);
         total += 1.0;
