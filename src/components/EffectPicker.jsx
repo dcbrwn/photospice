@@ -113,6 +113,11 @@ export default class EffectPicker extends React.Component {
                 onClick={() => this.fileInput.click()}>
                 Upload your own
               </button>
+              <a
+                className='button button-muted'
+                onClickCapture={() => {}}
+                target='_blank'
+                href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
             </div>
             <ul className='effect-picker-list'>
               {this.renderEffectsList(fx, this.state.query)}

@@ -12,15 +12,20 @@
 }
 
 .button {
+  box-sizing: border-box;
+  height: $size-control;
   margin: 0;
   padding: 1px ($size-control / 4);
   border: 0;
-  box-sizing: border-box;
-  height: $size-control;
   line-height: $size-control;
   font-family: $font-text;
   font-size: $size-text;
+  text-decoration: none;
   @include button-variant($palette-primary, $palette-foreground-inverse);
+
+  &:visited {
+    color: $palette-foreground;
+  }
 }
 
 .button-transparent {
