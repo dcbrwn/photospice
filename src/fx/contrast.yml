@@ -1,0 +1,29 @@
+name: Contrast and Brightness
+uniforms:
+  - name: Contrast
+    id: uContrast
+    type: float
+    min: 0
+    max: 5
+    default: 1.0
+  - name: Brightness
+    id: uBrightness
+    type: float
+    min: -2
+    max: 2
+    default: 0
+shader: |
+  precision lowp float;
+
+  varying vec2 vUv;
+  uniform sampler2D uImage;
+  uniform float uContrast;
+  uniform float uBrightness;
+
+  void main() {
+    vec4 src = texture2D(uImage, vUv);
+    src.rgb = ((src.rgb - 0.5) * max(uContrast, 0.0)) + 0.5;
+    src.rgb += uBrightness;
+    gl_FragColor.rgb = src.rgb;
+    gl_FragColor.a = src.a;
+  }
