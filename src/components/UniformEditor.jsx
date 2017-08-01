@@ -4,6 +4,11 @@ import Slider from './Slider';
 import PreciseSlider from './PreciseSlider';
 import ColorWell from './ColorWell';
 
+const vec2Defaults =  [
+  { name: 'Horizontal' },
+  { name: 'Vertical' },
+];
+
 export default class UniformEditor extends React.Component {
   renderFloat() {
     const uniform = this.props.uniform;
@@ -21,7 +26,7 @@ export default class UniformEditor extends React.Component {
   renderVec2() {
     const uniform = this.props.uniform;
     const value = this.props.value;
-    const [x, y] = uniform.components || [{ name: 'x' }, { name: 'y' }];
+    const [x, y] = uniform.components || vec2Defaults;
     return <div>
       <span>{uniform.name}: {x.name}</span>
       <PreciseSlider

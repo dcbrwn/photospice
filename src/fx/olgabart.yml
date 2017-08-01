@@ -10,11 +10,9 @@ uniforms:
     id: uShift
     type: vec2
     components:
-      - name: Horizontal
-        min: -0.5
+      - min: -0.5
         max: 0.5
-      - name: Vertical
-        min: -0.5
+      - min: -0.5
         max: 0.5
     default: [0.05, 0]
 shader: |
