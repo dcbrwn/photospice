@@ -1,6 +1,10 @@
 # Photospice effects
 
-Effects are simple OpenGL programs ([GLSL shaders](https://www.khronos.org/registry/webgl/specs/latest/1.0/)) with a bit of information about their parameters (aka uniforms). For effect definition I use [YAML format](http://yaml.org). Here is basic color filter effect:
+In this folder you'll find built-in photospice effects. You are free to use them as an example or even as a base for your own effects!
+
+Effects are simple programs called fragment (or pixel) shaders ([GLSL shaders](https://www.khronos.org/registry/webgl/specs/latest/1.0/)). If you are not familiar with GLSL yet, spend a bit of time [googling](https://www.google.ru/search?q=introduction+into+GLSL) and then head to [Shadertoy](http://shadertoy.com) to get some practice.
+
+For effect definition I use [YAML format](http://yaml.org). Here is basic color filter effect:
 
 ```yml
 # Name and description of the effect. Nothing special here.
@@ -27,3 +31,14 @@ shader: |
     gl_FragColor.a = src.a;
   }
 ```
+
+## Built-in uniforms/varyings
+
+- `uniform sampler2D uImage` - A texture with image from previous render pass
+- `varying vec2 vUv` - Texture coordinates of image
+- `varying vec2 iImageResolution` - Original image size
+- `varying vec2 iCanvasResolution` - Actual size of canvas used for rendering (usually bigger than image)
+
+## How to use custom effects
+
+On main screen click "Add effect" button and then "Upload your own". File selection dialog will pop up, so that you can find and select your effect. Currently I haven't added any debug tools into UI, so if your shader is incorrect all errors will be in JS console (hit F12 to open it).
