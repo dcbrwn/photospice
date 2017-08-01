@@ -1,0 +1,58 @@
+name: Channel shift
+uniforms:
+  - name: Amount
+    id: uAmount
+    type: float
+    default: 1
+  - name: Red shift
+    id: uRedShift
+    type: vec2
+    components:
+      - min: -1
+        max: 1
+      - min: -1
+        max: 1
+    default: [0, 0]
+  - name: Blue shift
+    id: uBlueShift
+    type: vec2
+    components:
+      - min: -1
+        max: 1
+      - min: -1
+        max: 1
+    default: [0, 0]
+  - name: Green shift
+    id: uGreenShift
+    type: vec2
+    components:
+      - min: -1
+        max: 1
+      - min: -1
+        max: 1
+    default: [0, 0]
+shader: |
+  precision lowp float;
+
+  varying vec2 vUv;
+  uniform sampler2D uImage;
+  uniform vec2 iImageResolution;
+  uniform vec2 iCanvasResolution;
+  uniform float uAmount;
+  uniform vec2 uRedShift;
+  uniform vec2 uBlueShift;
+  uniform vec2 uGreenShift;
+
+  vec2 wrap(vec2 uv) {
+    return mod(uv, iImageResolution / iCanvasResolution);
+  }
+
+  void main() {
+    vec4 src = texture2D(uImage, vUv, 0.0);
+    vec4 shifted = vec4(
+      texture2D(uImage, wrap(vUv + uRedShift), 0.0).r,
+      texture2D(uImage, wrap(vUv + uBlueShift), 0.0).g,
+      texture2D(uImage, wrap(vUv + uGreenShift), 0.0).b,
+      src.a);
+    gl_FragColor = mix(src, shifted, uAmount);
+  }
