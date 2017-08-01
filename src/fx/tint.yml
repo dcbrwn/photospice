@@ -22,12 +22,14 @@ uniforms:
         max: 1
       - min: -1
         max: 1
-    default: [-0.5, -0.5]
+    default: [0, 0]
 shader: |
   precision lowp float;
 
   varying vec2 vUv;
 
+  uniform vec2 iCanvasResolution;
+  uniform vec2 iImageResolution;
   uniform sampler2D uImage;
   uniform vec2 uTintShift;
   uniform float uAmount;
@@ -35,8 +37,10 @@ shader: |
   uniform float uScale;
 
   void main() {
+    vec2 size = iImageResolution / iCanvasResolution;
     vec4 src = texture2D(uImage, vUv, 0.0);
-    vec4 tint = mix(src, vec4(uColor, 1.0), clamp(length((vUv + uTintShift) * uScale), 0.0, 1.0));
+    vec2 pos = vUv - size * (0.5 + uTintShift);
+    vec4 tint = mix(src, vec4(uColor, 1.0), clamp(length(pos * uScale), 0.0, 1.0));
     gl_FragColor = mix(src, tint, uAmount);
     gl_FragColor.a = src.a;
   }
