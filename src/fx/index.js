@@ -1,19 +1,4 @@
-import colorize from './colorize';
-import vintage from './vintage';
-import grayscale from './grayscale';
-import scanline from './scanline';
-import olgabart from './olgabart';
-import motionBlur from './motionBlur';
-import contrast from './contrast';
-import tint from './tint';
+const req = require.context('./', false, /^.*\.yml$/);
+const effects = req.keys().map(req);
 
-export default [
-  contrast,
-  colorize,
-  vintage,
-  grayscale,
-  olgabart,
-  motionBlur,
-  scanline,
-  tint,
-];
+export default effects;
