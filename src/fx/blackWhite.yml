@@ -1,0 +1,21 @@
+name: Black and White
+uniforms:
+  - name: Threshold
+    id: uThreshold
+    type: float
+    default: 0.5
+shader: |
+  precision lowp float;
+
+  varying vec2 vUv;
+
+  uniform sampler2D uImage;
+  uniform float uThreshold;
+
+  void main() {
+    vec4 src = texture2D(uImage, vUv, 0.0);
+    float luminance = dot(src.rgb, vec3(0.2126, 0.7152, 0.0722));
+    gl_FragColor = length(luminance) > uThreshold
+      ? vec4(1.0, 1.0, 1.0, src.a)
+      : vec4(0.0, 0.0, 0.0, src.a);
+  }
