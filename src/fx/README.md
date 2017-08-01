@@ -36,8 +36,8 @@ shader: |
 
 - `uniform sampler2D uImage` - A texture with image from previous render pass
 - `varying vec2 vUv` - Texture coordinates of image
-- `varying vec2 iImageResolution` - Original image size
-- `varying vec2 iCanvasResolution` - Actual size of canvas used for rendering (usually bigger than image)
+- `uniform vec2 iImageResolution` - Original image size
+- `uniform vec2 iCanvasResolution` - Actual size of canvas used for rendering (usually bigger than image)
 
 ## How to use custom effects
 
