@@ -1,0 +1,57 @@
+name: Lens Distortion
+uniforms:
+  - name: Force
+    id: uForce
+    type: float
+    max: 3
+    min: 0.5
+    default: 1.1
+  - name: Scale
+    id: uScale
+    type: float
+    max: 5
+    min: 0.2
+    default: 1
+  - name: Center
+    id: uCenter
+    type: vec2
+    default: [0.5, 0.5]
+shader: |
+  precision lowp float;
+
+  varying vec2 vUv;
+  uniform vec2 iCanvasResolution;
+  uniform vec2 iImageResolution;
+  uniform sampler2D uImage;
+  uniform float uForce;
+  uniform float uScale;
+  uniform vec2 uCenter;
+
+  vec2 toPolar(vec2 p) {
+    return vec2(
+      atan(p.y, p.x),
+      length(p));
+  }
+
+  vec2 toCartesian(vec2 p) {
+    return vec2(
+      p.y * cos(p.x),
+      p.y * sin(p.x));
+  }
+
+  vec4 trim(vec2 uv) {
+    vec2 size = iImageResolution / iCanvasResolution;
+    return uv.x >= 0.0 && uv.y >= 0.0 && uv.x <= size.x && uv.y <= size.y
+      ? texture2D(uImage, uv)
+      : vec4(0.0);
+  }
+
+  void main() {
+    vec2 size = iImageResolution / iCanvasResolution;
+    vec2 center = size * uCenter;
+    vec2 polar = toPolar(vUv - center);
+    polar.y = (polar.y / 10.0 + pow(polar.y, uForce)) * uScale;
+    vec2 uv = toCartesian(polar) + center;
+    vec4 src = trim(uv);
+    gl_FragColor = src;
+  }
