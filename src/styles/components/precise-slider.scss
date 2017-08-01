@@ -1,0 +1,12 @@
+.precise-slider {
+  display: flex;
+
+  .slider {
+    flex: 1;
+  }
+
+  input {
+    width: $size-text * 5;
+    margin-left: 0.5em;
+  }
+}
