@@ -36,7 +36,7 @@ shader: |
   void main() {
     vec4 sum = vec4(0.0);
     vec2 bounds = iImageResolution / iCanvasResolution;
-    vec2 dir = rotate(vec2(1.0, 0.0), uDirection) * uForce;
+    vec2 dir = rotate(vec2(1.0, 0.0), 3.1415 - uDirection) * uForce;
     float total = 0.0;
     for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
       vec2 uv = vUv + dir * i;
