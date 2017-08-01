@@ -1,6 +1,10 @@
 
 .effect-editor {
-  background: $palette-background;
+  background-color: $palette-background;
+
+  &:hover {
+    box-shadow: inset 3px 0 0 $palette-primary;
+  }
 
   .effect-editor-header {
     line-height: $size-control;
