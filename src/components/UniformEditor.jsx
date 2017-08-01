@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Toggle from './Toggle';
 import Slider from './Slider';
 import PreciseSlider from './PreciseSlider';
@@ -26,7 +27,7 @@ export default class UniformEditor extends React.Component {
   renderVec2() {
     const uniform = this.props.uniform;
     const value = this.props.value;
-    const [x, y] = uniform.components || vec2Defaults;
+    const [x, y] = _.defaultsDeep([], uniform.components, vec2Defaults);
     return <div>
       <span>{uniform.name}: {x.name}</span>
       <PreciseSlider
