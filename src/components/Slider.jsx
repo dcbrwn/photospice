@@ -5,6 +5,7 @@ import { bound } from '../lib/utils';
 export default class Slider extends React.Component {
   static get defaultProps() {
     return {
+      default: 0,
       min: 0,
       max: 1,
       step: 0,
@@ -39,12 +40,19 @@ export default class Slider extends React.Component {
     document.addEventListener('mouseup', handleMouseUp);
   }
 
+  @bound
+  resetValue() {
+    this.props.onChange(this.props.default);
+  }
+
   render() {
     const value = (this.props.value - this.props.min) * 100 / (this.props.max - this.props.min);
     const position = clamp(value, 0, 100) + '%';
 
     return (
-      <div className='slider'>
+      <div
+        className='slider'
+        onDoubleClick={this.resetValue}>
         <div
           className='slider-container'
           ref={(container) => { this.container = container }}>
