@@ -15,7 +15,7 @@ uniforms:
         min: -0.5
         max: 0.5
     default: [0.1, 0]
-shader: "
+shader: |
   precision lowp float;
 
   varying vec2 vUv;
@@ -40,4 +40,4 @@ shader: "
     }
     sum /= total;
     gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
-  }"
+  }
