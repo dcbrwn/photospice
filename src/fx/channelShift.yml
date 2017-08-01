@@ -1,4 +1,4 @@
-name: Channel shift
+name: Channel Shift
 uniforms:
   - name: Amount
     id: uAmount

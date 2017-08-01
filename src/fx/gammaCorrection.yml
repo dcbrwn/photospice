@@ -1,0 +1,20 @@
+name: Gamma Correction
+uniforms:
+  - name: Gamma
+    id: uGamma
+    type: float
+    min: 0.0001
+    max: 10
+    default: 1.0
+shader: |
+  precision lowp float;
+
+  varying vec2 vUv;
+  uniform sampler2D uImage;
+  uniform float uGamma;
+
+  void main() {
+    vec4 src = texture2D(uImage, vUv);
+    gl_FragColor.rgb = pow(src.rgb, vec3(uGamma));
+    gl_FragColor.a = src.a;
+  }
