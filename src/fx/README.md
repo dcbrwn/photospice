@@ -2,7 +2,7 @@
 
 In this folder you'll find built-in photospice effects. You are free to use them as an example or even as a base for your own effects!
 
-Effects are simple programs called fragment (or pixel) shaders ([GLSL shaders](https://www.khronos.org/registry/webgl/specs/latest/1.0/)). If you are not familiar with GLSL yet, spend a bit of time [googling](https://www.google.ru/search?q=introduction+into+GLSL) and then head to [Shadertoy](http://shadertoy.com) to get some practice.
+Effects are simple programs called fragment (or pixel) shaders ([GLSL shaders](https://www.khronos.org/registry/webgl/specs/latest/1.0/)). If you are not familiar with GLSL yet, spend a bit of time [googling](https://www.google.ru/search?q=introduction+to+GLSL) and then head to [Shadertoy](http://shadertoy.com) to get some practice.
 
 For effect definition I use [YAML format](http://yaml.org). Here is basic color filter effect:
 

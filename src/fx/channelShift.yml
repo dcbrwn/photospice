@@ -51,8 +51,8 @@ shader: |
     vec4 src = texture2D(uImage, vUv, 0.0);
     vec4 shifted = vec4(
       texture2D(uImage, wrap(vUv + uRedShift), 0.0).r,
-      texture2D(uImage, wrap(vUv + uBlueShift), 0.0).g,
-      texture2D(uImage, wrap(vUv + uGreenShift), 0.0).b,
+      texture2D(uImage, wrap(vUv + uGreenShift), 0.0).g,
+      texture2D(uImage, wrap(vUv + uBlueShift), 0.0).b,
       src.a);
     gl_FragColor = mix(src, shifted, uAmount);
   }
