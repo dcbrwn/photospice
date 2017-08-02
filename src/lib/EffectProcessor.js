@@ -22,7 +22,6 @@ export default class EffectProcessor {
     this.source = null;
     this.sourceSize = null;
     this.passtrough = this.createPass(passtroughEffect, false);
-    this.isDirty = true;
   }
 
   createPass(effect, isIntermediate = true) {
@@ -43,16 +42,40 @@ export default class EffectProcessor {
     return pass;
   }
 
-  addPass(effect) {
-    this.passes.push(this.createPass(effect));
-    this.isDirty = true;
+  invalidatePassesFromPos(position) {
+    return this.passes
+      .slice(position)
+      .forEach((pass) => pass.prevState = null);
+  }
+
+  addPass(effect, position = this.passes.length) {
+    const pass = this.createPass(effect);
+    this.passes.splice(position, 0, pass);
+    this.invalidatePassesFromPos(position);
+    return position;
+  }
+
+  removePassAt(position) {
+    const [pass] = this.passes.splice(position, 1);
+
+    this.renderer.deleteProgram(pass.program);
+    this.renderer.deleteTexture(pass.texture);
+
+    if (position <= this.passes.length - 1) {
+      this.invalidatePassesFromPos(position);
+    }
   }
 
   removePass(pass) {
-    this.passes = _.without(this.passes, pass);
-    this.renderer.deleteProgram(pass.program);
-    this.renderer.deleteTexture(pass.texture);
-    this.isDirty = true;
+    const position = this.passes.indexOf(pass);
+    return this.removePassAt(position);
+  }
+
+  movePass(oldPosition, newPosition) {
+    const temp = this.passes[newPosition];
+    this.passes[newPosition] = this.passes[oldPosition];
+    this.passes[oldPosition] = temp;
+    this.invalidatePassesFromPos(Math.min(oldPosition, newPosition));
   }
 
   loadImage(source) {
@@ -73,7 +96,7 @@ export default class EffectProcessor {
   }
 
   render(target) {
-    let isDirty = this.isDirty;
+    let isDirty = false;
     this.renderer.setSize(...this.sourceSize);
     const result = this.passes.reduce((prevPassTexture, pass) => {
       const currentState = JSON.stringify({
@@ -89,6 +112,7 @@ export default class EffectProcessor {
       }
 
       if (isDirty) {
+        console.log(pass.name);
         this.renderer.useTexture(prevPassTexture);
         pass._uniforms.uImage.value = prevPassTexture;
         this.renderer.renderToTexture(pass.program, pass.texture);
