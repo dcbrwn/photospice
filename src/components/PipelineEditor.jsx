@@ -42,8 +42,8 @@ export default class PipelineEditor extends React.Component {
   }
 
   @bound
-  pickEffect(effect) {
-    this.processor.addPass(effect);
+  pickEffect(effect, position) {
+    this.processor.addPass(effect, position);
     this.setState({ passes: this.processor.passes });
     this.props.updatePhoto();
   }
@@ -63,7 +63,7 @@ export default class PipelineEditor extends React.Component {
 
   render() {
     let trailingEffectPicker = null;
-    if (this.processor.passes.length > 1) {
+    if (this.processor.passes.length >= 1) {
       trailingEffectPicker = <div className='pipeline-editor-item'>
         <EffectPicker
         isOpen={this.state.isPassPickerOpen}
@@ -77,7 +77,7 @@ export default class PipelineEditor extends React.Component {
         <div className='pipeline-editor-actions pipeline-editor-item'>
           <EffectPicker
             isOpen={this.state.isPassPickerOpen}
-            onPickEffect={this.pickEffect}>
+            onPickEffect={e => this.pickEffect(e, 0)}>
             <button className='button'>Add effect</button>
           </EffectPicker>
           <button
