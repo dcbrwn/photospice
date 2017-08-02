@@ -5,7 +5,11 @@
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
     "bundle": "webpack -p",
-    "backup": "tar --exclude='./node_modules' -cf ../photospice.tar ."
+    "backup": "tar --exclude='./node_modules' -cf ../photospice.tar .",
+    "test": "jest"
+  },
+  "jest": {
+    "rootDir": "src/"
   },
   "repository": {
     "type": "git",
@@ -27,6 +31,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.4",
     "gl-matrix": "^2.3.2",
+    "jest": "^20.0.4",
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",

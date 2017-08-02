@@ -25,13 +25,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'stage-1', 'react'],
-            plugins: ['transform-decorators-legacy'],
-          }
-        }
+        use: { loader: 'babel-loader' },
       },
       { test: /\.js$/, loader: 'source-map-loader' },
       { test: /\.yml$/, loader: 'yml-loader' },

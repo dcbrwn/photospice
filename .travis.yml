@@ -1,7 +1,7 @@
 dist: trusty
 language: node_js
 node_js: 6
-script: chmod +x ./release.sh && ./release.sh
+script: yarn test && chmod +x ./release.sh && ./release.sh
 cache: yarn
 deploy:
   provider: pages
