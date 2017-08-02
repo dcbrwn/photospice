@@ -99,6 +99,8 @@ export default class EffectProcessor {
     let isDirty = false;
     this.renderer.setSize(...this.sourceSize);
     const result = this.passes.reduce((prevPassTexture, pass) => {
+      pass._uniforms.uImage.value = prevPassTexture;
+
       const currentState = JSON.stringify({
         isDisabled: pass.isDisabled,
         uniforms: pass.uniforms,
@@ -112,9 +114,6 @@ export default class EffectProcessor {
       }
 
       if (isDirty) {
-        console.log(pass.name);
-        this.renderer.useTexture(prevPassTexture);
-        pass._uniforms.uImage.value = prevPassTexture;
         this.renderer.renderToTexture(pass.program, pass.texture);
       }
 

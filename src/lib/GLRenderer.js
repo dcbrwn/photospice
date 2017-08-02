@@ -200,6 +200,9 @@ export default class GLRenderer {
     const iImageResolution = gl.getUniformLocation(program, 'iImageResolution');
     gl.uniform2fv(iImageResolution, [this.width, this.height]);
     for (let uniform of program[symbols.uniforms]) {
+      if (uniform.type === 'sampler2D') {
+        this.useTexture(uniform.value);
+      }
       gl[uniform[symbols.type]](uniform[symbols.location], uniform.value);
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
