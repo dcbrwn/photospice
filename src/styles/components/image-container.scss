@@ -1,5 +1,6 @@
 .image-container {
   cursor: move;
+  touch-action: manipulation;
   user-select: none;
   display: block;
   height: 100%;

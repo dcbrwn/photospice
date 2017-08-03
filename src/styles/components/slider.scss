@@ -23,6 +23,7 @@
   }
 
   .slider-button {
+    touch-action: pan-x;
     position: absolute;
     height: $size-control;
     width: $size-control;
