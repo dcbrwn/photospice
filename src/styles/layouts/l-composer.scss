@@ -1,55 +1,9 @@
 .l-composer {
-  $sidebar-width: 400px;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-
-  &.l-composer-compact {
-    .composer-sidebar {
-      z-index: 1;
-      left: -$sidebar-width;
-
-      // Add 1px area on the left of the screen.
-      // Hovering on it, user can open sidebar.
-      &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: -1px;
-        width: 1px;
-      }
-
-      &:hover {
-        left: 0;
-        transition-delay: 0.5s;
-
-        // Prevent sidebar from closing immediately when user accidentaly
-        // moves cursor out of it for a few pixels. 
-        &::after {
-          right: -50px;
-          width: 50px;
-        }
-      }
-    }
-
-    .composer-screen {
-      left: 0;
-
-      // Hide action buttons when background picker is inactive
-      .image-container-actions:not(.active) {
-        opacity: 0;
-        transition: opacity 0.1s linear;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-    }
-  }
 
   .composer-sidebar {
     position: absolute;
@@ -75,5 +29,91 @@
     left: $sidebar-width;
     overflow: hidden;
     transition: left 0.3s ease;
+  }
+}
+
+.l-composer-compact {
+  .composer-sidebar {
+    z-index: 1;
+    left: -$sidebar-width;
+
+    // Add 1px area on the left of the screen.
+    // Hovering on it, user can open sidebar.
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -1px;
+      width: 1px;
+    }
+
+    &:hover {
+      left: 0;
+      transition-delay: 0.5s;
+
+      // Prevent sidebar from closing immediately when user accidentaly
+      // moves cursor out of it for a few pixels.
+      &::after {
+        right: -50px;
+        width: 50px;
+      }
+    }
+  }
+
+  .composer-screen {
+    left: 0;
+
+    // Hide action buttons when background picker is inactive
+    .image-container-actions:not(.active) {
+      opacity: 0;
+      transition: opacity 0.1s linear;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $screen-small) {
+  .composer-mobile-menu-button {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $screen-small) {
+  .l-composer {
+    .composer-mobile-menu-button {
+      z-index: 1;
+      position: absolute;
+      top: 1em;
+      left: calc(100% - #{$size-control * 1.5} - 1em);
+      width: $size-control * 1.5;
+      height: $size-control * 1.5;
+      line-height: $size-control * 1.5;
+      text-align: center;
+
+      &::before {
+        content: '≡';
+        display: inline-block;
+        font-size: 150%;
+        vertical-align: middle;
+      }
+    }
+
+    .composer-sidebar {
+      width: 100%;
+    }
+
+    &.l-composer-compact .composer-mobile-menu-button {
+      opacity: 0.6;
+      left: 1em;
+      right: 0;
+      border-radius: 50%;
+      background: $palette-background;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    }
   }
 }

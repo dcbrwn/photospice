@@ -83,7 +83,7 @@ export default class PipelineEditor extends React.Component {
           <button
             className='button button-muted'
             onClick={() => this.imageInput.click()}>
-            Upload new image
+            Upload image
           </button>
           <button
             className='button button-muted'

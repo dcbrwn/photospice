@@ -41,6 +41,10 @@ export default class ComposerPage extends React.Component {
     });
     return (
       <main className={layoutClass}>
+        <div
+          className='composer-mobile-menu-button'
+          onClick={this.toggleCompactMode}>
+        </div>
         <div className='composer-sidebar'>
           <div className='composer-sidebar-header'>
             <h1>
