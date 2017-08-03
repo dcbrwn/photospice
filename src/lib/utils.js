@@ -68,7 +68,7 @@ export function dragHelper(options) {
     if (!mappedEvent.isTouchEvent) event.preventDefault();
 
     if (options.moveOnStart) {
-      onDragMove(mappedEvent);
+      onDragMove(event);
     }
 
     function onDragMove(event) {
