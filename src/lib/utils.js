@@ -51,8 +51,15 @@ export function dragHelper(options) {
       ? ['touchmove', 'touchend']
       : ['mousemove', 'mouseup'];
 
+    if (!isTouchEvent) event.preventDefault();
+
+    if (options.moveOnStart) {
+      onDragMove(event);
+    }
+
     function onDragMove(event) {
       if (!isTouchEvent) event.preventDefault();
+
       const data = isTouchEvent
         ? event.touches[0]
         : event;

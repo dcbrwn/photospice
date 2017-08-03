@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { luminance, clamp, HSVToRGB, RGBToHSV } from '../lib/math';
-import { bound, toCssColor } from '../lib/utils';
+import { bound, toCssColor, dragHelper } from '../lib/utils';
 
 // FIXME: Calculate this on the fly
 const popupWidth = 300;
@@ -47,46 +47,24 @@ export default class ColorWell extends React.Component {
     this.setState({ isPopupOpen: false });
   }
 
-  @bound
-  handleHClick(event) {
-    event.preventDefault();
-    const self = this;
-    const containerRect = this.huePad.getBoundingClientRect();
+  startHueChange = dragHelper({
+    moveOnStart: true,
+    onStart: () => this.huePad.getBoundingClientRect(),
+    onMove: (container, data) => {
+      const hue = clamp((data.pageX - container.left) / container.width);
+      this.handleHSBChange(hue, this.state.saturation, this.state.brightness);
+    },
+  });
 
-    function handleMouseMove(event) {
-      const hue = clamp((event.pageX - containerRect.left) / containerRect.width);
-      self.handleHSBChange(hue, self.state.saturation, self.state.brightness);
-    }
-
-    function handleMouseUp() {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }
-
-  @bound
-  handleSBClick(event) {
-    event.preventDefault();
-    const self = this;
-    const containerRect = this.SBPad.getBoundingClientRect();
-
-    function handleMouseMove(event) {
-      const saturation = clamp((event.pageX - containerRect.left) / containerRect.width, 1e-5);
-      const brightness = clamp(1 - (event.pageY - containerRect.top) / containerRect.height, 1e-5);
-      self.handleHSBChange(self.state.hue, saturation, brightness);
-    }
-
-    function handleMouseUp() {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }
+  startToneChange = dragHelper({
+    moveOnStart: true,
+    onStart: () => this.SBPad.getBoundingClientRect(),
+    onMove: (container, data) => {
+      const saturation = clamp((data.pageX - container.left) / container.width, 1e-5);
+      const brightness = clamp(1 - (data.pageY - container.top) / container.height, 1e-5);
+      this.handleHSBChange(this.state.hue, saturation, brightness);
+    },
+  });
 
   @bound
   pickColor() {
@@ -133,13 +111,15 @@ export default class ColorWell extends React.Component {
             <div
               className='hue-pad'
               ref={huePad => this.huePad = huePad}
-              onMouseDown={this.handleHClick}
+              onTouchStart={this.startHueChange}
+              onMouseDown={this.startHueChange}
               style={{paddingLeft: this.state.hue * 100 + '%'}}>
             </div>
             <div
               className='saturation-value-pad'
               ref={SBPad => this.SBPad = SBPad}
-              onMouseDown={this.handleSBClick}
+              onTouchStart={this.startToneChange}
+              onMouseDown={this.startToneChange}
               style={{
                 backgroundColor: toCssColor(pureColor),
                 paddingLeft: this.state.saturation * 100 + '%',
