@@ -1,6 +1,6 @@
 import React from 'react';
 import { clamp, align } from '../lib/math';
-import { bound } from '../lib/utils';
+import { bound, dragHelper } from '../lib/utils';
 
 export default class Slider extends React.Component {
   static get defaultProps() {
@@ -13,32 +13,25 @@ export default class Slider extends React.Component {
     };
   }
 
-  @bound
-  handleMouseDown(event) {
-    event.preventDefault();
-    const self = this;
-    const domain =  this.props.max - this.props.min;
-    const containerRect = this.container.getBoundingClientRect();
-    const buttonRect = event.target.getBoundingClientRect();
-    const width = containerRect.width;
-    const sx = buttonRect.width / 2;
-
-    function handleMouseMove(event) {
-      let value = domain * (event.pageX - sx - containerRect.left) / width + self.props.min;
-      if (self.props.step) {
-        value = align(value, self.props.step);
+  startMove = dragHelper({
+    onStart: (event) => {
+      const container = this.container.getBoundingClientRect();
+      const button = event.target.getBoundingClientRect();
+      return {
+        origin: button.width / 2 + container.left,
+        width: container.width,
+        domain: this.props.max - this.props.min,
+      };
+    },
+    onMove: (init, data) => {
+      const rawValue = (data.pageX - init.origin) / init.width;
+      let value = init.domain * rawValue + this.props.min;
+      if (this.props.step) {
+        value = align(value, this.props.step);
       }
-      self.props.onChange(clamp(value, self.props.min, self.props.max));
-    }
-
-    function handleMouseUp() {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }
+      this.props.onChange(clamp(value, this.props.min, this.props.max));
+    },
+  });
 
   @bound
   resetValue() {
@@ -59,7 +52,8 @@ export default class Slider extends React.Component {
           <div
             style={{ left: position }}
             className='slider-button'
-            onMouseDown={ this.handleMouseDown }>
+            onTouchStart={this.startMove}
+            onMouseDown={this.startMove}>
           </div>
         </div>
       </div>

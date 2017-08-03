@@ -38,3 +38,34 @@ export function classes(...classes) {
   }, [])
   .join(' ');
 }
+
+export function dragHelper(options) {
+  const onStart = (_.isFunction(options.onStart) && options.onStart) || _.identity;
+  const onMove = (_.isFunction(options.onMove) && options.onMove) || _.identity;
+  const onEnd = (_.isFunction(options.onMove) && options.onEnd) || _.identity;
+
+  return function onDragStart(event) {
+    const init = onStart(event);
+    const isTouchEvent = !!event.touches;
+    const eventNames = isTouchEvent
+      ? ['touchmove', 'touchend']
+      : ['mousemove', 'mouseup'];
+
+    function onDragMove(event) {
+      if (!isTouchEvent) event.preventDefault();
+      const data = isTouchEvent
+        ? event.touches[0]
+        : event;
+      onMove(init, data, event);
+    }
+
+    function onDragEnd(event) {
+      onEnd(event);
+      document.removeEventListener(eventNames[0], onDragMove);
+      document.removeEventListener(eventNames[1], onDragEnd);
+    }
+
+    document.addEventListener(eventNames[0], onDragMove);
+    document.addEventListener(eventNames[1], onDragEnd);
+  }
+}
