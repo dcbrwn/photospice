@@ -77,13 +77,13 @@
   }
 }
 
-@media screen and (min-width: $screen-small) {
+@media screen and (min-width: $sidebar-width) {
   .composer-mobile-menu-button {
     display: none;
   }
 }
 
-@media screen and (max-width: $screen-small) {
+@media screen and (max-width: $sidebar-width) {
   .l-composer {
     .composer-mobile-menu-button {
       z-index: 1;
