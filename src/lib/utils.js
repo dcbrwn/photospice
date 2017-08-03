@@ -72,8 +72,8 @@ export function dragHelper(options) {
     }
 
     function onDragMove(event) {
+      event.preventDefault();
       const mappedEvent = mapPointerEvent(event);
-      if (!mappedEvent.isTouchEvent) event.preventDefault();
       onMove(init, mappedEvent);
     }
 
@@ -83,7 +83,7 @@ export function dragHelper(options) {
       document.removeEventListener(eventNames[1], onDragEnd);
     }
 
-    document.addEventListener(eventNames[0], onDragMove);
+    document.addEventListener(eventNames[0], onDragMove, { passive: false });
     document.addEventListener(eventNames[1], onDragEnd);
   }
 }
