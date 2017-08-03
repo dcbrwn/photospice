@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { clamp } from '../lib/math';
-import { bound, toCssColor, classes } from '../lib/utils';
+import { bound, toCssColor, classes, dragHelper } from '../lib/utils';
 import ColorWell from './ColorWell';
 
 export default class ImageContainer extends React.Component {
@@ -104,30 +104,22 @@ export default class ImageContainer extends React.Component {
     });
   }
 
-  @bound
-  startImageMove(event) {
-    event.preventDefault();
-    const self = this;
-    let px = event.clientX;
-    let py = event.clientY;
-
-    const handleMouseMove = _.throttle(function(event) {
-      self.setState({
-        posX: self.state.posX + (event.clientX - px),
-        posY: self.state.posY + (event.clientY - py),
+  startImageMove = dragHelper({
+    onStart: (event) => {
+      return {
+        x: event.clientX,
+        y: event.clientY,
+      };
+    },
+    onMove: (prev, event) => {
+      this.setState({
+        posX: this.state.posX + (event.clientX - prev.x),
+        posY: this.state.posY + (event.clientY - prev.y),
       });
-      px = event.clientX;
-      py = event.clientY;
-    }, 30);
-
-    function handleMouseUp() {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }
+      prev.x = event.clientX;
+      prev.y = event.clientY;
+    },
+  });
 
   render() {
     const wrapperTransform = `
@@ -146,6 +138,7 @@ export default class ImageContainer extends React.Component {
         className='image-container'
         onWheel={this.updateZoom}
         onDoubleClick={this.toggleViewSettings}
+        onTouchStart={this.startImageMove}
         onMouseDown={this.startImageMove}
         ref={(container) => this.container = container}
         style={{ backgroundColor: toCssColor(this.state.color) }}>

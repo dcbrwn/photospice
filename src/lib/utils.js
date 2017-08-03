@@ -39,31 +39,42 @@ export function classes(...classes) {
   .join(' ');
 }
 
+function mapPointerEvent(event) {
+  const pointDataKeys = ['pageX', 'pageY', 'clientX', 'clientY'];
+  const result = {};
+  result.isTouchEvent = !!event.touches;
+  if (result.isTouchEvent) {
+    _.assign(result, _.pick(event.touches[0], pointDataKeys));
+  } else {
+    _.assign(result, _.pick(event, pointDataKeys));
+  }
+  result.target = event.target;
+  result.originalEvent = event;
+  return result;
+}
+
 export function dragHelper(options) {
   const onStart = (_.isFunction(options.onStart) && options.onStart) || _.identity;
   const onMove = (_.isFunction(options.onMove) && options.onMove) || _.identity;
   const onEnd = (_.isFunction(options.onMove) && options.onEnd) || _.identity;
 
   return function onDragStart(event) {
-    const init = onStart(event);
-    const isTouchEvent = !!event.touches;
-    const eventNames = isTouchEvent
+    const mappedEvent = mapPointerEvent(event);
+    const init = onStart(mappedEvent);
+    const eventNames = mappedEvent.isTouchEvent
       ? ['touchmove', 'touchend']
       : ['mousemove', 'mouseup'];
 
-    if (!isTouchEvent) event.preventDefault();
+    if (!mappedEvent.isTouchEvent) event.preventDefault();
 
     if (options.moveOnStart) {
-      onDragMove(event);
+      onDragMove(mappedEvent);
     }
 
     function onDragMove(event) {
-      if (!isTouchEvent) event.preventDefault();
-
-      const data = isTouchEvent
-        ? event.touches[0]
-        : event;
-      onMove(init, data, event);
+      const mappedEvent = mapPointerEvent(event);
+      if (!mappedEvent.isTouchEvent) event.preventDefault();
+      onMove(init, mappedEvent);
     }
 
     function onDragEnd(event) {
