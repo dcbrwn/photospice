@@ -5,15 +5,28 @@ import PipelineEditor from './components/PipelineEditor';
 import ImageContainer from './components/ImageContainer';
 import _ from 'lodash';
 
+// See also: https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
+const isMobile = /Mobi/.test(navigator.userAgent);
+
 export default class ComposerPage extends React.Component {
+  constructor() {
+    super();
+
+    if (isMobile) {
+      this.updatePhoto = _.debounce(() => {
+        this.state.processor.render(this.canvas);
+      }, 100);
+    } else {
+      this.updatePhoto = _.throttle(() => {
+        this.state.processor.render(this.canvas);
+      }, 1000 / 60);
+    }
+  }
+
   state = {
     processor: new EffectProcessor(),
     compactMode: false,
   }
-
-  updatePhoto = _.throttle(() => {
-    this.state.processor.render(this.canvas);
-  }, 30)
 
   async componentDidMount() {
     await this.state.processor.useImage('assets/spice.jpg');
