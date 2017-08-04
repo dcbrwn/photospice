@@ -20,7 +20,6 @@ export default class EffectProcessor {
     this.renderer = new GLRenderer();
     this.passes = [];
     this.source = null;
-    this.sourceSize = null;
     this.passtrough = this.createPass(passtroughEffect, false);
   }
 
@@ -91,13 +90,11 @@ export default class EffectProcessor {
   async useImage(imageSrc) {
     const image = await this.loadImage(imageSrc);
     this.source = this.renderer.createTexture(image);
-    this.sourceSize = [image.width, image.height];
-    this.isDirty = true;
+    this.renderer.setSize(image.width, image.height);
   }
 
   render(target) {
     let isDirty = false;
-    this.renderer.setSize(...this.sourceSize);
     const result = this.passes.reduce((prevPassTexture, pass) => {
       pass._uniforms.uImage.value = prevPassTexture;
 
@@ -123,6 +120,5 @@ export default class EffectProcessor {
     this.passtrough._uniforms.uImage.value = result;
     this.renderer.render(this.passtrough.program);
     this.renderer.copyToCanvas(target);
-    this.isDirty = false;
   }
 }
