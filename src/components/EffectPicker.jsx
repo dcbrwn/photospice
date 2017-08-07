@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { load } from 'js-yaml';
 import { bound } from '../lib/utils';
 import fx from '../fx';
@@ -44,19 +43,6 @@ export default class EffectPicker extends React.Component {
   }
 
   @bound
-  openModal() {
-    this.setState({
-      query: null,
-      isModalOpened: true,
-    });
-  }
-
-  @bound
-  closeModal() {
-    this.setState({ isModalOpened: false });
-  }
-
-  @bound
   pickEffect(effect) {
     this.props.onPickEffect(effect);
     this.closeModal();
@@ -74,63 +60,35 @@ export default class EffectPicker extends React.Component {
   }
 
   render() {
-    const modalStyle = {
-      content: {
-        width: '540px',
-        height: 'auto',
-      },
-      overlay: {
-        backgroundColor: 'transparent',
-      },
-    };
-
     return (
-      <div
-        style={{ display: 'inline-block' }}
-        onClick={this.openModal}>
-        {this.props.children}
-        <Modal
-          style={modalStyle}
-          isOpen={this.state.isModalOpened}
-          onRequestClose={this.closeModal}
-          contentLabel='Effect pass picker'>
+      <div className='effect-picker'>
+        <input
+          type='file'
+          accept='.yml,.yaml'
+          style={{ display: 'none' }}
+          ref={(input) => this.fileInput = input}
+          onChange={this.uploadEffect}/>
+        <div className='effect-picker-header'>
           <input
-            type='file'
-            accept='.yml,.yaml'
-            style={{ display: 'none' }}
-            ref={(input) => this.fileInput = input}
-            onChange={this.uploadEffect}/>
-          <div className='effect-picker'>
-            <div className='effect-picker-header'>
-              <input
-                autoFocus
-                type='text'
-                placeholder='Search for effect...'
-                onChange={this.setSearchQuery}/>
-              <span>or</span>
-              <button
-                className='button'
-                onClick={() => this.fileInput.click()}>
-                Upload your own
-              </button>
-              <a
-                className='button button-muted'
-                onClickCapture={() => {}}
-                target='_blank'
-                href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
-            </div>
-            <ul className='effect-picker-list'>
-              {this.renderEffectsList(fx, this.state.query)}
-            </ul>
-            <div className='effect-picker-actions'>
-              <button
-                className='button button-muted'
-                onClick={this.closeModal}>
-                Close
-              </button>
-            </div>
-          </div>
-        </Modal>
+            autoFocus
+            type='text'
+            placeholder='Search for effect...'
+            onChange={this.setSearchQuery}/>
+          <span>or</span>
+          <button
+            className='button'
+            onClick={() => this.fileInput.click()}>
+            Upload your own
+          </button>
+          <a
+            className='button button-muted'
+            onClickCapture={() => {}}
+            target='_blank'
+            href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
+        </div>
+        <ul className='effect-picker-list'>
+          {this.renderEffectsList(fx, this.state.query)}
+        </ul>
       </div>
     );
   }

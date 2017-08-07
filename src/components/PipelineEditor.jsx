@@ -2,9 +2,8 @@ import React from 'react';
 import {
   SortableContainer,
   SortableElement,
-  arrayMove
 } from 'react-sortable-hoc';
-import { bound } from '../lib/utils';
+import { bound, classes } from '../lib/utils';
 import EffectEditor from './EffectEditor';
 import EffectPicker from './EffectPicker';
 
@@ -16,7 +15,8 @@ export default class PipelineEditor extends React.Component {
 
     this.state = {
       passes: this.processor.passes,
-      advancedMode: false,
+      isEffectPickerOpen: false,
+      newEffectPosition: 0,
     };
   }
 
@@ -26,9 +26,12 @@ export default class PipelineEditor extends React.Component {
       removePass={() => this.removeEffect(effect)}
       updatePhoto={this.props.updatePhoto}
     />);
-    return <ul>{
-      items.map((value, index) => (<Effect key={`item-${index}`} index={index} effect={value} />))
-    }</ul>;
+
+    return <ul className='pipeline-editor-effects'>
+      {items.map((value, index) => {
+        return <Effect key={`item-${index}`} index={index} effect={value} />;
+      })}
+    </ul>;
   });
 
   @bound
@@ -42,10 +45,17 @@ export default class PipelineEditor extends React.Component {
   }
 
   @bound
-  pickEffect(effect, position) {
-    this.processor.addPass(effect, position);
+  pickEffect(effect) {
+    this.processor.addPass(effect, this.state.newEffectPosition);
     this.setState({ passes: this.processor.passes });
     this.props.updatePhoto();
+    this.closeEffectPicker();
+  }
+
+  closeEffectPicker() {
+    this.setState({
+      isEffectPickerOpen: false,
+    });
   }
 
   removeEffect(pass) {
@@ -62,48 +72,64 @@ export default class PipelineEditor extends React.Component {
   }
 
   render() {
+    const pickerClass = classes('pipeline-editor-picker', {
+      active: this.state.isEffectPickerOpen,
+    });
     let trailingEffectPicker = null;
+
     if (this.processor.passes.length >= 1) {
-      trailingEffectPicker = <div className='pipeline-editor-item'>
-        <EffectPicker
-        isOpen={this.state.isPassPickerOpen}
-        onPickEffect={this.pickEffect}>
-          <button className='button'>Add effect</button>
-        </EffectPicker>
-      </div>
+      trailingEffectPicker = <button
+        className='button'
+        onClick={() => this.setState({
+          isEffectPickerOpen: true,
+          newEffectPosition: this.state.passes.length,
+        })}>
+        Add effect
+      </button>
     }
+
     return (
       <div className='pipeline-editor'>
-        <div className='pipeline-editor-actions pipeline-editor-item'>
-          <EffectPicker
-            isOpen={this.state.isPassPickerOpen}
-            onPickEffect={e => this.pickEffect(e, 0)}>
-            <button className='button'>Add effect</button>
-          </EffectPicker>
-          <button
-            className='button button-muted'
-            onClick={() => this.imageInput.click()}>
-            Upload image
-          </button>
-          <button
-            className='button button-muted'
-            onClick={this.props.downloadPhoto}>
-            Download result
-          </button>
-          <input
-            type='file'
-            accept='image/*'
-            style={{ display: 'none' }}
-            onChange={this.useImage}
-            ref={(input) => this.imageInput = input } />
+        <div className='pipeline-editor-pipe'>
+          <div className='pipeline-editor-actions pipeline-editor-item'>
+            <button
+              className='button'
+              onClick={() => this.setState({
+                isEffectPickerOpen: true,
+                newEffectPosition: 0,
+              })}>
+              Add effect
+            </button>
+            <button
+              className='button button-muted'
+              onClick={() => this.imageInput.click()}>
+              Upload image
+            </button>
+            <button
+              className='button button-muted'
+              onClick={this.props.downloadPhoto}>
+              Download result
+            </button>
+            <input
+              type='file'
+              accept='image/*'
+              style={{ display: 'none' }}
+              onChange={this.useImage}
+              ref={(input) => this.imageInput = input } />
+          </div>
+          <this.EffectsList
+            lockAxis='y'
+            items={this.state.passes}
+            onSortEnd={this.onSortEnd}
+            useDragHandle={true}
+          />
+          <div className='pipeline-editor-item'>
+            {trailingEffectPicker}
+          </div>
         </div>
-        <this.EffectsList
-          lockAxis='y'
-          items={this.state.passes}
-          onSortEnd={this.onSortEnd}
-          useDragHandle={true}
-        />
-        {trailingEffectPicker}
+        <div className={pickerClass}>
+          <EffectPicker onPickEffect={this.pickEffect} />
+        </div>
       </div>
     );
   }

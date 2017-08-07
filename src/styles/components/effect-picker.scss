@@ -1,13 +1,15 @@
 .effect-picker {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
+  background-color: $palette-background;
 
   .effect-picker-header {
     display: flex;
     flex-direction: row;
-    margin: 0 0 1.5em 0;
+    padding: 1em;
     line-height: $size-control;
 
     input {
@@ -39,10 +41,5 @@
         background-color: $palette-muted;
       }
     }
-  }
-
-  .effect-picker-actions {
-    padding: 1.5em 0 0 0;
-    text-align: right;
   }
 }
