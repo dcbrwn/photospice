@@ -45,7 +45,6 @@ export default class EffectPicker extends React.Component {
   @bound
   pickEffect(effect) {
     this.props.onPickEffect(effect);
-    this.closeModal();
   }
 
   @bound
