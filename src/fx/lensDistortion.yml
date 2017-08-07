@@ -5,7 +5,7 @@ uniforms:
     type: float
     max: 1
     min: 0.0001
-    default: 1.1
+    default: 0.1
   - name: Scale
     id: uScale
     type: float
@@ -46,13 +46,14 @@ shader: |
       : vec4(0.0);
   }
 
+  #define sin45 0.707106781186547
+
   void main() {
     vec2 size = iImageResolution / iCanvasResolution;
     vec2 center = size * uCenter;
     vec2 polar = toPolar(vUv - center);
-    float d = sqrt(2.0) / 2.0;
     float r = 1.0 / uForce;
-    float c = (sqrt(r * r - 0.5) - d) * d;
+    float c = (sqrt(r * r - 0.5) - sin45) * sin45;
     float x = polar.y;
     polar.y = 1.0 + c - sqrt(r * r - c * c - x * x - 2.0 * c * x);
     polar.y *= uScale;
