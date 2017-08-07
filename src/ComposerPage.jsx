@@ -15,7 +15,7 @@ export default class ComposerPage extends React.Component {
     if (isMobile) {
       this.updatePhoto = _.debounce(() => {
         this.state.processor.render(this.canvas);
-      }, 100);
+      }, 1000);
     } else {
       this.updatePhoto = _.throttle(() => {
         this.state.processor.render(this.canvas);
@@ -66,7 +66,6 @@ export default class ComposerPage extends React.Component {
                 <sup className='text-negative'>&alpha;</sup>
               </a>
             </h1>
-            <hr />
           </div>
           <PipelineEditor
             downloadPhoto={this.downloadPhoto}
