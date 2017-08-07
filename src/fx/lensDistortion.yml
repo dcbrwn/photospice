@@ -3,8 +3,8 @@ uniforms:
   - name: Force
     id: uForce
     type: float
-    max: 3
-    min: 0.5
+    max: 1
+    min: 0.0001
     default: 1.1
   - name: Scale
     id: uScale
@@ -50,7 +50,12 @@ shader: |
     vec2 size = iImageResolution / iCanvasResolution;
     vec2 center = size * uCenter;
     vec2 polar = toPolar(vUv - center);
-    polar.y = (polar.y / 10.0 + pow(polar.y, uForce)) * uScale;
+    float d = sqrt(2.0) / 2.0;
+    float r = 1.0 / uForce;
+    float c = (sqrt(r * r - 0.5) - d) * d;
+    float x = polar.y;
+    polar.y = 1.0 + c - sqrt(r * r - c * c - x * x - 2.0 * c * x);
+    polar.y *= uScale;
     vec2 uv = toCartesian(polar) + center;
     vec4 src = trim(uv);
     gl_FragColor = src;
