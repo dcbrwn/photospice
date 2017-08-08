@@ -171,7 +171,7 @@ export default class GLRenderer {
     const cache = {};
 
     for (let uniform of uniforms) {
-      const type =  uniformTypeMapping[uniform.type];
+      const type = uniformTypeMapping[uniform.type];
       if (!type) {
         throw new Error(`Unknown uniform type "${type}"`);
       }

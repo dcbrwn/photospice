@@ -24,6 +24,10 @@ export default class EffectProcessor {
   }
 
   createPass(effect, isIntermediate = true) {
+    if (!effect.shader) {
+      throw new Error('Can\'t use an effect without shader');
+    }
+
     const pass = _.cloneDeep(effect);
     // BuiltIn uniforms
     pass._uniforms = {
@@ -37,7 +41,9 @@ export default class EffectProcessor {
     pass.uniforms = _.values(pass._uniforms).concat(pass.uniforms);
     pass.prevState = null;
     if (isIntermediate) pass.texture = this.renderer.createTexture();
-    pass.program = this.renderer.createProgram(pass.uniforms, pass.shader);
+    pass.programs = _.flatten([pass.shader]).map((shader) => {
+      return this.renderer.createProgram(pass.uniforms, shader);
+    });
     return pass;
   }
 
@@ -94,32 +100,22 @@ export default class EffectProcessor {
     this.invalidatePassesFromPos(0);
   }
 
-  render(target) {
-    let isDirty = false;
-    const result = this.passes.reduce((prevPassTexture, pass) => {
-      pass._uniforms.uImage.value = prevPassTexture;
+  renderPass(source, pass) {
+    if (pass.isDisabled) return source;
 
-      const currentState = JSON.stringify({
-        isDisabled: pass.isDisabled,
-        uniforms: pass.uniforms,
-      });
-
-      isDirty = isDirty || currentState !== pass.prevState;
-      pass.prevState = currentState;
-
-      if (pass.isDisabled) {
-        return prevPassTexture;
-      }
-
-      if (isDirty) {
-        this.renderer.renderToTexture(pass.program, pass.texture);
-      }
-
+    return pass.programs.reduce((texture, program) => {
+      pass._uniforms.uImage.value = texture;
+      this.renderer.renderToTexture(program, pass.texture);
       return pass.texture;
+    }, source);
+  }
+
+  render(target) {
+    const result = this.passes.reduce((prevTexture, pass) => {
+      return this.renderPass(prevTexture, pass);
     }, this.source);
-    this.renderer.useTexture(result);
     this.passtrough._uniforms.uImage.value = result;
-    this.renderer.render(this.passtrough.program);
+    this.renderer.render(this.passtrough.programs[0]);
     this.renderer.copyToCanvas(target);
   }
 }
