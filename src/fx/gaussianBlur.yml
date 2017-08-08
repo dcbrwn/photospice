@@ -1,4 +1,4 @@
-name: Gaussian blur
+name: Gaussian Blur
 uniforms:
   - name: Amount
     id: uAmount
@@ -21,12 +21,6 @@ shader:
     uniform vec2 iImageResolution;
 
     #define uSamples 25.0
-
-    vec2 rotate(vec2 p, float a) {
-      return vec2(
-        p.x * cos(a) + p.y * sin(a),
-        p.x * sin(a) + p.y * cos(a));
-    }
 
     float pseudoGauss(float x) {
       return cos(x * 1.57);
@@ -59,12 +53,6 @@ shader:
     uniform vec2 iImageResolution;
 
     #define uSamples 25.0
-
-    vec2 rotate(vec2 p, float a) {
-      return vec2(
-        p.x * cos(a) + p.y * sin(a),
-        p.x * sin(a) + p.y * cos(a));
-    }
 
     float pseudoGauss(float x) {
       return cos(x * 1.57);

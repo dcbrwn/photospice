@@ -1,4 +1,4 @@
-name: Motion blur
+name: Motion Blur
 uniforms:
   - name: Amount
     id: uAmount
