@@ -83,6 +83,7 @@ export default class EffectPicker extends React.Component {
             className='button button-muted'
             onClickCapture={() => {}}
             target='_blank'
+            rel='noopener'
             href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
         </div>
         <ul className='effect-picker-list'>
