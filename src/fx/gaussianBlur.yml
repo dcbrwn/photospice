@@ -17,10 +17,6 @@ prelude: |
 
   #define uSamples 25.0
 
-  float pseudoGauss(float x) {
-    return cos(x * 1.57);
-  }
-
   vec4 gaussianBlur(vec2 p, vec2 dir) {
     vec4 sum = vec4(0.0);
     vec2 bounds = iImageResolution / iCanvasResolution;
@@ -28,7 +24,7 @@ prelude: |
     for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
       vec2 uv = p + dir * i;
       if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
-        float factor = pseudoGauss(i);
+        float factor = pow(100.0, -(i * i));
         sum += texture2D(uImage, uv) * factor;
         total += factor;
       }
