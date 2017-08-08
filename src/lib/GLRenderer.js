@@ -39,8 +39,7 @@ const uniformTypeMapping = {
 };
 
 const symbols = {
-  location: Symbol(),
-  type: Symbol(),
+  cache: Symbol(),
   uniforms: Symbol(),
 };
 
@@ -169,16 +168,22 @@ export default class GLRenderer {
 
     // Locate and initialize uniforms
 
+    const cache = {};
+
     for (let uniform of uniforms) {
-      uniform[symbols.location] = gl.getUniformLocation(program, uniform.id);
-      uniform[symbols.type] = uniformTypeMapping[uniform.type];
-      if (!uniform[symbols.type]) {
-        throw new Error(`Unknown uniform type "${uniform[symbols.type]}"`);
+      const type =  uniformTypeMapping[uniform.type];
+      if (!type) {
+        throw new Error(`Unknown uniform type "${type}"`);
       }
+      cache[uniform.id] = {
+        type: uniformTypeMapping[uniform.type],
+        location: gl.getUniformLocation(program, uniform.id),
+      };
       uniform.value = uniform.default;
     }
 
     program[symbols.uniforms] = uniforms;
+    program[symbols.cache] = cache;
 
     return program;
   }
@@ -200,10 +205,11 @@ export default class GLRenderer {
     const iImageResolution = gl.getUniformLocation(program, 'iImageResolution');
     gl.uniform2fv(iImageResolution, [this.width, this.height]);
     for (let uniform of program[symbols.uniforms]) {
+      const cache = program[symbols.cache][uniform.id];
       if (uniform.type === 'sampler2D') {
         this.useTexture(uniform.value);
       }
-      gl[uniform[symbols.type]](uniform[symbols.location], uniform.value);
+      gl[cache.type](cache.location, uniform.value);
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
