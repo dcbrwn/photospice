@@ -12,14 +12,16 @@ module.exports = {
     },
   },
   context: __dirname,
-  entry: { main: ['babel-polyfill', './src/index.jsx'] },
+  entry: {
+    photospice: ['babel-polyfill', './src/photospice.jsx'],
+    // sink: ['babel-polyfill', './src/sink.jsx'],
+  },
   output: {
     path: path.resolve('./bundles'),
     publicPath: '/bundles/',
     filename: '[name].js'
   },
   devtool: 'source-map',
-
   module: {
     rules: [
       {

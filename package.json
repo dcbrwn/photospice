@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --inline --hot",
-    "bundle": "webpack -p",
+    "bundle": "webpack -p photospice",
     "backup": "tar --exclude='./node_modules' -cf ../photospice.tar .",
     "test": "jest"
   },
@@ -38,8 +38,6 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-modal": "^2.2.2",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
     "react-sortable-hoc": "^0.6.5",
     "sass-loader": "^6.0.5",
     "source-map-loader": "^0.2.1",
