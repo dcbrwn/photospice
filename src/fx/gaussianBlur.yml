@@ -1,0 +1,88 @@
+name: Gaussian blur
+uniforms:
+  - name: Amount
+    id: uAmount
+    type: float
+    default: 0.5
+  - name: Radius
+    id: uRadius
+    type: float
+    max: 0.15
+    default: 0.05
+shader:
+  - |
+    precision lowp float;
+
+    varying vec2 vUv;
+    uniform sampler2D uImage;
+    uniform float uAmount;
+    uniform float uRadius;
+    uniform vec2 iCanvasResolution;
+    uniform vec2 iImageResolution;
+
+    #define uSamples 25.0
+
+    vec2 rotate(vec2 p, float a) {
+      return vec2(
+        p.x * cos(a) + p.y * sin(a),
+        p.x * sin(a) + p.y * cos(a));
+    }
+
+    float pseudoGauss(float x) {
+      return cos(x * 1.57);
+    }
+
+    void main() {
+      vec4 sum = vec4(0.0);
+      vec2 bounds = iImageResolution / iCanvasResolution;
+      vec2 dir = vec2(uRadius, 0.0);
+      float total = 0.0;
+      for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
+        vec2 uv = vUv + dir * i;
+        if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
+          float factor = pseudoGauss(i);
+          sum += texture2D(uImage, uv) * factor;
+          total += factor;
+        }
+      }
+      sum /= total;
+      gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
+    }
+  - |
+    precision lowp float;
+
+    varying vec2 vUv;
+    uniform sampler2D uImage;
+    uniform float uAmount;
+    uniform float uRadius;
+    uniform vec2 iCanvasResolution;
+    uniform vec2 iImageResolution;
+
+    #define uSamples 25.0
+
+    vec2 rotate(vec2 p, float a) {
+      return vec2(
+        p.x * cos(a) + p.y * sin(a),
+        p.x * sin(a) + p.y * cos(a));
+    }
+
+    float pseudoGauss(float x) {
+      return cos(x * 1.57);
+    }
+
+    void main() {
+      vec4 sum = vec4(0.0);
+      vec2 bounds = iImageResolution / iCanvasResolution;
+      vec2 dir = vec2(0.0, uRadius);
+      float total = 0.0;
+      for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
+        vec2 uv = vUv + dir * i;
+        if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
+          float factor = pseudoGauss(i);
+          sum += texture2D(uImage, uv) * factor;
+          total += factor;
+        }
+      }
+      sum /= total;
+      gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
+    }
