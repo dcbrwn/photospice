@@ -1,7 +1,7 @@
 .pipeline-editor {
   position: relative;
   height: 100%;
-  margin: 0.5em 0 0.5em 0;
+  margin: 0;
   text-align: left;
 
   .pipeline-editor-effects {
@@ -15,6 +15,7 @@
     width: 100%;
     height: 100%;
     overflow: auto;
+    padding: 0.5em 0 0.5em 0;
   }
 
   .pipeline-editor-actions {
