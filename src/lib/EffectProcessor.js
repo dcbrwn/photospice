@@ -41,8 +41,9 @@ export default class EffectProcessor {
     pass.uniforms = _.values(pass._uniforms).concat(pass.uniforms);
     pass.prevState = null;
     if (isIntermediate) pass.texture = this.renderer.createTexture();
+    const prelude = pass.prelude || '';
     pass.programs = _.flatten([pass.shader]).map((shader) => {
-      return this.renderer.createProgram(pass.uniforms, shader);
+      return this.renderer.createProgram(pass.uniforms, prelude + '\n' + shader);
     });
     return pass;
   }

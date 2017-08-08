@@ -9,94 +9,35 @@ uniforms:
     type: float
     max: 0.15
     default: 0.005
+prelude: |
+  precision lowp float;
+
+  varying vec2 vUv;
+  uniform sampler2D uImage;
+  uniform float uBokeh;
+  uniform float uRadius;
+  uniform vec2 iCanvasResolution;
+  uniform vec2 iImageResolution;
+
+  #define uSamples 10.0
+
+  vec4 bokehBlur(vec2 p, vec2 dir) {
+    vec4 sum = vec4(0.0);
+    vec4 maxs = vec4(0.0);
+    vec2 bounds = iImageResolution / iCanvasResolution;
+    float total = 0.0;
+    for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
+      vec2 uv = p + dir * i;
+      if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
+        vec4 sample = texture2D(uImage, uv);
+        sum += sample;
+        maxs = max(sample, maxs);
+        total += 1.0;
+      }
+    }
+    return mix(sum / total, maxs, uBokeh);
+  }
 shader:
-  - |
-    precision lowp float;
-
-    varying vec2 vUv;
-    uniform sampler2D uImage;
-    uniform float uBokeh;
-    uniform float uRadius;
-    uniform vec2 iCanvasResolution;
-    uniform vec2 iImageResolution;
-
-    #define uSamples 10.0
-
-    void main() {
-      vec4 sum = vec4(0.0);
-      vec4 maxs = vec4(0.0);
-      vec2 bounds = iImageResolution / iCanvasResolution;
-      vec2 dir = vec2(0.0, 1.0) * uRadius;
-      float total = 0.0;
-      for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
-        vec2 uv = vUv + dir * i;
-        if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
-          vec4 sample = texture2D(uImage, uv);
-          sum += sample;
-          maxs = max(sample, maxs);
-          total += 1.0;
-        }
-      }
-      sum /= total;
-      gl_FragColor = mix(sum, maxs, uBokeh);
-    }
-  - |
-    precision lowp float;
-
-    varying vec2 vUv;
-    uniform sampler2D uImage;
-    uniform float uBokeh;
-    uniform float uRadius;
-    uniform vec2 iCanvasResolution;
-    uniform vec2 iImageResolution;
-
-    #define uSamples 10.0
-
-    void main() {
-      vec4 sum = vec4(0.0);
-      vec4 maxs = vec4(0.0);
-      vec2 bounds = iImageResolution / iCanvasResolution;
-      vec2 dir = vec2(0.866, 0.5) * uRadius;
-      float total = 0.0;
-      for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
-        vec2 uv = vUv + dir * i;
-        if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
-          vec4 sample = texture2D(uImage, uv);
-          sum += sample;
-          maxs = max(sample, maxs);
-          total += 1.0;
-        }
-      }
-      sum /= total;
-      gl_FragColor = mix(sum, maxs, uBokeh);
-    }
-  - |
-    precision lowp float;
-
-    varying vec2 vUv;
-    uniform sampler2D uImage;
-    uniform float uBokeh;
-    uniform float uRadius;
-    uniform vec2 iCanvasResolution;
-    uniform vec2 iImageResolution;
-
-    #define uSamples 10.0
-
-    void main() {
-      vec4 sum = vec4(0.0);
-      vec4 maxs = vec4(0.0);
-      vec2 bounds = iImageResolution / iCanvasResolution;
-      vec2 dir = vec2(-0.866, 0.5) * uRadius;
-      float total = 0.0;
-      for (float i = -1.0; i < 1.0; i += 2.0 / uSamples) {
-        vec2 uv = vUv + dir * i;
-        if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
-          vec4 sample = texture2D(uImage, uv);
-          sum += sample;
-          maxs = max(sample, maxs);
-          total += 1.0;
-        }
-      }
-      sum /= total;
-      gl_FragColor = mix(sum, maxs, uBokeh);
-    }
+  - void main() { gl_FragColor = bokehBlur(vUv, uRadius * vec2(0.0, 1.0)); }
+  - void main() { gl_FragColor = bokehBlur(vUv, uRadius * vec2(0.866, 0.5)); }
+  - void main() { gl_FragColor = bokehBlur(vUv, uRadius * vec2(-0.866, 0.5)); }
