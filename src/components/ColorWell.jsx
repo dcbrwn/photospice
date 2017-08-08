@@ -99,9 +99,10 @@ export default class ColorWell extends React.Component {
 
     return (
       <div
+        className='color-well'
+        aria-label='Pick a color'
         style={{ backgroundColor: toCssColor(this.props.value) }}
-        onClick={this.openPopup}
-        className='color-well'>
+        onClick={this.openPopup}>
         <Modal
           isOpen={this.state.isPopupOpen}
           onAfterOpen={this.handlePopupOpen}

@@ -165,16 +165,19 @@ export default class ImageContainer extends React.Component {
             className={colorButtonsClass}>
             <button
               className='button'
+              aria-label='Set background to white'
               style={{ backgroundColor: 'white' }}
               onClick={() => this.pickColor([1, 1, 1])}>
             </button>
             <button
               className='button'
+              aria-label='Set background to grey'
               style={{ left: '25%', backgroundColor: 'grey' }}
               onClick={() => this.pickColor([0.5, 0.5, 0.5])}>
             </button>
             <button
               className='button'
+              aria-label='Set background to black'
               style={{ left: '50%', backgroundColor: 'black' }}
               onClick={() => this.pickColor([0, 0, 0])}>
             </button>
