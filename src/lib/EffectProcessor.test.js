@@ -104,9 +104,18 @@ describe('EffectProcessor', () => {
         { name: 1, prevState: fakeState },
         { name: 2, prevState: fakeState },
       ];
-      processor.addPass({ name: 3 });
+      processor.addPass({ shader: 't3h shad0r', name: 3 });
       expect(processor.passes[0].prevState).toEqual(fakeState);
       expect(processor.passes[1].prevState).toEqual(fakeState);
+    });
+
+    test('should fail if shader is not provided', () => {
+      const processor = new EffectProcessor();
+      try {
+        processor.addPass({});
+      } catch (e) {
+        expect(e.message).toEqual('Can\'t use an effect without shader');
+      }
     });
   });
 });
