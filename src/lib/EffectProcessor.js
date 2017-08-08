@@ -105,6 +105,7 @@ export default class EffectProcessor {
     if (pass.isDisabled) return source;
 
     return pass.programs.reduce((texture, program) => {
+      // FIXME: This is missed in pass state serialization below
       pass._uniforms.uImage.value = texture;
       this.renderer.renderToTexture(program, pass.texture);
       return pass.texture;
@@ -112,8 +113,21 @@ export default class EffectProcessor {
   }
 
   render(target) {
-    const result = this.passes.reduce((prevTexture, pass) => {
-      return this.renderPass(prevTexture, pass);
+    const result = this.passes.reduce((prevTexture, pass, index) => {
+      const currentState = JSON.stringify({
+        isDisabled: pass.isDisabled,
+        uniforms: pass.uniforms,
+      });
+      const isDirty = pass.prevState !== currentState;
+      let passResult = pass.texture;
+
+      if (isDirty) {
+        this.invalidatePassesFromPos(index);
+        passResult = this.renderPass(prevTexture, pass);
+      }
+
+      pass.prevState = currentState;
+      return passResult;
     }, this.source);
     this.passtrough._uniforms.uImage.value = result;
     this.renderer.render(this.passtrough.programs[0]);
