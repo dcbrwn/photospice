@@ -1,9 +1,5 @@
 name: Gaussian Blur
 uniforms:
-  - name: Amount
-    id: uAmount
-    type: float
-    default: 0.5
   - name: Radius
     id: uRadius
     type: float
@@ -39,8 +35,7 @@ shader:
           total += factor;
         }
       }
-      sum /= total;
-      gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
+      gl_FragColor = sum / total;
     }
   - |
     precision lowp float;
@@ -71,6 +66,5 @@ shader:
           total += factor;
         }
       }
-      sum /= total;
-      gl_FragColor = mix(texture2D(uImage, vUv, 0.0), sum, uAmount);
+      gl_FragColor = sum / total;
     }

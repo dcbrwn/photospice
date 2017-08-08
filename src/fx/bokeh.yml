@@ -1,21 +1,21 @@
 name: Bokeh Blur
 uniforms:
-  - name: Amount
-    id: uAmount
+  - name: Bokeh
+    id: uBokeh
     type: float
     default: 0.5
   - name: Radius
     id: uRadius
     type: float
     max: 0.15
-    default: 0.05
+    default: 0.005
 shader:
   - |
     precision lowp float;
 
     varying vec2 vUv;
     uniform sampler2D uImage;
-    uniform float uAmount;
+    uniform float uBokeh;
     uniform float uRadius;
     uniform vec2 iCanvasResolution;
     uniform vec2 iImageResolution;
@@ -38,14 +38,14 @@ shader:
         }
       }
       sum /= total;
-      gl_FragColor = mix(sum, maxs, uAmount);
+      gl_FragColor = mix(sum, maxs, uBokeh);
     }
   - |
     precision lowp float;
 
     varying vec2 vUv;
     uniform sampler2D uImage;
-    uniform float uAmount;
+    uniform float uBokeh;
     uniform float uRadius;
     uniform vec2 iCanvasResolution;
     uniform vec2 iImageResolution;
@@ -68,14 +68,14 @@ shader:
         }
       }
       sum /= total;
-      gl_FragColor = mix(sum, maxs, uAmount);
+      gl_FragColor = mix(sum, maxs, uBokeh);
     }
   - |
     precision lowp float;
 
     varying vec2 vUv;
     uniform sampler2D uImage;
-    uniform float uAmount;
+    uniform float uBokeh;
     uniform float uRadius;
     uniform vec2 iCanvasResolution;
     uniform vec2 iImageResolution;
@@ -98,5 +98,5 @@ shader:
         }
       }
       sum /= total;
-      gl_FragColor = mix(sum, maxs, uAmount);
+      gl_FragColor = mix(sum, maxs, uBokeh);
     }
