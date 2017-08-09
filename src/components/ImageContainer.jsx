@@ -6,7 +6,7 @@ import ColorWell from './ColorWell';
 
 export default class ImageContainer extends React.Component {
   state = {
-    color: [0.5, 0.5, 0.5],
+    color: [0.22, 0.25, 0.28],
     posX: 0,
     posY: 0,
     zoom: 1,
