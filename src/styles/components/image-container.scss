@@ -56,10 +56,6 @@
     .hide-ui-button {
       background-image: url('/assets/fullscreen.svg');
       background-position: 50% 50%;
-
-      @media screen and (max-width: $screen-small) {
-        display: none;
-      }
     }
 
     .color-buttons {

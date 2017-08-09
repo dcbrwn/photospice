@@ -135,7 +135,7 @@ export default class ImageContainer extends React.Component {
     const activeClass = {
       'active': this.state.isColorPickerOpened,
     };
-    const actionsClass = classes('image-container-actions', activeClass);
+    const actionsClass = classes('image-container-actions', 'hide-sm', activeClass);
     const bgButtonClass = classes('button bg-button', activeClass);
     const colorButtonsClass = classes('color-buttons', activeClass);
     return (
