@@ -70,6 +70,10 @@ export default class ImageContainer extends React.Component {
     this.setState({ isColorPickerOpened: !this.state.isColorPickerOpened });
   }
 
+  closeColorPicker() {
+    this.setState({ isColorPickerOpened: false });
+  }
+
   @bound
   toggleViewSettings() {
     const currentView = _.pick(this.state, ['posX', 'posY', 'zoom']);
@@ -106,6 +110,7 @@ export default class ImageContainer extends React.Component {
 
   startImageMove = dragHelper({
     onStart: (event) => {
+      this.closeColorPicker();
       return {
         x: event.clientX,
         y: event.clientY,
@@ -134,21 +139,23 @@ export default class ImageContainer extends React.Component {
     const bgButtonClass = classes('button bg-button', activeClass);
     const colorButtonsClass = classes('color-buttons', activeClass);
     return (
-      <div
-        className='image-container'
-        onWheel={this.updateZoom}
-        onDoubleClick={this.toggleViewSettings}
-        onTouchStart={this.startImageMove}
-        onMouseDown={this.startImageMove}
-        ref={(container) => this.container = container}
-        style={{ backgroundColor: toCssColor(this.state.color) }}>
+      <div className='image-container'>
         <div
-          className='image-container-wrapper'
-          ref={(wrapper) => this.wrapper = wrapper}
-          style={{
-            transform: wrapperTransform
-          }}>
-          {this.props.children}
+          className='image-container-backdrop'
+          onWheel={this.updateZoom}
+          onDoubleClick={this.toggleViewSettings}
+          onTouchStart={this.startImageMove}
+          onMouseDown={this.startImageMove}
+          ref={(container) => this.container = container}
+          style={{ backgroundColor: toCssColor(this.state.color) }}>
+          <div
+            className='image-container-wrapper'
+            ref={(wrapper) => this.wrapper = wrapper}
+            style={{
+              transform: wrapperTransform
+            }}>
+            {this.props.children}
+          </div>
         </div>
         <div className={actionsClass}>
           <button
