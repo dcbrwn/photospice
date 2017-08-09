@@ -93,15 +93,10 @@
       left: calc(100% - #{$size-control * 1.5} - 1em);
       width: $size-control * 1.5;
       height: $size-control * 1.5;
-      line-height: $size-control * 1.5;
-      text-align: center;
-
-      &::before {
-        content: '≡';
-        display: inline-block;
-        font-size: 150%;
-        vertical-align: middle;
-      }
+      border-radius: 50%;
+      background-image: url('/assets/menu.svg');
+      background-size: contain;
+      transition: all 0.3s ease;
     }
 
     .composer-sidebar {
@@ -112,8 +107,7 @@
       opacity: 0.6;
       left: 1em;
       right: 0;
-      border-radius: 50%;
-      background: $palette-background;
+      background-color: $palette-background;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
     }
   }
