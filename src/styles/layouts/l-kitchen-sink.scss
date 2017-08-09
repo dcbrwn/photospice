@@ -1,9 +1,9 @@
 .l-kitchen-sink {
-  padding: 1em;
+  padding: $interval-block;
   max-width: 540px;
   margin: 0 auto;
 
   .buttons-group .button {
-    margin-right: 0.5em;
+    margin-right: $interval-component;
   }
 }

@@ -24,7 +24,7 @@
     cursor: default;
     position: absolute;
     bottom: 0;
-    padding: 1em;
+    padding: $interval-block;
 
     .button, .color-well {
       cursor: pointer;
@@ -40,7 +40,7 @@
     .button {
       width: $size-control * 1.5;
       height: $size-control * 1.5;
-      margin-right: 0.5em;
+      margin-right: $interval-component;
       border-radius: 50%;
       background-color: $palette-background;
       background-size: $size-control;

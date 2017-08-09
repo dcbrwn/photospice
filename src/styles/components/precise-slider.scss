@@ -7,6 +7,6 @@
 
   input {
     width: $size-text * 5;
-    margin-left: 0.5em;
+    margin-left: $interval-component;
   }
 }

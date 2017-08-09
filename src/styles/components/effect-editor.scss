@@ -9,10 +9,10 @@
   .effect-editor-header {
     touch-action: pan-y;
     line-height: $size-control;
-    margin: 0 0 0.5em 0;
+    margin: 0 0 $interval-component 0;
 
     .toggle {
-      margin-right: 0.5em;
+      margin-right: $interval-component;
     }
 
     .effect-editor-actions {

@@ -9,7 +9,7 @@
   .effect-picker-header {
     display: flex;
     flex-direction: row;
-    padding: 1em;
+    padding: $interval-block;
     line-height: $size-control;
 
     input {
@@ -33,7 +33,7 @@
 
     li {
       cursor: pointer;
-      padding: 1em;
+      padding: $interval-block;
       border-top: 1px solid $palette-muted;
       transition: background-color 0.1s linear;
 

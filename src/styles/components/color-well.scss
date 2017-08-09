@@ -21,7 +21,7 @@
     box-sizing: border-box;
     width: $pad-width;
     height: $pad-height;
-    margin: 0 0 0.5em 0;
+    margin: 0 0 $interval-component 0;
     background-image: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
     user-select: none;
 
@@ -56,7 +56,7 @@
     box-sizing: border-box;
     width: $pad-width;
     height: $pad-width;
-    margin: 0 0 0.5em 0;
+    margin: 0 0 $interval-component 0;
     overflow: hidden;
     background-size: cover;
     background-image: url('/assets/colorpicker_overlay.png');
@@ -77,7 +77,7 @@
     text-align: right;
 
     .button {
-      margin-left: 0.5em;
+      margin-left: $interval-component;
     }
   }
 }

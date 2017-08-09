@@ -10,7 +10,7 @@ span, a, img, i, u, b, small, strong {
 }
 
 h1, h2, h3 {
-  margin: 0.2em 0 0.5em 0;
+  margin: floor($interval-component / 2) 0 $interval-component 0;
   font-family: $font-heading;
   font-weight: $font-weight-heading;
   line-height: 1.1em;

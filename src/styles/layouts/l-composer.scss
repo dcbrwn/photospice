@@ -89,8 +89,8 @@
     .composer-mobile-menu-button {
       z-index: 1;
       position: absolute;
-      top: 1em;
-      left: calc(100% - #{$size-control * 1.5} - 1em);
+      top: $interval-block;
+      left: calc(100% - #{$size-control * 1.5} - #{$interval-block});
       width: $size-control * 1.5;
       height: $size-control * 1.5;
       border-radius: 50%;
@@ -107,12 +107,22 @@
       left: 100vw;
     }
 
-    &.l-composer-compact .composer-mobile-menu-button {
-      opacity: 0.6;
-      left: 1em;
-      right: 0;
-      background-color: $palette-background;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+    &.l-composer-compact {
+      .composer-mobile-menu-button {
+        opacity: 0.6;
+        left: $interval-block;
+        right: 0;
+        background-color: $palette-background;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+      }
+
+      .composer-sidebar {
+        left: -100%;
+      }
+
+      .composer-screen {
+        left: 0;
+      }
     }
   }
 }
