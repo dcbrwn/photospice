@@ -25,11 +25,12 @@ prelude: |
       vec2 uv = p + dir * i;
       if (uv.x > 0.0 && uv.y > 0.0 && uv.x < bounds.x && uv.y < bounds.y) {
         float factor = pow(100.0, -(i * i));
-        sum += texture2D(uImage, uv) * factor;
+        vec4 sample = texture2D(uImage, uv);
+        sum += (sample * sample) * factor;
         total += factor;
       }
     }
-    return sum / total;
+    return sqrt(sum / total);
   }
 shader:
   - void main() { gl_FragColor = gaussianBlur(vUv, vec2(uRadius, 0.0)); }
