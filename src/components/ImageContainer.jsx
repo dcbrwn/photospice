@@ -99,8 +99,8 @@ export default class ImageContainer extends React.Component {
     const zoom = this.state.zoom * factor;
     if (zoom > maxZoom || zoom < minZoom) return;
     const [ix, iy] = this.pageToImageSpace(event.pageX, event.pageY);
-    const dx = (ix * factor - ix) * zoom;
-    const dy = (iy * factor - iy) * zoom;
+    const dx = (ix * factor - ix) * this.state.zoom;
+    const dy = (iy * factor - iy) * this.state.zoom;
     this.setState({
       posX: this.state.posX - dx,
       posY: this.state.posY - dy,

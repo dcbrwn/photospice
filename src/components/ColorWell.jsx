@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { luminance, clamp, HSVToRGB, RGBToHSV } from '../lib/math';
 import { bound, toCssColor, dragHelper } from '../lib/utils';
 
+// TODO: Extract color picker modal to a separate component
 // FIXME: Calculate this on the fly
 const popupWidth = 300;
 const popupHeight = 350;
