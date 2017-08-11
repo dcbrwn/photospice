@@ -54,9 +54,9 @@ function mapPointerEvent(event) {
 }
 
 export function dragHelper(options) {
-  const onStart = (_.isFunction(options.onStart) && options.onStart) || _.identity;
-  const onMove = (_.isFunction(options.onMove) && options.onMove) || _.identity;
-  const onEnd = (_.isFunction(options.onMove) && options.onEnd) || _.identity;
+  const onStart = typeof options.onStart === 'function' ? options.onStart : _.identity;
+  const onMove = typeof options.onMove === 'function' ? options.onMove : _.identity;
+  const onEnd = typeof options.onEnd === 'function' ? options.onEnd : _.identity;
 
   return function onDragStart(event) {
     const mappedEvent = mapPointerEvent(event);
@@ -79,7 +79,7 @@ export function dragHelper(options) {
 
     function onDragEnd(event) {
       onEnd(event);
-      document.removeEventListener(eventNames[0], onDragMove);
+      document.removeEventListener(eventNames[0], onDragMove, { passive: false });
       document.removeEventListener(eventNames[1], onDragEnd);
     }
 
