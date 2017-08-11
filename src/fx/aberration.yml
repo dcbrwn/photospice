@@ -11,7 +11,7 @@ uniforms:
     components:
       - max: 4
       - max: 4
-    default: [0.5, 1.5]
+    default: [1.5, 0.5]
 shader: |
   precision lowp float;
 
