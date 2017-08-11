@@ -119,7 +119,7 @@ export default class EffectProcessor {
         uniforms: pass.uniforms,
       });
       const isDirty = pass.prevState !== currentState;
-      let passResult = prevTexture;
+      let passResult = pass.isDisabled ? prevTexture : pass.texture;
 
       if (isDirty) {
         this.invalidatePassesFromPos(index);
