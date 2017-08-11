@@ -38,9 +38,10 @@ const uniformTypeMapping = {
   sampler2D: 'uniform1i',
 };
 
+// NOTE: Symbol polyfill doesn't work for IE11
 const symbols = {
-  cache: Symbol(),
-  uniforms: Symbol(),
+  cache: '_glr_cache',
+  uniforms: '_glr_uniforms',
 };
 
 function resizeToPowerOfTwo(image) {
