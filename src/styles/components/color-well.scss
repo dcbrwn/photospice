@@ -22,17 +22,18 @@
     width: $pad-width;
     height: $pad-height;
     margin: 0 0 $interval-component 0;
+    overflow: hidden;
     background-image: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
     user-select: none;
 
     &::before {
       content: '';
+      display: block;
       position: relative;
       top: $pad-height - $arrow-size;
       left: -$arrow-size;
       width: 0;
       height: 0;
-      display: block;
       border: $arrow-size;
       border-style: solid;
       border-color: transparent transparent $palette-foreground transparent;
@@ -59,7 +60,9 @@
     margin: 0 0 $interval-component 0;
     overflow: hidden;
     background-size: cover;
-    background-image: url('/assets/colorpicker_overlay.png');
+    background-image:
+      linear-gradient(to bottom, transparent, black),
+      linear-gradient(to right, white, transparent);
 
     &::before {
       content: '';
