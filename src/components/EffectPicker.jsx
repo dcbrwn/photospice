@@ -68,23 +68,30 @@ export default class EffectPicker extends React.Component {
           ref={(input) => this.fileInput = input}
           onChange={this.uploadEffect}/>
         <div className='effect-picker-header'>
+          <button
+            className='button button-muted'
+            onClick={() => this.props.onPickEffect(null)}>
+            Back
+          </button>
           <input
             autoFocus
             type='text'
             placeholder='Search for effect...'
             onChange={this.setSearchQuery}/>
           <span>or</span>
-          <button
-            className='button'
-            onClick={() => this.fileInput.click()}>
-            Upload your own
-          </button>
-          <a
-            className='button button-muted'
-            onClickCapture={() => {}}
-            target='_blank'
-            rel='noopener'
-            href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
+          <span>
+            <button
+              className='button'
+              onClick={() => this.fileInput.click()}>
+              Upload
+            </button>
+            <a
+              className='button button-muted'
+              onClickCapture={() => {}}
+              target='_blank'
+              rel='noopener'
+              href='https://github.com/photospice/photospice/tree/master/src/fx'>?</a>
+          </span>
         </div>
         <ul className='effect-picker-list'>
           {this.renderEffectsList(fx, this.state.query)}

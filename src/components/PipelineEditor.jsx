@@ -46,9 +46,11 @@ export default class PipelineEditor extends React.Component {
 
   @bound
   pickEffect(effect) {
-    this.processor.addPass(effect, this.state.newEffectPosition);
-    this.setState({ passes: this.processor.passes });
-    this.props.updatePhoto();
+    if (effect) {
+      this.processor.addPass(effect, this.state.newEffectPosition);
+      this.setState({ passes: this.processor.passes });
+      this.props.updatePhoto();
+    }
     this.closeEffectPicker();
   }
 

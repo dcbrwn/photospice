@@ -20,6 +20,8 @@
   }
 
   .pipeline-editor-actions {
+    white-space: nowrap;
+
     .button {
       margin-right: $interval-component;
     }
