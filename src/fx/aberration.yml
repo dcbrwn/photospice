@@ -38,7 +38,7 @@ shader: |
     vec4 sum = vec4(0.0);
     vec2 dir = (vec2(size * 0.5) - p) * force;
     vec4 total = vec4(0.0);
-    for (float i = -1.0; i < 1.0; i += 2.0 / SAMPLES) {
+    for (float i = 0.0; i < 1.0; i += 1.0 / SAMPLES) {
       vec2 shift = dir * i;
       vec2 vGA = p + shift;
       vec2 vR = p + shift * uColorShift.x;
